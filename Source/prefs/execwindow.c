@@ -505,7 +505,7 @@ struct Node *CopyExecNode(struct Node *node)
     en->en_Delay=orignode->en_Delay;
 
     /* Return pointer to new node */
-    return(en);
+    return((struct Node *)en);
    }
   } else {
    /* No, set defaults */
@@ -514,7 +514,7 @@ struct Node *CopyExecNode(struct Node *node)
     en->en_Stack=4096;
 
     /* Return pointer to new node */
-    return(en);
+    return((struct Node *)en);
    }
   }
 
@@ -548,7 +548,7 @@ struct Node *CreateExecNode(char *name, struct WBArg *wa)
 
     /* All OK. */
     free(dirbuf);
-    return(en);
+    return((struct Node *)en);
    }
    free(dirbuf);
   }
@@ -1094,7 +1094,7 @@ struct Node *ReadExecNode(UBYTE *buf)
    en->en_Stack=epo->epo_Stack;
 
    /* All OK. */
-   return(en);
+   return((struct Node *)en);
   }
 
   /* Call failed */

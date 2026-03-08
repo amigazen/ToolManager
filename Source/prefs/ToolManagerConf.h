@@ -55,7 +55,12 @@
 #include <ctype.h>
 
 /* Compiler specific include files */
+#include <clib/compiler-specific.h>
 #include <lists.h>     /* GetHead() et al. */
+
+#ifndef __COMMODORE_DATE__
+#define __COMMODORE_DATE__ __DATE__
+#endif
 
 /* Project specific include files */
 #define CATCOMP_NUMBERS
@@ -85,7 +90,7 @@ struct FileReqParms {
                      char          *frp_OldFile;
                     };
 
-struct ToolNode {
+struct TMNode {
                  struct Node  tn_Node;
                  char        *tn_Image;
                  char        *tn_Sound;
@@ -289,6 +294,23 @@ extern UWORD                 WBYOffset;
 extern const struct TagItem  DisabledTags[];
 extern const char            PrefsFileName[];
 extern const char            SavePrefsFileName[];
+
+/* AppStrings indices (integer subscript for SAS/C); match locale.c / toolmanager.h order */
+#define IX_WINDOW_NAME_GAD 5
+#define IX_WINDOW_OK_GAD 16
+#define IX_WINDOW_CANCEL_GAD 17
+#define IX_MAINWIN_TITLE 18
+#define IX_MAINWIN_TYPE_EXEC_CYCLE_LABEL 20
+#define IX_MAINWIN_TYPE_IMAGE_CYCLE_LABEL 21
+#define IX_EXECWIN_NEWNAME 54
+#define IX_SELECTWIN_TITLE 98
+#define IX_SELECTWIN_OBJECT_GAD 99
+#define IX_SELECTWIN_MENU_MX_LABEL 100
+#define IX_SELECTWIN_ICON_MX_LABEL 101
+#define IX_SELECTWIN_MENUICON_MX_LABEL 102
+#define IX_FILEREQ_OK_GAD 106
+#define IX_FILEREQ_CANCEL_GAD 108
+#define IX_FONTREQ_TITLE 109
 
 /* Global defines */
 #define TMVERSION  "2"

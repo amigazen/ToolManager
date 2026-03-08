@@ -156,7 +156,7 @@ void InitAccessEditWindow(UWORD left, UWORD fheight)
  gd++;
  gd->type=BUTTON_KIND;
  gd->flags=PLACETEXT_IN;
- gd->tags=DisabledTags;
+ gd->tags=(struct TagItem *)DisabledTags;
  gd->left=maxw1;
  gd->top=tmp;
  gd->width=maxw2;
@@ -263,12 +263,12 @@ struct Node *CopyAccessNode(struct Node *node)
    if ((!orignode->an_Node.ln_Name || (an->an_Node.ln_Name=
                                         strdup(orignode->an_Node.ln_Name))) &&
        CopyEntriesList(&orignode->an_Entries,&an->an_Entries))
-   return(an);
+   return((struct Node *)an);
   } else
    /* No, set defaults */
    if (an->an_Node.ln_Name=strdup(AppStrings[MSG_ACCESSWIN_NEWNAME]))
     /* Return pointer to new node */
-    return(an);
+    return((struct Node *)an);
 
   FreeAccessNode((struct Node *) an);
  }
@@ -630,7 +630,7 @@ struct Node *ReadAccessNode(UBYTE *buf)
    }
 
    /* Error? All OK. */
-   if (entries!=-1) return(an);
+   if (entries!=-1) return((struct Node *)an);
   }
 
   /* Call failed */

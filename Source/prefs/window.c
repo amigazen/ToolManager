@@ -43,11 +43,11 @@ void CloseWindowSafely(struct Window *w)
  Forbid();
 
  /* Remove all messsages for this window */
- msg=GetHead(&w->UserPort->mp_MsgList);
+ msg=(struct IntuiMessage *)GetHead(&w->UserPort->mp_MsgList);
  while (msg)
   /* Does this message point to the window? */
   if (msg->IDCMPWindow==w) {
-   struct IntuiMessage *nextmsg=GetSucc(msg);
+   struct IntuiMessage *nextmsg=(struct IntuiMessage *)GetSucc((struct Node *)msg);
 
    /* Yes. Remove it from port */
    Remove((struct Node *) msg);
@@ -59,7 +59,7 @@ void CloseWindowSafely(struct Window *w)
    msg=nextmsg;
   }
    /* No. Get pointer to next message */
-  else msg=GetSucc(msg);
+  else msg=(struct IntuiMessage *)GetSucc((struct Node *)msg);
 
  /* clear UserPort so Intuition will not free it */
  w->UserPort=NULL;
@@ -70,12 +70,12 @@ void CloseWindowSafely(struct Window *w)
  /* turn multitasking back on */
  Permit();
 
- DEBUG_PRINTF("Closing window\n");
+ DEBUG_PRINTF("Closing window\n",0);
 
  /* and really close the window */
  CloseWindow(w);
 
- DEBUG_PRINTF("Window closed\n");
+ DEBUG_PRINTF("Window closed\n",0);
 }
 
 /* Disable a window */
@@ -91,7 +91,7 @@ void DisableWindow(struct Window *w, struct Requester *req)
  if (OSV39)
   SetWindowPointer(w,WA_BusyPointer,TRUE,TAG_DONE);
  else
-  SetPointer(w,WaitPointer,16,16,-6,0);
+  SetPointer(w,(UWORD *)WaitPointer,16,16,-6,0);
 }
 
 /* Enable a window */

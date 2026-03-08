@@ -14,7 +14,7 @@ static struct Window *w;              /* Window */
 static struct MsgPort *wp;            /* Window user port */
 static UWORD ww,wh;                   /* Window size */
 static struct List *ToolsList;
-static struct ToolNode *CurrentTool;
+static struct TMNode *CurrentTool;
 static LONG CurrentTop;               /* Top tool ordinal number */
 static LONG CurrentOrd;               /* Current tool ordinal number */
 static ULONG CurrentGadgetNum;
@@ -154,7 +154,7 @@ void InitDockListEditWindow(UWORD left, UWORD fheight)
  gd++;
  gd->type=BUTTON_KIND;
  gd->flags=PLACETEXT_IN;
- gd->tags=DisabledTags;
+ gd->tags=(struct TagItem *)DisabledTags;
  gd->left=left;
  gd->top=tmp2+fheight+INTERHEIGHT;
  gd->width=maxw1;
@@ -167,7 +167,7 @@ void InitDockListEditWindow(UWORD left, UWORD fheight)
  for (i=GAD_TOP; i<=GAD_BOTTOM; i++, gd++, tmp2+=fheight+INTERHEIGHT) {
   gd->type=BUTTON_KIND;
   gd->flags=PLACETEXT_IN;
-  gd->tags=DisabledTags;
+  gd->tags=(struct TagItem *)DisabledTags;
   gd->left=tmp3;
   gd->top=tmp2;
   gd->width=maxw1;
@@ -182,7 +182,7 @@ void InitDockListEditWindow(UWORD left, UWORD fheight)
  gd->name=AppStrings[MSG_WINDOW_EXEC_GAD];
  gd->type=BUTTON_KIND;
  gd->flags=PLACETEXT_IN;
- gd->tags=DisabledTags;
+ gd->tags=(struct TagItem *)DisabledTags;
  gd->left=left;
  gd->top=tmp;
  gd->width=maxw2;
@@ -203,7 +203,7 @@ void InitDockListEditWindow(UWORD left, UWORD fheight)
  gd->name=AppStrings[MSG_WINDOW_IMAGE_GAD];
  gd->type=BUTTON_KIND;
  gd->flags=PLACETEXT_IN;
- gd->tags=DisabledTags;
+ gd->tags=(struct TagItem *)DisabledTags;
  gd->left=left;
  gd->top=tmp;
  gd->width=maxw2;
@@ -224,7 +224,7 @@ void InitDockListEditWindow(UWORD left, UWORD fheight)
  gd->name=AppStrings[MSG_WINDOW_SOUND_GAD];
  gd->type=BUTTON_KIND;
  gd->flags=PLACETEXT_IN;
- gd->tags=DisabledTags;
+ gd->tags=(struct TagItem *)DisabledTags;
  gd->left=left;
  gd->top=tmp;
  gd->width=maxw2;
@@ -273,14 +273,14 @@ void InitDockListEditWindow(UWORD left, UWORD fheight)
 /* Free tool list */
 void FreeToolsList(struct List *toollist)
 {
- struct ToolNode *tn1,*tn2=GetHead(toollist);
+ struct TMNode *tn1,*tn2=(struct TMNode *)GetHead(toollist);
 
  /* Free tool nodes */
  while (tn1=tn2) {
   char *s;
 
   /* Get next node */
-  tn2=GetSucc(tn1);
+  tn2=(struct TMNode *)GetSucc((struct Node *)tn1);
 
   /* Remove node */
   Remove((struct Node *) tn1);
@@ -289,7 +289,7 @@ void FreeToolsList(struct List *toollist)
   if (s=tn1->tn_Node.ln_Name) free(s);
   if (s=tn1->tn_Image) free(s);
   if (s=tn1->tn_Sound) free(s);
-  FreeMem(tn1,sizeof(struct ToolNode));
+  FreeMem(tn1,sizeof(struct TMNode));
  }
  free(toollist);
 }
@@ -306,13 +306,13 @@ struct List *CopyToolsList(struct List *srclist)
 
   /* Valid source list? */
   if (srclist) {
-   struct ToolNode *origtool=GetHead(srclist);
+   struct TMNode *origtool=(struct TMNode *)GetHead(srclist);
 
    /* Scan tools list */
    while (origtool) {
-    struct ToolNode *newtool;
+    struct TMNode *newtool;
 
-    if ((newtool=AllocMem(sizeof(struct ToolNode),MEMF_PUBLIC|MEMF_CLEAR)) &&
+    if ((newtool=AllocMem(sizeof(struct TMNode),MEMF_PUBLIC|MEMF_CLEAR)) &&
         (!origtool->tn_Node.ln_Name || (newtool->tn_Node.ln_Name=
                                          strdup(origtool->tn_Node.ln_Name))) &&
         (!origtool->tn_Image || (newtool->tn_Image=
@@ -327,13 +327,13 @@ struct List *CopyToolsList(struct List *srclist)
      if (s=newtool->tn_Node.ln_Name) free(s);
      if (s=newtool->tn_Image) free(s);
      if (s=newtool->tn_Sound) free(s);
-     FreeMem(newtool,sizeof(struct ToolNode));
+     FreeMem(newtool,sizeof(struct TMNode));
      FreeToolsList(destlist);
      return(NULL);
     }
 
     /* Get next node */
-    origtool=GetSucc(origtool);
+    origtool=(struct TMNode *)GetSucc((struct Node *)origtool);
    }
   }
  }
@@ -436,10 +436,10 @@ static void SetTextGadget(ULONG num, char *text)
 /* New gadget function */
 static void NewGadgetFunc(void)
 {
- struct ToolNode *tn;
+ struct TMNode *tn;
 
  /* Create dummy tool */
- if (tn=AllocMem(sizeof(struct ToolNode),MEMF_PUBLIC|MEMF_CLEAR))
+ if (tn=AllocMem(sizeof(struct TMNode),MEMF_PUBLIC|MEMF_CLEAR))
   if (tn->tn_Node.ln_Name=strdup(AppStrings[MSG_LISTREQ_TITLE_EXEC])) {
    /* Detach tool list */
    DetachToolList();
@@ -478,7 +478,7 @@ static void NewGadgetFunc(void)
    AttachToolList();
   } else
    /* Error */
-   FreeMem(tn,sizeof(struct ToolNode));
+   FreeMem(tn,sizeof(struct TMNode));
 }
 
 /* Exec, Image & Sound button gadget function */
@@ -522,9 +522,9 @@ void *HandleDockListEditWindowIDCMP(struct IntuiMessage *msg)
                          CurrentTop=(msg->Code>ListViewRows-5) ?
                           msg->Code-ListViewRows+5 : 0;
                          CurrentOrd=msg->Code;
-                         CurrentTool=GetHead(ToolsList);
+                         CurrentTool=(struct TMNode *)GetHead(ToolsList);
                          for (i=0; i<CurrentOrd; i++)
-                          CurrentTool=GetSucc(CurrentTool);
+                          CurrentTool=(struct TMNode *)GetSucc((struct Node *)CurrentTool);
 
                          /* Set text gadgets */
                          SetTextGadget(GAD_EXEC_TXT,
@@ -559,7 +559,7 @@ void *HandleDockListEditWindowIDCMP(struct IntuiMessage *msg)
                          if (s=CurrentTool->tn_Node.ln_Name) free(s);
                          if (s=CurrentTool->tn_Image) free(s);
                          if (s=CurrentTool->tn_Sound) free(s);
-                         FreeMem(CurrentTool,sizeof(struct ToolNode));
+                         FreeMem(CurrentTool,sizeof(struct TMNode));
 
                          /* Reset pointers */
                          CurrentTool=NULL;
@@ -588,7 +588,7 @@ void *HandleDockListEditWindowIDCMP(struct IntuiMessage *msg)
                          struct Node *pred;
 
                          /* Node valid and has a predecessor? */
-                         if (CurrentTool && (pred=GetPred(CurrentTool))) {
+                         if (CurrentTool && (pred=GetPred((struct Node *)CurrentTool))) {
                           /* Detach tool list */
                           DetachToolList();
 
@@ -609,7 +609,7 @@ void *HandleDockListEditWindowIDCMP(struct IntuiMessage *msg)
                          struct Node *succ;
 
                          /* Node valid and has a successor? */
-                         if (CurrentTool && (succ=GetSucc(CurrentTool))) {
+                         if (CurrentTool && (succ=GetSucc((struct Node *)CurrentTool))) {
                           /* Detach tool list */
                           DetachToolList();
 

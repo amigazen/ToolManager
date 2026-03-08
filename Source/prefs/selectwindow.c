@@ -62,23 +62,23 @@ void InitSelectWindow(UWORD left, UWORD fheight)
  struct GadgetData *gd;
 
  /* Init strings */
- gdata[GAD_NAME_STR].name=AppStrings[MSG_WINDOW_NAME_GAD];
- gdata[GAD_OBJ_TXT].name =AppStrings[MSG_SELECTWIN_OBJECT_GAD];
- mxlabels[0]             =AppStrings[MSG_MAINWIN_TYPE_EXEC_CYCLE_LABEL];
- mxlabels[1]             =AppStrings[MSG_MAINWIN_TYPE_IMAGE_CYCLE_LABEL];
- mxlabels[2]             =AppStrings[MSG_SELECTWIN_MENU_MX_LABEL];
- mxlabels[3]             =AppStrings[MSG_SELECTWIN_ICON_MX_LABEL];
- mxlabels[4]             =AppStrings[MSG_SELECTWIN_MENUICON_MX_LABEL];
- gdata[GAD_OK].name      =AppStrings[MSG_WINDOW_OK_GAD];
- gdata[GAD_CANCEL].name  =AppStrings[MSG_WINDOW_CANCEL_GAD];
+ gdata[GAD_NAME_STR].name=AppStrings[IX_WINDOW_NAME_GAD];
+ gdata[GAD_OBJ_TXT].name =AppStrings[IX_SELECTWIN_OBJECT_GAD];
+ mxlabels[0]             =AppStrings[IX_MAINWIN_TYPE_EXEC_CYCLE_LABEL];
+ mxlabels[1]             =AppStrings[IX_MAINWIN_TYPE_IMAGE_CYCLE_LABEL];
+ mxlabels[2]             =AppStrings[IX_SELECTWIN_MENU_MX_LABEL];
+ mxlabels[3]             =AppStrings[IX_SELECTWIN_ICON_MX_LABEL];
+ mxlabels[4]             =AppStrings[IX_SELECTWIN_MENUICON_MX_LABEL];
+ gdata[GAD_OK].name      =AppStrings[IX_WINDOW_OK_GAD];
+ gdata[GAD_CANCEL].name  =AppStrings[IX_WINDOW_CANCEL_GAD];
 
  /* Calculate maximum label width for name gadget */
- labwidth=TextLength(&TmpRastPort,AppStrings[MSG_WINDOW_NAME_GAD],
-                     strlen(AppStrings[MSG_WINDOW_NAME_GAD]))+INTERWIDTH;
+ labwidth=TextLength(&TmpRastPort,AppStrings[IX_WINDOW_NAME_GAD],
+                     strlen(AppStrings[IX_WINDOW_NAME_GAD]))+INTERWIDTH;
 
  /* Calculate minimum window width */
- ww=labwidth+TextLength(&TmpRastPort,AppStrings[MSG_EXECWIN_NEWNAME],
-                        strlen(AppStrings[MSG_EXECWIN_NEWNAME]))
+ ww=labwidth+TextLength(&TmpRastPort,AppStrings[IX_EXECWIN_NEWNAME],
+                        strlen(AppStrings[IX_EXECWIN_NEWNAME]))
     +4*INTERWIDTH;
 
  /* Calculate maximum MX gadget width */
@@ -218,7 +218,7 @@ BOOL OpenSelectWindow(struct WBArg *wa, struct Window *parent)
                              WA_InnerWidth,  ww,
                              WA_InnerHeight, wh,
                              WA_AutoAdjust,  TRUE,
-                             WA_Title,       AppStrings[MSG_SELECTWIN_TITLE],
+                             WA_Title,       AppStrings[IX_SELECTWIN_TITLE],
                              WA_PubScreen,   PublicScreen,
                              WA_Flags,       WFLG_CLOSEGADGET|WFLG_DRAGBAR|
                                              WFLG_DEPTHGADGET|WFLG_RMBTRAP|

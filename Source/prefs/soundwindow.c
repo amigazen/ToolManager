@@ -184,12 +184,12 @@ struct Node *CopySoundNode(struct Node *node)
        (!orignode->sn_Command || (sn->sn_Command=
                                    strdup(orignode->sn_Command))) &&
        (!orignode->sn_Port || (sn->sn_Port=strdup(orignode->sn_Port))))
-    return(sn);
+    return((struct Node *)sn);
   } else
    /* No, set defaults */
    if (sn->sn_Node.ln_Name=strdup(AppStrings[MSG_SOUNDWIN_NEWNAME]))
     /* Return pointer to new node */
-    return(sn);
+    return((struct Node *)sn);
 
   FreeSoundNode((struct Node *) sn);
  }
@@ -363,7 +363,7 @@ struct Node *ReadSoundNode(UBYTE *buf)
       (!(sbits & SOPO_COMMAND) || (sn->sn_Command=GetConfigStr(&ptr))) &&
       (!(sbits & SOPO_PORT) || (sn->sn_Port=GetConfigStr(&ptr))))
    /* All OK. */
-   return(sn);
+   return((struct Node *)sn);
 
   /* Call failed */
   FreeSoundNode((struct Node *) sn);

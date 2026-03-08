@@ -212,12 +212,12 @@ struct Node *CopyMenuNode(struct Node *node)
                                         strdup(orignode->mn_Node.ln_Name))) &&
        (!orignode->mn_Exec || (mn->mn_Exec=strdup(orignode->mn_Exec))) &&
        (!orignode->mn_Sound || (mn->mn_Sound=strdup(orignode->mn_Sound))))
-    return(mn);
+    return((struct Node *)mn);
   } else
    /* No, set defaults */
    if (mn->mn_Node.ln_Name=strdup(AppStrings[MSG_MENUWIN_NEWNAME]))
     /* Return pointer to new node */
-    return(mn);
+    return((struct Node *)mn);
 
   FreeMenuNode((struct Node *) mn);
  }
@@ -237,7 +237,7 @@ struct Node *CreateMenuNode(char *name)
   if ((mn->mn_Node.ln_Name=strdup(name)) &&
       (mn->mn_Exec=strdup(name)))
    /* All OK. */
-   return(mn);
+   return((struct Node *)mn);
 
   FreeMenuNode((struct Node *) mn);
  }
@@ -461,7 +461,7 @@ struct Node *ReadMenuNode(UBYTE *buf)
       (!(sbits & MOPO_EXEC) || (mn->mn_Exec=GetConfigStr(&ptr))) &&
       (!(sbits & MOPO_SOUND) || (mn->mn_Sound=GetConfigStr(&ptr))))
    /* All OK. */
-   return(mn);
+   return((struct Node *)mn);
 
   /* Call failed */
   FreeMenuNode((struct Node *) mn);

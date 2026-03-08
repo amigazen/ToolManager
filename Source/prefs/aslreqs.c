@@ -8,8 +8,17 @@
 
 #include "ToolManagerConf.h"
 
+/* Stack-args calling convention: SAS/C uses __stdargs; DICE uses __stkargs; else none */
+#if defined(__SASC) || defined(__SASC__)
+#define ASL_HOOK_CONV __stdargs
+#elif defined(_DCC)
+#define ASL_HOOK_CONV __stkargs
+#else
+#define ASL_HOOK_CONV
+#endif
+
 /* Handle window IDCMP's */
-__stkargs static struct IntuiMessage *RequesterHook(ULONG mask,
+static ASL_HOOK_CONV struct IntuiMessage *RequesterHook(ULONG mask,
                                                     struct IntuiMessage *msg,
                                                     void *dummy)
 {
@@ -68,7 +77,7 @@ char *OpenFileRequester(struct Requester *req)
                                   ASLFR_TitleText,     FileReqParms.frp_Title,
                                   ASLFR_PositiveText,  FileReqParms.frp_OKText,
                                   ASLFR_NegativeText,
-                                    AppStrings[MSG_FILEREQ_CANCEL_GAD],
+                                    AppStrings[IX_FILEREQ_CANCEL_GAD],
                                   ASLFR_Flags1,       FileReqParms.frp_Flags1 |
                                                       FRF_INTUIFUNC,
                                   ASLFR_Flags2,       FileReqParms.frp_Flags2,
@@ -134,11 +143,11 @@ struct TextAttr *OpenFontRequester(struct Window *w, struct Requester *req,
                                  ASLFO_InitialLeftEdge, w->LeftEdge,
                                  ASLFO_InitialTopEdge,  w->TopEdge+WindowTop,
                                  ASLFO_TitleText,
-                                   AppStrings[MSG_FONTREQ_TITLE],
+                                   AppStrings[IX_FONTREQ_TITLE],
                                  ASLFO_PositiveText,
-                                   AppStrings[MSG_FILEREQ_OK_GAD],
+                                   AppStrings[IX_FILEREQ_OK_GAD],
                                  ASLFO_NegativeText,
-                                   AppStrings[MSG_FILEREQ_CANCEL_GAD],
+                                   AppStrings[IX_FILEREQ_CANCEL_GAD],
                                  ASLFO_Flags,           FOF_DOSTYLE|
                                                         FOF_INTUIFUNC,
                                  ASLFO_HookFunc,        RequesterHook,

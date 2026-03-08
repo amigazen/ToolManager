@@ -38,7 +38,7 @@ static BOOL OpenResources(void)
  if (!(IFFParseBase=OpenLibrary("iffparse.library",37))) return(FALSE);
  if (!(PrefsPort=CreateMsgPort())) return(FALSE);
  PrefsPort->mp_Node.ln_Pri=-127;
- PrefsPort->mp_Node.ln_Name=PrefsPortName;
+ PrefsPort->mp_Node.ln_Name=(char *)PrefsPortName;
  AddPort(PrefsPort);
 
  /* Try to open workbench.library */
@@ -138,7 +138,7 @@ static int mainprogram(struct WBArg *wa)
    OSV39=TRUE;
 
   /* Set defaults */
-  FromFileName=PrefsFileName;
+  FromFileName=(char *)PrefsFileName;
   PubScreenName=NULL;
   ProgramName=NULL;
   DefaultFont=FALSE;
@@ -155,7 +155,7 @@ static int mainprogram(struct WBArg *wa)
     /* USE? */
     if (FindToolType(tt,"USE")) {
      /* Copy From file to preferences file */
-     CopyFile(wa->wa_Name,PrefsFileName);
+     CopyFile(wa->wa_Name,(char *)PrefsFileName);
 
      /* ...and exit */
      FreeDiskObject(dobj);
@@ -166,7 +166,7 @@ static int mainprogram(struct WBArg *wa)
     /* SAVE? */
     if (FindToolType(tt,"SAVE")) {
      /* Copy From file to preferences file */
-     CopyFile(wa->wa_Name,SavePrefsFileName);
+     CopyFile(wa->wa_Name,(char *)SavePrefsFileName);
 
      /* ...and exit */
      FreeDiskObject(dobj);
@@ -213,7 +213,7 @@ static int mainprogram(struct WBArg *wa)
                      break;
      case WBPROJECT: ProgramName=strdup(dobj->do_DefaultTool);
                      if (!(FromFileName=strdup(wa->wa_Name)))
-                      FromFileName=PrefsFileName;
+                      FromFileName=(char *)PrefsFileName;
                      break;
     }
 
@@ -229,7 +229,7 @@ static int mainprogram(struct WBArg *wa)
 
    /* Get values */
    if (cmdlineparams.from) FromFileName=strdup(cmdlineparams.from);
-   if (!FromFileName) FromFileName=PrefsFileName;
+   if (!FromFileName) FromFileName=(char *)PrefsFileName;
    if (cmdlineparams.pubsc) PubScreenName=strdup(cmdlineparams.pubsc);
    if (cmdlineparams.deffont) DefaultFont=TRUE;
 
@@ -239,7 +239,7 @@ static int mainprogram(struct WBArg *wa)
    /* USE? */
    if (cmdlineparams.use) {
     /* Copy From file to preferences file */
-    CopyFile(FromFileName,PrefsFileName);
+    CopyFile(FromFileName,(char *)PrefsFileName);
 
     /* ...and exit */
     CloseResources();
@@ -249,7 +249,7 @@ static int mainprogram(struct WBArg *wa)
    /* SAVE? */
    if (cmdlineparams.save) {
     /* Copy From file to save preferences file */
-    CopyFile(FromFileName,SavePrefsFileName);
+    CopyFile(FromFileName,(char *)SavePrefsFileName);
 
     /* ...and exit */
     CloseResources();
@@ -276,7 +276,7 @@ static int mainprogram(struct WBArg *wa)
    struct List *pubsclist;
 
    if (pubsclist=LockPubScreenList()) {
-    struct PubScreenNode *pubscnode=GetHead(pubsclist);
+    struct PubScreenNode *pubscnode=(struct PubScreenNode *)GetHead(pubsclist);
 
     /* Scan list */
     while (pubscnode) {
@@ -292,7 +292,7 @@ static int mainprogram(struct WBArg *wa)
        free(mynode);
 
      /* get a pointer to next node */
-     pubscnode=GetSucc(pubscnode);
+     pubscnode=(struct PubScreenNode *)GetSucc((struct Node *)pubscnode);
     }
 
     /* Release public screen list */

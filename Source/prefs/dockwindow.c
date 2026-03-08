@@ -658,7 +658,7 @@ struct Node *CopyDockNode(struct Node *node)
     dn->dn_Flags=orignode->dn_Flags;
 
     /* Return pointer to new node */
-    return(dn);
+    return((struct Node *)dn);
    }
   } else {
    /* No, set defaults */
@@ -667,7 +667,7 @@ struct Node *CopyDockNode(struct Node *node)
     dn->dn_Flags=DOPOF_ACTIVATED;
 
     /* Return pointer to new node */
-    return(dn);
+    return((struct Node *)dn);
    }
   }
 
@@ -1174,9 +1174,9 @@ struct Node *ReadDockNode(UBYTE *buf)
 
    /* Get tools */
    while ((tlflags=*ptr++) & DOPOT_CONTINUE) {
-    struct ToolNode *tn;
+    struct TMNode *tn;
 
-    if (tn=AllocMem(sizeof(struct ToolNode),MEMF_PUBLIC|MEMF_CLEAR)) {
+    if (tn=AllocMem(sizeof(struct TMNode),MEMF_PUBLIC|MEMF_CLEAR)) {
      /* Add tool to list */
      AddTail(toolslist,(struct Node *) tn);
 
@@ -1217,7 +1217,7 @@ struct Node *ReadDockNode(UBYTE *buf)
     dn->dn_Font.ta_Flags=dpo->dpo_Font.ta_Flags;
 
     /* All OK. */
-    return(dn);
+    return((struct Node *)dn);
    }
   }
 
@@ -1247,7 +1247,7 @@ BOOL WriteDockNode(struct IFFHandle *iff, UBYTE *buf, struct Node *node)
 
  /* Write tool list */
  if (dn->dn_ToolsList) {
-  struct ToolNode *tn=GetHead(dn->dn_ToolsList);
+  struct TMNode *tn=(struct TMNode *)GetHead(dn->dn_ToolsList);
 
   while (tn) {
    UBYTE *flptr=ptr++;
@@ -1261,7 +1261,7 @@ BOOL WriteDockNode(struct IFFHandle *iff, UBYTE *buf, struct Node *node)
    *flptr=tfl;
 
    /* Get next node */
-   tn=GetSucc(tn);
+   tn=(struct TMNode *)GetSucc((struct Node *)tn);
   }
  }
 

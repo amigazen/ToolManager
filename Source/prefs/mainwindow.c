@@ -8,6 +8,53 @@
 
 #include "ToolManagerConf.h"
 
+/* AppStrings indices (match locale.c array order); use integers for SAS/C */
+#define IX_MAINWIN_TYPE_GAD 19
+#define IX_MAINWIN_TYPE_EXEC_CYCLE_LABEL 20
+#define IX_MAINWIN_TYPE_IMAGE_CYCLE_LABEL 21
+#define IX_MAINWIN_TYPE_SOUND_CYCLE_LABEL 22
+#define IX_MAINWIN_TYPE_MENU_CYCLE_LABEL 23
+#define IX_MAINWIN_TYPE_ICON_CYCLE_LABEL 24
+#define IX_MAINWIN_TYPE_DOCK_CYCLE_LABEL 25
+#define IX_MAINWIN_TYPE_ACCESS_CYCLE_LABEL 26
+#define IX_MAINWIN_LIST_GAD 27
+#define IX_MAINWIN_SORT_GAD 28
+#define IX_MAINWIN_NEW_GAD 29
+#define IX_MAINWIN_EDIT_GAD 30
+#define IX_MAINWIN_COPY_GAD 31
+#define IX_MAINWIN_SAVE_GAD 32
+#define IX_MAINWIN_USE_GAD 33
+#define IX_MAINWIN_TEST_GAD 34
+#define IX_MAINWIN_PROJECT_MENU_LABEL 35
+#define IX_MAINWIN_OPEN_MENU_LABEL 36
+#define IX_MAINWIN_OPEN_MENU_SHORTCUT 37
+#define IX_MAINWIN_SAVEAS_MENU_LABEL 39
+#define IX_MAINWIN_SAVEAS_MENU_SHORTCUT 40
+#define IX_MAINWIN_LASTSAVED_MENU_LABEL 45
+#define IX_MAINWIN_LASTSAVED_MENU_SHORTCUT 46
+#define IX_MAINWIN_RESTORE_MENU_LABEL 47
+#define IX_MAINWIN_RESTORE_MENU_SHORTCUT 48
+#define IX_MAINWIN_CREATEICONS_MENU_LABEL 50
+#define IX_MAINWIN_CREATEICONS_MENU_SHORTCUT 51
+#define IX_MAINWIN_WRITE_ERROR 52
+#define IX_MAINWIN_TITLE 18
+#define IX_WINDOW_TOP_GAD 0
+#define IX_WINDOW_UP_GAD 1
+#define IX_WINDOW_DOWN_GAD 2
+#define IX_WINDOW_BOTTOM_GAD 3
+#define IX_WINDOW_REMOVE_GAD 4
+#define IX_WINDOW_CANCEL_GAD 17
+#define IX_MAINWIN_APPEND_MENU_LABEL 38
+#define IX_MAINWIN_ABOUT_MENU_LABEL 41
+#define IX_MAINWIN_QUIT_MENU_LABEL 42
+#define IX_MAINWIN_QUIT_MENU_SHORTCUT 43
+#define IX_MAINWIN_EDIT_MENU_LABEL 44
+#define IX_MAINWIN_SETTINGS_MENU_LABEL 49
+#define IX_FILEREQ_TITLE_FILE 104
+#define IX_FILEREQ_OK_GAD 106
+#define IX_FILEREQ_SAVE_GAD 107
+#define IX_FILEREQ_CANCEL_GAD 108
+
 /* Edit windows function tables */
 OpenWindowFuncPtr OpenEditWindowFunctions[TMOBJTYPES]={
                                                        OpenExecEditWindow,
@@ -131,48 +178,47 @@ void InitMainWindow(UWORD left, UWORD fheight)
  struct GadgetData *gd;
 
  /* Init strings */
- gdata[GAD_TYPE].name  =AppStrings[MSG_MAINWIN_TYPE_GAD];
- gdata[GAD_LIST].name  =AppStrings[MSG_MAINWIN_LIST_GAD];
- gdata[GAD_TOP].name   =AppStrings[MSG_WINDOW_TOP_GAD];
- gdata[GAD_UP].name    =AppStrings[MSG_WINDOW_UP_GAD];
- gdata[GAD_DOWN].name  =AppStrings[MSG_WINDOW_DOWN_GAD];
- gdata[GAD_BOTTOM].name=AppStrings[MSG_WINDOW_BOTTOM_GAD];
- gdata[GAD_SORT].name  =AppStrings[MSG_MAINWIN_SORT_GAD];
- gdata[GAD_NEW].name   =AppStrings[MSG_MAINWIN_NEW_GAD];
- gdata[GAD_EDIT].name  =AppStrings[MSG_MAINWIN_EDIT_GAD];
- gdata[GAD_COPY].name  =AppStrings[MSG_MAINWIN_COPY_GAD];
- gdata[GAD_REMOVE].name=AppStrings[MSG_WINDOW_REMOVE_GAD];
- gdata[GAD_SAVE].name  =AppStrings[MSG_MAINWIN_SAVE_GAD];
- gdata[GAD_USE].name   =AppStrings[MSG_MAINWIN_USE_GAD];
- gdata[GAD_TEST].name  =AppStrings[MSG_MAINWIN_TEST_GAD];
- gdata[GAD_CANCEL].name=AppStrings[MSG_WINDOW_CANCEL_GAD];
- cyclelabels[TMOBJTYPE_EXEC]  =AppStrings[MSG_MAINWIN_TYPE_EXEC_CYCLE_LABEL];
- cyclelabels[TMOBJTYPE_IMAGE] =AppStrings[MSG_MAINWIN_TYPE_IMAGE_CYCLE_LABEL];
- cyclelabels[TMOBJTYPE_SOUND] =AppStrings[MSG_MAINWIN_TYPE_SOUND_CYCLE_LABEL];
- cyclelabels[TMOBJTYPE_MENU]  =AppStrings[MSG_MAINWIN_TYPE_MENU_CYCLE_LABEL];
- cyclelabels[TMOBJTYPE_ICON]  =AppStrings[MSG_MAINWIN_TYPE_ICON_CYCLE_LABEL];
- cyclelabels[TMOBJTYPE_DOCK]  =AppStrings[MSG_MAINWIN_TYPE_DOCK_CYCLE_LABEL];
- cyclelabels[TMOBJTYPE_ACCESS]=AppStrings[MSG_MAINWIN_TYPE_ACCESS_CYCLE_LABEL];
+ gdata[GAD_TYPE].name  =AppStrings[IX_MAINWIN_TYPE_GAD];
+ gdata[GAD_LIST].name  =AppStrings[IX_MAINWIN_LIST_GAD];
+ gdata[GAD_TOP].name   =AppStrings[IX_WINDOW_TOP_GAD];
+ gdata[GAD_UP].name    =AppStrings[IX_WINDOW_UP_GAD];
+ gdata[GAD_DOWN].name  =AppStrings[IX_WINDOW_DOWN_GAD];
+ gdata[GAD_BOTTOM].name=AppStrings[IX_WINDOW_BOTTOM_GAD];
+ gdata[GAD_SORT].name  =AppStrings[IX_MAINWIN_SORT_GAD];
+ gdata[GAD_NEW].name   =AppStrings[IX_MAINWIN_NEW_GAD];
+ gdata[GAD_EDIT].name  =AppStrings[IX_MAINWIN_EDIT_GAD];
+ gdata[GAD_COPY].name  =AppStrings[IX_MAINWIN_COPY_GAD];
+ gdata[GAD_REMOVE].name=AppStrings[IX_WINDOW_REMOVE_GAD];
+ gdata[GAD_SAVE].name  =AppStrings[IX_MAINWIN_SAVE_GAD];
+ gdata[GAD_USE].name   =AppStrings[IX_MAINWIN_USE_GAD];
+ gdata[GAD_TEST].name  =AppStrings[IX_MAINWIN_TEST_GAD];
+ gdata[GAD_CANCEL].name=AppStrings[IX_WINDOW_CANCEL_GAD];
+ cyclelabels[TMOBJTYPE_EXEC]  =AppStrings[IX_MAINWIN_TYPE_EXEC_CYCLE_LABEL];
+ cyclelabels[TMOBJTYPE_IMAGE] =AppStrings[IX_MAINWIN_TYPE_IMAGE_CYCLE_LABEL];
+ cyclelabels[TMOBJTYPE_SOUND] =AppStrings[IX_MAINWIN_TYPE_SOUND_CYCLE_LABEL];
+ cyclelabels[TMOBJTYPE_MENU]  =AppStrings[IX_MAINWIN_TYPE_MENU_CYCLE_LABEL];
+ cyclelabels[TMOBJTYPE_ICON]  =AppStrings[IX_MAINWIN_TYPE_ICON_CYCLE_LABEL];
+ cyclelabels[TMOBJTYPE_DOCK]  =AppStrings[IX_MAINWIN_TYPE_DOCK_CYCLE_LABEL];
+ cyclelabels[TMOBJTYPE_ACCESS]=AppStrings[IX_MAINWIN_TYPE_ACCESS_CYCLE_LABEL];
  cyclelabels[TMOBJTYPES]      =NULL;
 
- mdata[MENU_PROJECT].nm_Label  =AppStrings[MSG_MAINWIN_PROJECT_MENU_LABEL];
- mdata[MENU_OPEN].nm_Label     =AppStrings[MSG_MAINWIN_OPEN_MENU_LABEL];
- mdata[MENU_OPEN].nm_CommKey   =AppStrings[MSG_MAINWIN_OPEN_MENU_SHORTCUT];
- mdata[MENU_APPEND].nm_Label   =AppStrings[MSG_MAINWIN_APPEND_MENU_LABEL];
- mdata[MENU_SAVEAS].nm_Label   =AppStrings[MSG_MAINWIN_SAVEAS_MENU_LABEL];
- mdata[MENU_SAVEAS].nm_CommKey =AppStrings[MSG_MAINWIN_SAVEAS_MENU_SHORTCUT];
- mdata[MENU_ABOUT].nm_Label    =AppStrings[MSG_MAINWIN_ABOUT_MENU_LABEL];
- mdata[MENU_QUIT].nm_Label     =AppStrings[MSG_MAINWIN_QUIT_MENU_LABEL];
- mdata[MENU_QUIT].nm_CommKey   =AppStrings[MSG_MAINWIN_QUIT_MENU_SHORTCUT];
- mdata[MENU_EDIT].nm_Label     =AppStrings[MSG_MAINWIN_EDIT_MENU_LABEL];
- mdata[MENU_LSAVED].nm_Label   =AppStrings[MSG_MAINWIN_LASTSAVED_MENU_LABEL];
- mdata[MENU_LSAVED].nm_CommKey =AppStrings[MSG_MAINWIN_LASTSAVED_MENU_SHORTCUT];
- mdata[MENU_RESTORE].nm_Label  =AppStrings[MSG_MAINWIN_RESTORE_MENU_LABEL];
- mdata[MENU_RESTORE].nm_CommKey=AppStrings[MSG_MAINWIN_RESTORE_MENU_SHORTCUT];
- mdata[MENU_SETTING].nm_Label  =AppStrings[MSG_MAINWIN_SETTINGS_MENU_LABEL];
- mdata[MENU_CRICONS].nm_Label  =AppStrings[MSG_MAINWIN_CREATEICONS_MENU_LABEL];
- mdata[MENU_CRICONS].nm_CommKey=
-                             AppStrings[MSG_MAINWIN_CREATEICONS_MENU_SHORTCUT];
+ mdata[MENU_PROJECT].nm_Label  =AppStrings[IX_MAINWIN_PROJECT_MENU_LABEL];
+ mdata[MENU_OPEN].nm_Label     =AppStrings[IX_MAINWIN_OPEN_MENU_LABEL];
+ mdata[MENU_OPEN].nm_CommKey   =AppStrings[IX_MAINWIN_OPEN_MENU_SHORTCUT];
+ mdata[MENU_APPEND].nm_Label   =AppStrings[IX_MAINWIN_APPEND_MENU_LABEL];
+ mdata[MENU_SAVEAS].nm_Label   =AppStrings[IX_MAINWIN_SAVEAS_MENU_LABEL];
+ mdata[MENU_SAVEAS].nm_CommKey =AppStrings[IX_MAINWIN_SAVEAS_MENU_SHORTCUT];
+ mdata[MENU_ABOUT].nm_Label    =AppStrings[IX_MAINWIN_ABOUT_MENU_LABEL];
+ mdata[MENU_QUIT].nm_Label     =AppStrings[IX_MAINWIN_QUIT_MENU_LABEL];
+ mdata[MENU_QUIT].nm_CommKey   =AppStrings[IX_MAINWIN_QUIT_MENU_SHORTCUT];
+ mdata[MENU_EDIT].nm_Label     =AppStrings[IX_MAINWIN_EDIT_MENU_LABEL];
+ mdata[MENU_LSAVED].nm_Label   =AppStrings[IX_MAINWIN_LASTSAVED_MENU_LABEL];
+ mdata[MENU_LSAVED].nm_CommKey =AppStrings[IX_MAINWIN_LASTSAVED_MENU_SHORTCUT];
+ mdata[MENU_RESTORE].nm_Label  =AppStrings[IX_MAINWIN_RESTORE_MENU_LABEL];
+ mdata[MENU_RESTORE].nm_CommKey=AppStrings[IX_MAINWIN_RESTORE_MENU_SHORTCUT];
+ mdata[MENU_SETTING].nm_Label  =AppStrings[IX_MAINWIN_SETTINGS_MENU_LABEL];
+ mdata[MENU_CRICONS].nm_Label  =AppStrings[IX_MAINWIN_CREATEICONS_MENU_LABEL];
+ mdata[MENU_CRICONS].nm_CommKey=AppStrings[IX_MAINWIN_CREATEICONS_MENU_SHORTCUT];
  mdata[MENU_CRICONS].nm_Flags=CHECKIT|MENUTOGGLE| (CreateIcons ? CHECKED : 0);
 
  /* Calculate maximum width for cycle gadget */
@@ -242,7 +288,7 @@ void InitMainWindow(UWORD left, UWORD fheight)
  for (i=GAD_TOP; i<=GAD_SORT; i++, gd++, tmp+=fheight+INTERHEIGHT) {
   gd->type=BUTTON_KIND;
   gd->flags=PLACETEXT_IN;
-  gd->tags=DisabledTags;
+  gd->tags=(struct TagItem *)DisabledTags;
   gd->left=maxw1;
   gd->top=tmp;
   gd->width=maxw2;
@@ -257,7 +303,7 @@ void InitMainWindow(UWORD left, UWORD fheight)
  for (i=GAD_NEW; i<=GAD_REMOVE; i++, gd++, maxw1+=maxw2) {
   gd->type=BUTTON_KIND;
   gd->flags=PLACETEXT_IN;
-  gd->tags=DisabledTags;
+  gd->tags=(struct TagItem *)DisabledTags;
   gd->left=maxw1;
   gd->top=tmp;
   gd->width=maxw3;
@@ -311,7 +357,7 @@ ULONG OpenMainWindow(UWORD wx, UWORD wy)
                               WA_InnerWidth,   ww,
                               WA_InnerHeight,  wh,
                               WA_AutoAdjust,   TRUE,
-                              WA_Title,        AppStrings[MSG_MAINWIN_TITLE],
+                              WA_Title,        AppStrings[IX_MAINWIN_TITLE],
                               WA_PubScreen,    PublicScreen,
                               WA_Flags,        WFLG_CLOSEGADGET|WFLG_DRAGBAR|
                                                WFLG_DEPTHGADGET|WFLG_ACTIVATE,
@@ -341,7 +387,7 @@ ULONG OpenMainWindow(UWORD wx, UWORD wy)
       if (aw) HandleAppMsg=HandleMainWindowAppMsg;
 
       /* All OK. (Return IDCMP signal mask) */
-      return(1L << IDCMPPort->mp_SigBit);
+      return((ULONG)(1UL << IDCMPPort->mp_SigBit));
      }
      CloseWindow(w);
    }
@@ -451,8 +497,8 @@ void HandleMainWindowAppMsg(struct AppMessage *msg)
 /* Display write error requester */
 static void ConfigWriteError(char *s)
 {
- es.es_TextFormat=AppStrings[MSG_MAINWIN_WRITE_ERROR];
- es.es_GadgetFormat=AppStrings[MSG_FILEREQ_CANCEL_GAD];
+ es.es_TextFormat=AppStrings[IX_MAINWIN_WRITE_ERROR];
+ es.es_GadgetFormat=AppStrings[IX_FILEREQ_CANCEL_GAD];
 
  EasyRequest(w,&es,NULL,s);
 }
@@ -463,11 +509,11 @@ static void LoadConfigFile(BOOL delobjs)
  char *file;
 
  FileReqParms.frp_Window=w;
- FileReqParms.frp_Title=AppStrings[MSG_FILEREQ_TITLE_FILE];
- FileReqParms.frp_OKText=AppStrings[MSG_FILEREQ_OK_GAD];
+ FileReqParms.frp_Title=AppStrings[IX_FILEREQ_TITLE_FILE];
+ FileReqParms.frp_OKText=AppStrings[IX_FILEREQ_OK_GAD];
  FileReqParms.frp_Flags1=FRF_DOPATTERNS;
  FileReqParms.frp_Flags2=FRF_REJECTICONS;
- FileReqParms.frp_OldFile=PrefsFileName;
+ FileReqParms.frp_OldFile=(char *)PrefsFileName;
 
  /* Get file name */
  if (file=OpenFileRequester(&DummyReq)) {
@@ -624,13 +670,13 @@ static void *SaveGadgetFunc(void)
  DisableWindow(w,&DummyReq);
 
  /* Save config file */
- if (WriteConfigFile(SavePrefsFileName))
-  if (CopyFile(SavePrefsFileName,PrefsFileName))
+ if (WriteConfigFile((char *)SavePrefsFileName))
+  if (CopyFile((char *)SavePrefsFileName,(char *)PrefsFileName))
    rc=(void *) 1;
   else
-   ConfigWriteError(PrefsFileName);
+   ConfigWriteError((char *)PrefsFileName);
  else
-  ConfigWriteError(SavePrefsFileName);
+  ConfigWriteError((char *)SavePrefsFileName);
 
  /* Remove wait pointer */
  EnableWindow(w,&DummyReq,WINDOW_IDCMP);
@@ -646,10 +692,10 @@ static void *UseGadgetFunc(void)
  DisableWindow(w,&DummyReq);
 
  /* Save config file */
- if (WriteConfigFile(PrefsFileName))
+ if (WriteConfigFile((char *)PrefsFileName))
   rc=(void *) 1;
  else
-  ConfigWriteError(PrefsFileName);
+  ConfigWriteError((char *)PrefsFileName);
 
  /* Remove wait pointer */
  EnableWindow(w,&DummyReq,WINDOW_IDCMP);
@@ -663,8 +709,8 @@ static void TestGadgetFunc(void)
  DisableWindow(w,&DummyReq);
 
  /* Save config file */
- if (!WriteConfigFile(PrefsFileName))
-  ConfigWriteError(PrefsFileName);
+ if (!WriteConfigFile((char *)PrefsFileName))
+  ConfigWriteError((char *)PrefsFileName);
 
  /* Remove wait pointer */
  EnableWindow(w,&DummyReq,WINDOW_IDCMP);
@@ -892,7 +938,7 @@ void *HandleMainWindowIDCMP(struct IntuiMessage *msg)
      struct MenuItem *menuitem=ItemAddress(mn,menunum);
 
      /* Which menu selected? */
-     switch(GTMENUITEM_USERDATA(menuitem)) {
+     switch((ULONG)GTMENUITEM_USERDATA(menuitem)) {
       case MENU_OPEN:    LoadConfigFile(TRUE);
                          break;
       case MENU_APPEND:  LoadConfigFile(FALSE);
@@ -902,12 +948,12 @@ void *HandleMainWindowIDCMP(struct IntuiMessage *msg)
 
                           FileReqParms.frp_Window=w;
                           FileReqParms.frp_Title=
-                             AppStrings[MSG_FILEREQ_TITLE_FILE];
+                             AppStrings[IX_FILEREQ_TITLE_FILE];
                           FileReqParms.frp_OKText=
-                             AppStrings[MSG_FILEREQ_SAVE_GAD];
+                             AppStrings[IX_FILEREQ_SAVE_GAD];
                           FileReqParms.frp_Flags1=FRF_DOSAVEMODE;
                           FileReqParms.frp_Flags2=FRF_REJECTICONS;
-                          FileReqParms.frp_OldFile=SavePrefsFileName;
+                          FileReqParms.frp_OldFile=(char *)SavePrefsFileName;
 
                           /* Get file name */
                           if (file=OpenFileRequester(&DummyReq)) {
@@ -959,8 +1005,8 @@ void *HandleMainWindowIDCMP(struct IntuiMessage *msg)
       case MENU_ABOUT:   es.es_TextFormat="ToolManager " TMVERSION "."
                                           TMREVISION " (" __COMMODORE_DATE__
                                           ")\nFreely distributable\n"
-                                          "© " TMCRYEAR "  Stefan Becker";
-                         es.es_GadgetFormat=AppStrings[MSG_FILEREQ_CANCEL_GAD];
+                                          " " TMCRYEAR "  Stefan Becker";
+                         es.es_GadgetFormat=AppStrings[IX_FILEREQ_CANCEL_GAD];
 
                          /* Disable window */
                          DisableWindow(w,&DummyReq);
@@ -987,7 +1033,7 @@ void *HandleMainWindowIDCMP(struct IntuiMessage *msg)
                           DisableWindow(w,&DummyReq);
 
                           /* Read new config file */
-                          if (!ReadConfigFile(SavePrefsFileName))
+                          if (!ReadConfigFile((char *)SavePrefsFileName))
                            DisplayBeep(NULL);
 
                           /* Remove wait pointer */
@@ -1017,7 +1063,7 @@ void *HandleMainWindowIDCMP(struct IntuiMessage *msg)
                           DisableWindow(w,&DummyReq);
 
                           /* Read new config file */
-                          if (!ReadConfigFile(PrefsFileName)) DisplayBeep(NULL);
+                          if (!ReadConfigFile((char *)PrefsFileName)) DisplayBeep(NULL);
 
                           /* Remove wait pointer */
                           EnableWindow(w,&DummyReq,WINDOW_IDCMP);
@@ -1034,6 +1080,7 @@ void *HandleMainWindowIDCMP(struct IntuiMessage *msg)
                          break;
       case MENU_CRICONS: CreateIcons=(menuitem->Flags & CHECKED) != 0;
                          break;
+      default:           break;
      }
 
      /* Get next menu event number */

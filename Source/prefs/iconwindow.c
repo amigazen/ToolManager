@@ -358,7 +358,7 @@ struct Node *CopyIconNode(struct Node *node)
     in->in_Flags=orignode->in_Flags;
     in->in_XPos=orignode->in_XPos;
     in->in_YPos=orignode->in_YPos;
-    return(in);
+    return((struct Node *)in);
    }
   } else
    /* No, set defaults */
@@ -367,7 +367,7 @@ struct Node *CopyIconNode(struct Node *node)
     in->in_Flags=ICPOF_SHOWNAME;
 
     /* Return pointer to new node */
-    return(in);
+    return((struct Node *)in);
    }
 
   FreeIconNode((struct Node *) in);
@@ -392,7 +392,7 @@ struct Node *CreateIconNode(char *name)
    in->in_Flags=ICPOF_SHOWNAME;
 
    /* All OK. */
-   return(in);
+   return((struct Node *)in);
   }
 
   FreeIconNode((struct Node *) in);
@@ -694,7 +694,7 @@ struct Node *ReadIconNode(UBYTE *buf)
    in->in_YPos=ipo->ipo_YPos;
 
    /* All OK. */
-   return(in);
+   return((struct Node *)in);
   }
 
   /* Call failed */

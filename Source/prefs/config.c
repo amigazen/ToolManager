@@ -52,7 +52,7 @@ BOOL ReadConfigFile(char *filename)
  if (configbuf=malloc(BUFSIZE)) {
   struct IFFHandle *iff;
 
-  DEBUG_PRINTF("config buffer: 0x%08lx\n",configbuf)
+  DEBUG_PRINTF("config buffer: 0x%08lx\n",configbuf);
 
   /* Allocate IFF handle */
   if (iff=AllocIFF()) {
@@ -71,19 +71,19 @@ BOOL ReadConfigFile(char *filename)
     /* Open IFF handle */
     if (!OpenIFF(iff,IFFF_READ)) {
 
-     DEBUG_PRINTF("IFF open\n");
+     DEBUG_PRINTF("IFF open\n",0);
 
      /* Start IFF parsing */
      if (!ParseIFF(iff,IFFPARSE_STEP)) {
       struct ContextNode *cn;
 
-      DEBUG_PRINTF("First IFF scan step\n");
+      DEBUG_PRINTF("First IFF scan step\n",0);
 
       /* Check IFF type and set IFF chunk types */
       if ((cn=CurrentChunk(iff)) && (cn->cn_ID==ID_FORM) &&
           (cn->cn_Type==ID_PREF) &&
           !PropChunk(iff,ID_PREF,ID_PRHD) &&
-          !StopChunks(iff,stopchunks,TMOBJTYPES) &&
+          !StopChunks(iff,(const LONG *)stopchunks,TMOBJTYPES) &&
           !StopOnExit(iff,ID_PREF,ID_FORM) &&
           !ParseIFF(iff,IFFPARSE_SCAN)) {
        /* First stop chunk encountered */
@@ -135,7 +135,7 @@ BOOL ReadConfigFile(char *filename)
             if (ReadChunkBytes(iff,configbuf,size)==size) {
              struct Node *node;
 
-             DEBUG_PRINTF("chunk read\n");
+             DEBUG_PRINTF("chunk read\n",0);
 
              /* Interpret chunk contents */
              if (node=(*ReadNodeFunctions[type])(configbuf)) {
@@ -180,7 +180,7 @@ BOOL WriteConfigFile(char *filename)
  if (configbuf=malloc(BUFSIZE)) {
   struct IFFHandle *iff;
 
-  DEBUG_PRINTF("config buffer: 0x%08lx\n",configbuf)
+  DEBUG_PRINTF("config buffer: 0x%08lx\n",configbuf);
 
   /* Allocate IFF handle */
   if (iff=AllocIFF()) {
@@ -197,7 +197,7 @@ BOOL WriteConfigFile(char *filename)
     /* Open IFF handle */
     if (!OpenIFF(iff,IFFF_WRITE)) {
 
-     DEBUG_PRINTF("IFF open\n");
+     DEBUG_PRINTF("IFF open\n",0);
 
      /* Push FORM IFF chunk */
      if (!PushChunk(iff,ID_PREF,ID_FORM,IFFSIZE_UNKNOWN)) {

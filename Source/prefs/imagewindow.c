@@ -187,13 +187,13 @@ struct Node *CopyImageNode(struct Node *node)
    if ((!orignode->in_Node.ln_Name || (in->in_Node.ln_Name=
                                   strdup(orignode->in_Node.ln_Name))) &&
        (!orignode->in_File || (in->in_File=strdup(orignode->in_File))))
-    return(in);
+    return((struct Node *)in);
   } else
    /* No, set defaults */
    if ((in->in_Node.ln_Name=strdup(AppStrings[MSG_IMAGEWIN_NEWNAME])) &&
        (!DirName || (in->in_File=strdup(DirName))))
     /* Return pointer to new node */
-    return(in);
+    return((struct Node *)in);
 
   FreeImageNode((struct Node *) in);
  }
@@ -220,7 +220,7 @@ struct Node *CreateImageNode(char *name, struct WBArg *wa)
        (in->in_File=strdup(filebuf))) {
     /* All OK. */
     free(filebuf);
-    return(in);
+    return((struct Node *)in);
    }
    free(filebuf);
   }
@@ -466,7 +466,7 @@ struct Node *ReadImageNode(UBYTE *buf)
   if ((!(sbits & IMPO_NAME) || (in->in_Node.ln_Name=GetConfigStr(&ptr))) &&
       (!(sbits & IMPO_FILE) || (in->in_File=GetConfigStr(&ptr))))
    /* All OK. */
-   return(in);
+   return((struct Node *)in);
 
   /* Call failed */
   FreeImageNode((struct Node *) in);
