@@ -18,7 +18,7 @@ DummyEntry:
 ;
          xref     _LibName       ; library name
          xref     _LibId         ; library id string
-         xref     @LibInit       ; library init routine
+         xref     _LibInit       ; library init routine (C symbol)
 
 ROMTag:                          ; struct Resident ROMTag;
          dc.w     $4AFC          ; UWORD            rt_MatchWord
@@ -30,7 +30,7 @@ ROMTag:                          ; struct Resident ROMTag;
          dc.b     0              ; BYTE             rt_Pri;
          dc.l     _LibName       ; char            *rt_Name;
          dc.l     _LibId+6       ; char            *rt_IdString;
-         dc.l     @LibInit       ; APTR             rt_Init;
+         dc.l     _LibInit       ; APTR             rt_Init;
 
 EndCode:
 

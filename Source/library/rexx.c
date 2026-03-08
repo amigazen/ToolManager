@@ -9,7 +9,7 @@
 #include "ToolManagerLib.h"
 
 /* ARexx library base */
-struct Library *RexxSysBase;
+extern struct RxsLib *RexxSysBase;
 
 /* Send an ARexx command */
 BOOL SendARexxCommand(char *command, ULONG len)

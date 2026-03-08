@@ -11,8 +11,8 @@
 /* library name & id string */
 #define INTTOSTR(a) #a
 const char LibName[]=TMLIBNAME;
-const char LibId[]="$VER: " TMLIBNAME " " INTTOSTR(TMLIBVERSION) "."
-                   INTTOSTR(TMLIBREVISION) " (" __COMMODORE_DATE__ ")\r\n";
+/* const char LibId[]="$VER: " TMLIBNAME " " TMLIBVERSION "." TMLIBREVISION " (" __COMMODORE_DATE__ ")\r\n"; */
+const char LibId[]="$VER: toolmanager.library 2.3 (8/3/2026)\n";
 
 /* prototypes for library management functions (param names required for SAS/C __REG__) */
 __SAVE_DS__ __ASM__ static struct Library *LibOpen(__REG__(a6, struct Library *lib), __REG__(d0, ULONG version));
@@ -56,7 +56,7 @@ static const APTR LibVectors[]={
 static BPTR LibSegment=NULL;
 static struct Library *PrivateDOSBase=NULL;
 static struct Task *HandlerTask;
-struct Library *SysBase=NULL;
+extern struct ExecBase *SysBase=NULL;
 struct Library *LibBase=NULL;
 BOOL Closing=FALSE;
 const char DosName[]="dos.library";

@@ -3,7 +3,7 @@
 # Run from Source/WBStartup: smake
 # Builds ToolManager executable; run from WB or CLI to start/quit ToolManager.
 #
-inc = //Programmers/include
+inc = //SDK/include
 opts = NOLINK INCLUDEDIR=$(inc) INCLUDEDIR=/ INCLUDEDIR=/locale
 
 ldlibs = lib:sc.lib lib:amiga.lib

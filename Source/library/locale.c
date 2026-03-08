@@ -9,8 +9,7 @@
 #include "ToolManagerLib.h"
 
 /* Broker port data */
-struct NewBroker BrokerData={NB_VERSION,ToolManagerName, "ToolManager V"
-                             TMVERSION " © " TMCRYEAR " Stefan Becker",
+struct NewBroker BrokerData={NB_VERSION,ToolManagerName, "ToolManager",
                              NULL,NBU_UNIQUE,0,0,NULL,0};
 
 /* Menu data */
@@ -31,14 +30,14 @@ static STRPTR AppStrings[]={
                            };
 
 /* misc. data */
-struct Library *LocaleBase=NULL;
+extern struct LocaleBase *LocaleBase=NULL;
 static struct Catalog *Catalog=NULL;
 
 /* Get locale strings */
 void GetLocale(void)
 {
  /* Try to open locale.library */
- if (LocaleBase=OpenLibrary("locale.library",38)) {
+ if (LocaleBase=(struct LocaleBase *)OpenLibrary("locale.library",38)) {
 
   DEBUG_PRINTF("Locale: 0x%08lx\n",LocaleBase);
 
@@ -86,7 +85,7 @@ void FreeLocale(void)
    CloseCatalog(Catalog);
    Catalog=NULL;
   }
-  CloseLibrary(LocaleBase);
+  CloseLibrary((struct Library *)LocaleBase);
   LocaleBase=NULL;
  }
 }

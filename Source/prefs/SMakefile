@@ -4,7 +4,7 @@
 # Builds ToolManager prefs editor (main window, object editors, ASL requesters).
 # For debug build add DEFINE DEBUG=1 to opts.
 #
-inc = //Programmers/include
+inc = //SDK/include
 # Parent (..) and locale so ToolManagerPrefs.h and locale/toolmanager.h are found
 opts = NOLINK INCLUDEDIR=$(inc) INCLUDEDIR=/ INCLUDEDIR=/locale 
 

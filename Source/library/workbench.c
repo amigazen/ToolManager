@@ -11,32 +11,37 @@
 /* Data */
 static ULONG WBCount=0;
 struct Library *WorkbenchBase=NULL;
+BOOL WBUseOpenWorkbenchObject=FALSE;
 
-/* Try to open workbench.library */
+/* Try to open workbench.library. Prefer 45+ for OpenWorkbenchObjectA (reliable
+ * launch); fall back to 37 for AddAppIcon/AddAppWindow etc. when on older OS. */
 BOOL GetWorkbench(void)
 {
- /* Workbench already open or can we open it? */
- if (WorkbenchBase || (WorkbenchBase=OpenLibrary("workbench.library",37)))
-  {
-   /* Increment WB counter */
-   WBCount++;
-   DEBUG_PRINTF("WorkbenchBase 0x%08lx ",WorkbenchBase);
-   DEBUG_PRINTF("(Count %2ld)\n",WBCount);
-
-   /* All OK */
-   return(TRUE);
+ if (!WorkbenchBase) {
+  WorkbenchBase=OpenLibrary("workbench.library",45);
+  if (WorkbenchBase) {
+   WBUseOpenWorkbenchObject=TRUE;  /* 45.39+ safe for OpenWorkbenchObjectA */
+  } else {
+   WorkbenchBase=OpenLibrary("workbench.library",37);
+   WBUseOpenWorkbenchObject=FALSE;
   }
-
- /* Call failed */
+ }
+ if (WorkbenchBase) {
+  WBCount++;
+  DEBUG_PRINTF("WorkbenchBase 0x%08lx ",WorkbenchBase);
+  DEBUG_PRINTF("(Count %2ld)\n",WBCount);
+  DEBUG_PRINTF("OpenObject %s\n",WBUseOpenWorkbenchObject ? "yes" : "no");
+  return(TRUE);
+ }
  return(FALSE);
 }
 
 /* Try to close workbench.library */
 void FreeWorkbench(void)
 {
- /* Decrement WB counter and close workbench.library if zero */
  if (--WBCount==0) {
   CloseLibrary(WorkbenchBase);
   WorkbenchBase=NULL;
+  WBUseOpenWorkbenchObject=FALSE;
  }
 }

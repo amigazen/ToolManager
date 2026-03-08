@@ -32,37 +32,21 @@
 #include <workbench/workbench.h>
 
 /* System function prototypes */
-#include <clib/alib_protos.h>
-#include <clib/commodities_protos.h>
-#include <clib/diskfont_protos.h>
-#include <clib/dos_protos.h>
-#include <clib/exec_protos.h>
-#include <clib/gadtools_protos.h>
-#include <clib/graphics_protos.h>
-#include <clib/icon_protos.h>
-#include <clib/iffparse_protos.h>
-#include <clib/intuition_protos.h>
-#include <clib/locale_protos.h>
-#include <clib/nipc_protos.h>
-#include <clib/rexxsyslib_protos.h>
-#include <clib/utility_protos.h>
-#include <clib/wb_protos.h>
-
-/* System function pragmas */
-#include <pragmas/commodities_pragmas.h>
-#include <pragmas/diskfont_pragmas.h>
-#include <pragmas/dos_pragmas.h>
-#include <pragmas/exec_pragmas.h>
-#include <pragmas/gadtools_pragmas.h>
-#include <pragmas/graphics_pragmas.h>
-#include <pragmas/icon_pragmas.h>
-#include <pragmas/iffparse_pragmas.h>
-#include <pragmas/intuition_pragmas.h>
-#include <pragmas/locale_pragmas.h>
-#include <pragmas/nipc_pragmas.h>
-#include <pragmas/rexxsyslib_pragmas.h>
-#include <pragmas/utility_pragmas.h>
-#include <pragmas/wb_pragmas.h>
+#include <proto/alib.h>
+#include <proto/commodities.h>
+#include <proto/diskfont.h>
+#include <proto/dos.h>
+#include <proto/exec.h>
+#include <proto/gadtools.h>
+#include <proto/graphics.h>
+#include <proto/icon.h>
+#include <proto/iffparse.h>
+#include <proto/intuition.h>
+#include <proto/locale.h>
+#include <proto/nipc.h>
+#include <proto/rexxsyslib.h>
+#include <proto/utility.h>
+#include <proto/wb.h>
 
 /* ANSI C include files */
 #include <stdlib.h>
@@ -199,15 +183,16 @@ void FreeWorkbench(void);
 
 /* System library base pointers */
 extern struct Library *CxBase;
-extern struct Library *DOSBase;
+extern struct DosLibrary *DOSBase;
 extern struct Library *GadToolsBase;
-extern struct Library *GfxBase;
+extern struct GfxBase *GfxBase;
 extern struct Library *IFFParseBase;
 extern struct IntuitionBase *IntuitionBase;
 extern struct Library *NIPCBase;
-extern struct Library *SysBase;
+extern struct ExecBase *SysBase;
 extern struct Library *UtilityBase;
 extern struct Library *WorkbenchBase;
+extern BOOL WBUseOpenWorkbenchObject;
 
 /* Global data */
 extern const struct TagItem HandlerProcessTags[];
@@ -233,9 +218,9 @@ extern char DefaultOutput[];
 extern char DefaultPortName[];
 
 /* Global defines */
-#define TMVERSION     "2.1"
-#define TMLIBREVISION 0
-#define TMCRYEAR      "1990-93"
+#define TMVERSION     2
+#define TMLIBREVISION 3
+#define TMCRYEAR      "2026"
 
 #ifdef DEBUG
 __STDARGS__ void kputs(char *);

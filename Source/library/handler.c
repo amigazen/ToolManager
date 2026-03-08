@@ -10,11 +10,11 @@
 
 /* misc. data */
 static BOOL TimerOpen=FALSE;
-struct Library *DOSBase=NULL;
+extern struct DosLibrary *DOSBase=NULL;
 struct Library *CxBase=NULL;
 struct Library *UtilityBase=NULL;
-struct IntuitionBase *IntuitionBase=NULL;
-struct Library *GfxBase=NULL;
+extern struct IntuitionBase *IntuitionBase=NULL;
+extern struct GfxBase *GfxBase=NULL;
 struct Library *GadToolsBase=NULL;
 struct Library *NIPCBase=NULL;
 extern const char DosName[];

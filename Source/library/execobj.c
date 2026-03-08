@@ -7,6 +7,18 @@
  */
 
 #include "ToolManagerLib.h"
+#include <workbench/startup.h>
+
+/* OpenWorkbenchObjectA() tags (workbench.library V44+) if not in SDK */
+#ifndef WBOPENA_ArgLock
+#define WBOPENA_ArgLock  (TAG_USER + 0x1B01)
+#endif
+#ifndef WBOPENA_ArgName
+#define WBOPENA_ArgName  (TAG_USER + 0x1B02)
+#endif
+
+/* Prototype for V44+; older NDK may not declare it */
+extern BOOL OpenWorkbenchObjectA(CONST_STRPTR name, const struct TagItem *tags);
 
 /* extended TMObject structure for TMOBJTYPE_Exec objects */
 struct TMObjectExec {
@@ -591,84 +603,132 @@ static BOOL StartCLIProgram(struct TMObjectExec *tmobj, struct AppMessage *msg)
  return(rc);
 }
 
-/* Start WB program */
-static BOOL StartWBProgram(struct TMObjectExec *tmobj, struct AppMessage *msg)
+/* Launch via workbench.library OpenWorkbenchObjectA (45.39+). Stack/priority
+ * are not settable. */
+static BOOL StartWBProgramViaOpenObject(struct TMObjectExec *tmobj,
+                                        struct AppMessage *msg)
 {
- struct MsgPort *hp;     /* Port of WBStart-Handler */
- struct WBStartMsg wbsm; /* Message for WBStart-Handler */
- BOOL rc=FALSE;
+ BPTR dirLock;
+ BPTR oldDir;
+ struct TagItem *tagList;
+ ULONG numArgs;
+ ULONG i;
+ struct WBArg *argList;
+ BOOL rc;
 
- /* Build message for WBStart-Handler */
- wbsm.wbsm_Msg.mn_Node.ln_Pri= 0;
- wbsm.wbsm_Msg.mn_ReplyPort  = DummyPort;
- wbsm.wbsm_Name              = tmobj->eo_Command;
- wbsm.wbsm_DirLock           = Lock(tmobj->eo_CurrentDir,SHARED_LOCK);
- wbsm.wbsm_Stack             = tmobj->eo_Stack;
- wbsm.wbsm_Prio              = tmobj->eo_Priority;
- wbsm.wbsm_NumArgs           = msg ? msg->am_NumArgs : 0;
- wbsm.wbsm_ArgList           = msg ? msg->am_ArgList : 0;
+ dirLock = Lock(tmobj->eo_CurrentDir, SHARED_LOCK);
+ if (!dirLock) return FALSE;
 
- /* Try to send a message to the WBStart-Handler */
+ oldDir = CurrentDir(dirLock);
+ rc = FALSE;
+ tagList = NULL;
+ numArgs = (msg && msg->am_ArgList) ? msg->am_NumArgs : 0;
+ argList = msg ? msg->am_ArgList : NULL;
+
+ if (numArgs > 0 && argList && WorkbenchBase) {
+  tagList = AllocMem((ULONG)(2 * numArgs + 1) * (ULONG)sizeof(struct TagItem),
+                     MEMF_PUBLIC | MEMF_CLEAR);
+ }
+
+ if (tagList) {
+  for (i = 0; i < numArgs; i++) {
+   tagList[2 * i].ti_Tag = WBOPENA_ArgLock;
+   tagList[2 * i].ti_Data = (ULONG)argList[i].wa_Lock;
+   tagList[2 * i + 1].ti_Tag = WBOPENA_ArgName;
+   tagList[2 * i + 1].ti_Data = (ULONG)argList[i].wa_Name;
+  }
+  tagList[2 * numArgs].ti_Tag = TAG_DONE;
+  tagList[2 * numArgs].ti_Data = 0;
+ }
+
+ if (WorkbenchBase && tmobj->eo_Command) {
+  rc = OpenWorkbenchObjectA((CONST_STRPTR)tmobj->eo_Command,
+                            tagList ? tagList : NULL);
+ }
+
+ if (tagList) FreeMem(tagList, (ULONG)(2 * numArgs + 1) * (ULONG)sizeof(struct TagItem));
+ CurrentDir(oldDir);
+ UnLock(dirLock);
+ return rc;
+}
+
+/* Fallback: launch via WBStart-Handler when workbench.library < 45. */
+static BOOL StartWBProgramViaHandler(struct TMObjectExec *tmobj,
+                                     struct AppMessage *msg)
+{
+ struct MsgPort *hp;
+ struct WBStartMsg wbsm;
+ BOOL rc;
+ BPTR ifh;
+ BPTR ofh;
+ int i;
+
+ ifh = 0;
+ ofh = 0;
+ rc = FALSE;
+ wbsm.wbsm_Msg.mn_Node.ln_Pri = 0;
+ wbsm.wbsm_Msg.mn_ReplyPort = DummyPort;
+ wbsm.wbsm_Name = tmobj->eo_Command;
+ wbsm.wbsm_DirLock = Lock(tmobj->eo_CurrentDir, SHARED_LOCK);
+ wbsm.wbsm_Stack = tmobj->eo_Stack;
+ wbsm.wbsm_Prio = tmobj->eo_Priority;
+ wbsm.wbsm_NumArgs = msg ? msg->am_NumArgs : 0;
+ wbsm.wbsm_ArgList = msg ? msg->am_ArgList : NULL;
+ hp = NULL;
+
  Forbid();
- hp=FindPort(WBS_PORTNAME);
- if (hp) PutMsg(hp,(struct Message *) &wbsm);
+ hp = FindPort(WBS_PORTNAME);
+ if (hp) PutMsg(hp, (struct Message *)&wbsm);
  Permit();
 
- /* No WBStart-Handler, try to start it! */
  if (!hp) {
-  BPTR ifh;
-
-  if (ifh=Open(DefaultOutput,MODE_NEWFILE)) {
-   BPTR ofh;
-
-   if (ofh=Open(DefaultOutput,MODE_OLDFILE))
-    /* Start handler */
-    if (SystemTags(WBS_LOADNAME,SYS_Input,ifh,
-                                SYS_Output,ofh,
-                                SYS_Asynch,TRUE,
-                                SYS_UserShell,TRUE,
-                                NP_ConsoleTask,NULL,
-                                NP_WindowPtr,NULL,
-                                TAG_DONE) != -1) {
-     int i;
-
-     /* Handler started, try to send message (Retry up to 5 seconds) */
-     for (i=0; i<10; i++) {
-      /* Try to send message */
+  ifh = Open(DefaultOutput, MODE_NEWFILE);
+  if (ifh) {
+   ofh = Open(DefaultOutput, MODE_OLDFILE);
+   if (ofh) {
+    if (SystemTags(WBS_LOADNAME, SYS_Input, ifh,
+                  SYS_Output, ofh,
+                  SYS_Asynch, TRUE,
+                  SYS_UserShell, TRUE,
+                  NP_ConsoleTask, NULL,
+                  NP_WindowPtr, NULL,
+                  TAG_DONE) != -1) {
+     for (i = 0; i < 10; i++) {
       Forbid();
-      hp=FindPort(WBS_PORTNAME);
-      if (hp) PutMsg(hp,(struct Message *) &wbsm);
+      hp = FindPort(WBS_PORTNAME);
+      if (hp) PutMsg(hp, (struct Message *)&wbsm);
       Permit();
-
-      /* Message sent? Yes, leave loop */
       if (hp) break;
-
-      /* No, wait 1/2 second */
       Delay(25);
      }
-    }
-    /* Handler not started, close file handles */
-    else {
+    } else {
      Close(ofh);
      Close(ifh);
     }
-   else Close(ifh);
+   } else {
+    Close(ifh);
+   }
   }
  }
 
- /* Could we send the message? */
  if (hp) {
-  /* Get reply message */
   WaitPort(DummyPort);
   GetMsg(DummyPort);
-  rc=wbsm.wbsm_Stack; /* Has tool been started? */
-  DEBUG_PRINTF("Return Code %ld\n",rc);
+  rc = (BOOL)wbsm.wbsm_Stack;
+  DEBUG_PRINTF("Return Code %ld\n", (long)wbsm.wbsm_Stack);
  }
 
- /* Free lock */
  if (wbsm.wbsm_DirLock) UnLock(wbsm.wbsm_DirLock);
+ return rc;
+}
 
- return(rc);
+/* Start WB program: use OpenWorkbenchObjectA if workbench.library 45+,
+ * else WBStart-Handler. */
+static BOOL StartWBProgram(struct TMObjectExec *tmobj, struct AppMessage *msg)
+{
+ if (WBUseOpenWorkbenchObject)
+  return StartWBProgramViaOpenObject(tmobj, msg);
+ return StartWBProgramViaHandler(tmobj, msg);
 }
 
 /* Start ARexx program */
