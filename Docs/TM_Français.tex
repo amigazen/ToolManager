@@ -1,0 +1,2254 @@
+\input amigatexinfo
+\input ftexinfo
+@c %**start of header
+@setfilename TM_French.info
+@settitle ToolManager 2.1 Documentation
+@setchapternewpage on
+@ifinfo
+@set xrefstring voir
+@set Xrefstring Voir
+@end ifinfo
+@c %**end of header
+
+
+@comment
+@comment  TM_French.tex V2.1
+@comment
+@comment  Documentation française pour ToolManager (format Texinfo)
+@comment
+@comment  (c) 1990-1993 Stefan Becker
+@comment
+@comment  Traduction de TM_English.tex par Pascal Rullier
+@comment
+@comment  (c) 1993 B.U.G.S.S.
+@hyphenation{se-lec-tion-ne}
+@hyphenation{Tool-Ma-na-ger}
+@hyphenation{pro-gram-me}
+@hyphenation{dif-fe-rents}
+@hyphenation{sau-ve-gar-de}
+@hyphenation{sup-ple-men-taire}
+@hyphenation{actuel-lement}
+@hyphenation{inter-face}
+@hyphenation{uti-li-taire}
+@hyphenation{re-per-toi-re}
+
+
+@comment ----------------------------------------------------------------
+@comment --- Titre & Page de Copyright (pour le manuel imprimé)       ---
+@comment ----------------------------------------------------------------
+@titlepage
+
+@title{ToolManager}
+@subtitle{Une extension pour le Workbench Amiga}
+@subtitle{}
+@subtitle{Version 2.1}
+@subtitle{16 Mai 1993}
+
+@page
+@vskip 0pt plus 1filll
+
+@comment ----------------------------------------------------------------
+@comment Note to translators:
+@comment Translate this page and then copy it to the node "Copyright"
+@comment Both pages must be identical!
+@comment ----------------------------------------------------------------
+
+Copyright @copyright{} 1990-93 Stefan Becker
+
+La permission est accordée de faire et de distribuer des copies de
+ce manuel pourvu que la notice de copyright et cette notice de
+permissions soient preservées sur toutes les copies.
+
+@ignore
+Permission is granted to process this file by TeX and print the results,
+provided the printed document carries a copying permission notice identical to
+this one except for the removal of this paragraph (this paragraph not being
+relevant to the printed manual).
+@end ignore
+
+Aucune garantie de quelque nature n'est donnée pour une fiabilité à 100%
+des programmes décrits dans ce document. Vous utilisez votre matériel
+à vos propres risques. L'auteur @strong{ne peut pas} être rendu pour
+responsable des dommages causés par l'utilisation de ces programmes.
+
+Cette archive est en libre distribution, mais reste encore
+"copyrighter" par Stefan Becker. Cela veut dire que vous pouvez la
+copier gratuitement aussi longtemps que vous ne demandez pas plus que
+le tarif nominal de copie. Ce tarif @strong{ne doit pas} être plus de
+US $5 ou 5 DM.
+
+@strong{Cette limite s'applique aux distributeurs de Domaine-Public
+Allemand aussi !!}
+
+La permission est accordée pour inclure cette archive dans les
+collections de Domaine-Public, spécialement dans les "Fred Fishs Amiga
+Disk Library" (en incluant les versions CD-ROM). Le fichier distribué
+peut être récupéré sur des "Bulletin Board Systems" (BBS) ou sur des
+serveurs FTP. Si vous voulez distribuer ce programme, vous
+@strong{devez} utiliser les archives de la distribution originale
+@file{ToolManager2_1bin.lha}, @file{ToolManager2_1gfx.lha},
+@file{ToolManager2_1src.lha}.
+
+Aucun de ces programmes ni le code source (ni des parties de celui-ci)
+ne peuvent être utilisés dans des programmes commerciaux qu'avec la
+permission de l'auteur.
+
+@strong{Aucun} de ces programmes @strong{ni} le code source (ni des
+parties de celui-ci) ne doivent être utilisés sur aucune machine
+utilisée pour la recherche, le developpement, la construction, pour
+le test ou la production d'armes ou pour d'autres applications
+militaires. Cela inclut, également, toute machine qui est utilisée
+pour la formation des personnes pour @strong{tous} les usages
+mentionnés au dessus.
+
+@end titlepage
+@headings double
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Top Node (not printed)                                   ---
+@comment ----------------------------------------------------------------
+@ifinfo
+@node Top, Copyright, (dir), (dir)
+@top ToolManager 2.1 Documentation
+
+@menu
+Chapitres pour @emph{tout} les utilisateurs:
+
+* Copyright::                 Copyright et Garantie légale
+* Important::                 Notes importantes
+* Adresses des auteurs::      Où envoyer la liste des erreurs, commentaires & donations
+
+Chapitres pour les utilisateurs impatients:
+
+* Installation rapide::       Comment installer ToolManager 2.0 rapidement
+
+Chapitres pour les utilisateurs "première fois":
+
+* Introduction::              Qu'est ToolManager ?
+* Concepts::                  Les concepts de ToolManager
+* Guide::                     Un tour guidé à travers ToolManager
+* Distribution des fichiers:: Distribution des fichiers
+
+Chapitres de références:
+
+* Objets::                    Référence des objets de ToolManager
+* Préférences:Preferences.    L'éditeur de préférences de ToolManager
+* Librairie::                 L'interface de Mla librairie partagée de ToolManager
+* Raccourci-clavier::         Comment définir un raccourci-clavier
+
+Appendices:
+
+* Questions::                 Les questions les plus posées à propos de ToolManager
+* Historique::                L'histoirique de ToolManager
+* Crédits:Credits.            L'auteur voudrait remercier@dots{}
+* Index::                     L'index pour ce document
+@end menu
+
+@end ifinfo
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre: Copyright (pour document Info/AmigaGuide )     ---
+@comment ----------------------------------------------------------------
+@ifinfo
+@node Copyright, Important, Top, Top
+@chapter Copyright et Garantie légale
+@cindex Copyright
+@cindex Distribution
+@cindex Garantie légale
+@cindex Permissions
+@cindex Interdictions
+
+Copyright @copyright{} 1990-93 Stefan Becker
+
+La permission est accordée de faire et de distribuer des copies de
+ce manuel pourvu que la notice de copyright et cette notice de
+permissions soient preservées sur toutes les copies.
+
+@ignore
+Permission is granted to process this file by TeX and print the results,
+provided the printed document carries a copying permission notice identical to
+this one except for the removal of this paragraph (this paragraph not being
+relevant to the printed manual).
+@end ignore
+
+Aucune garantie de quelque nature n'est donnée pour une fiabilité à 100%
+des programmes décrits dans ce document. Vous utilisez votre matériel
+à vos propres risques. L'auteur @strong{ne peut pas} être rendu pour
+responsable des dommages causés par l'utilisation de ces programmes.
+
+Cette archive est distribuable gratuitement, mais reste encore
+"copyrighter" par Stefan Becker. Cela veut dire que vous pouvez la
+copier gratuitement aussi longtemps que vous ne demandez pas plus que
+le tarif nominal de copie. Ce tarif @strong{ne doit pas} être plus que
+US $5 or 5 DM.
+
+@strong{Cette limite s'applique aux distributeurs de Domaine-Public
+Allemand aussi !!}
+
+La permission est accordée pour inclure cette archive dans les
+collections de Domaine-Public, spécialement dans les "Fred Fishs Amiga
+Disk Library" (en incluant les versions CD-ROM). Le fichier distribué
+peut être récupéré sur des "Bulletin Board Systems" (BBS) ou sur des
+serveurs FTP. Si vous voulez distribuer ce programme, vous
+@strong{devez} utiliser les archives de la distribution originale
+@file{ToolManager2_1bin.lha}, @file{ToolManager2_1gfx.lha},
+@file{ToolManager2_1src.lha}.
+
+Aucun de ces programmes ni le code source (ni des parties de celui-ci)
+ne peuvent être utilisés dans des programmes commerciaux qu'avec la
+permission de l'auteur.
+
+@strong{Aucun} de ces programmes @strong{ni} le code source (ni des
+parties de celui-ci) ne doivent être utilisés sur aucune machine
+utilisée pour la recherche, le developpement, la construction, pour
+le test ou la production d'armes ou pour d'autres applications
+militaires. Cela inclut, également, toute machine qui est utilisée
+pour la formation des personnes pour @strong{tous} les usages
+mentionnés au dessus.
+
+@end ifinfo
+@comment ----------------------------------------------------------------
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre: Important                                      ---
+@comment ----------------------------------------------------------------
+@node Important, Adresses des auteurs, Copyright, Top
+@chapter Important
+@cindex GiftWare
+@cindex Notes importantes
+@cindex V38 (et plus) caractéristiques
+
+Bienvenu dans le merveilleux monde de ToolManager 2.1 :-)
+
+@itemize @minus
+
+@item
+ToolManager et ses concepts ont radicalement changé (@pxref{Historique})
+depuis la dernière version (1.5).
+
+@item
+En commencant avec la version 2.0 de ToolManager, ce programme a une
+option @emph{GiftWare}. Si vous aimez ce programme et que vous utilisez assez
+souvent, tu devras considérer l'envoi d'une petite donation pour honorer
+l'effort que l'auteur a mis dans ce programme. Je suggère une donation de
+$10-20 US ou 10-20 DM. SVP N'envoyer pas de chèques ou d'argent depuis
+l'exterieur de l'Europe, car le plus souvent, encaisser ces choses coûte
+plus que leur valeur.
+
+Si vous n'envoyez pas votre contribution ou vos moyens ne le permettent pas,
+vous ne sentez pas géné pour cela. Envoyez-moi un mot en me disant
+que vous utilisez ToolManager de toute façon. (J'aime avec du courrier de mes fans
+:-). @xref{Adresses des auteurs}.
+
+@item
+Les utilisateurs de Toolmanager 1.X/2.0 peuvent commencer au chapitre
+d'installation rapide (@pxref{Installation rapide}). Quelques
+caractéristiques n'ont pas changé et le reste est équitablement facile
+à deviner à travers essais & erreurs. Pour une description du nouveau
+concept & caractéristiques, consulter la partie référence de ce
+document (@pxref{Objets}).
+
+Vous @strong{devez} quitter tout ToolManager 1.X/2.0 ou sinon la
+nouvelle version ne marchera pas. La nouvelle version ne peut pas lire
+l'ancien format du fichier de configuration 1.X (Désolé).
+
+@item
+Les utilisateurs débutants doivent lire le document entier pour
+comprendre le concept et l'usage du programme. Commencer par
+@ref{Introduction}.
+
+@item
+ToolManager 2.1 utilise quelques carctéristiques de l'AmigaOS Version
+V38 (et plus), qui supporte les nouvelles caractéristiques réseau
+AmigaOS,qui devrait être (espérons-le) bientôt disponible pour tous
+les utilisateurs Amiga. Mais si vous utilisez encore le 2.0 (noté V37
+dans ce document), vous n'avez pas besoin d'être inquiet car
+ToolManager ne s'appuie pas sur ses caractéristiques. Toutes les
+caractéristiques étendues sont marquées dans cette documentation.
+
+@end itemize
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre: Adresse des auteurs                            ---
+@comment ----------------------------------------------------------------
+@node Adresses des auteurs, Installation rapide, Important, Top
+@chapter Où envoyer la liste des erreurs, commentaires & donations
+@cindex Adresse
+@cindex Liste des erreurs
+@cindex Commentaires
+@cindex Donations
+@cindex E-Mail
+@cindex Adresse InterNet
+@cindex Adresse postale
+
+L'auteur peut être joint aux adresses suivantes :
+
+@table @asis
+@item Adresse postale :
+
+@example
+
+     Stefan Becker
+     Holsteinstrasse 9
+     5100 Aachen
+     GERMANY
+@end example
+
+SVP, utiliser l'adresse suivante après le 1 Juillet 93:
+
+@example
+
+      Stefan Becker
+      Holsteinstrasse 9
+      52068 Aachen
+      GERMANY
+@end example
+
+@item InterNet E-Mail:
+
+@example
+
+stefanb@@pool.informatik.rwth-aachen.de
+@end example
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre : Installation rapide                           ---
+@comment ----------------------------------------------------------------
+@node Installation rapide, Introduction, Adresses des auteurs, Top
+@chapter Comment installer ToolManager 2.1 rapidement
+@cindex Installation rapide
+@cindex Installation (rapide)
+@cindex Rapide installation
+
+L'installation basique de Toolmanager 2.1 se fait en quatre temps :
+
+@table @asis
+@item @file{Libs/toolmanager.library} @result{} @file{LIBS:}
+C'est le programme principal de ToolManager. Il gère tous les programmes, menus,
+icônes et docks (@pxref{Librairie}).
+
+@item @file{Prefs/ToolManager*} @result{} @file{SYS:Prefs}
+C'est l'éditeur pour la configuration (@pxref{Preferences,Préférences}).
+
+@item @file{WBStartup/ToolManager*} @result{} @file{SYS:WBStartup}
+Avec cet outil, vous pouvez démarrer ou arrêter ToolManager. Si il réside
+dans le répertoire WBStartup, ToolManager sera toujours lancé quand votre
+machine bootera.
+
+@item @file{L/WBStart-Handler} @result{} @file{L:}
+Ce programme lance les programmes par le Workbench. C'est un processus
+séparé, de ce fait, vous pouvez quitter ToolManager même si vous avez
+encore des programmes actifs lancés par ToolManager par la méthode WB.
+
+@end table
+Après avoir copier ces fichiers, vous devrez quitter toute ancienne
+version de ToolManager et double-cliquer l'icône dans le répertoire
+WBStartup. Maintenant vous pouvez lancer l'éditeur de préférences et
+configurer votre environnement (Utilisez le boutton ``Test'' au lieu
+du boutton ``Use (Utilise)'' pendant les tests). Vous devriez
+comprendre la plus part des caractéristiques avec des essais & des
+erreurs, pour plus d'informations : voir les descriptions des objects
+de ToolManager (@pxref{Objets}).
+
+La distribution inclut un exemple de configurationn appelé
+@file{TM.Demo.prefs}. Vous pouvez le charger dans l'éditeur de
+préférences avec l'entrée du menu @code{Open/Ouvre}.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre: Introduction                                   ---
+@comment ----------------------------------------------------------------
+@node Introduction, Concepts, Installation rapide, Top
+@chapter Qu'est ToolManager ?
+@cindex Introduction à ToolManager
+
+ToolManager est un programme souple pour gérer les outils de votre
+environnement de travail. Il peut lancer des programmes du Workbench
+et du CLI, des scripts AREXX, des événements sur des
+raccourci-clavier. Il peut même lancer une commande d'un ToolManager
+tournant sur une machine à distance. L'interface utilisateur est
+consistuée de menus, d'icônes ou de fenêtres dock. Si vous aimez un
+ordinateur bruyant, vous pouvez associer un son à chacun de ces
+objets. @xref{Sound}.
+
+ToolManager peut rajouter des objets dans le menu @code{Tools} du
+Workbench. Si vous selectionnez un objet du menu, le programme associé
+avec lui sera lancé. Chaque icône selectionnée sur le Workbench sera
+utilisée comme un argument pour le programme. Cette caractéristique
+est seulement disponible quand le Workbench est actif.
+@xref{Menu}.
+
+ToolManager peut rajouter des icônes à la fenêtre du WorkBench. Quand vous
+double-cliquez une pareille icône, le programme associé avec elle sera
+lancé. Si vous amenez une ou plusieurs icônes sur cette icône, le
+programme sera lancé avec ces icônes comme arguments. Cette
+caractéristique est seulement disponible quand le Workbench est actif.
+@xref{Icon}.
+
+ToolManager peut créer une fenêtre dock depuis un regroupement de
+programmes. Cette fenêtre peut être ouverte sur chaque écran public.
+Chaque programme est representé par une image ou un bouton gadget.
+Pour lancer un programme, vous cliquez simplement sur l'image ou le
+bouton gadget. Si la fenêtre dock a été ouverte sur l'écran du
+Workbench et qu'il est actif, vous pouvez aussi amener une ou
+plusieurs icônes sur l'image ou le bouton gadget pour lancer le
+programme avec les arguments. @xref{Dock}.
+
+En plus, vous pouvez associer une touche d'appel à chaque programme.
+Si vous pressez cette Hot Key, le programme sera lancé. A noter que
+@emph{aucun} argument ne peut être passé au programme si vous utilisez
+cette méthode de lancement. @xref{Exec}.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre: Concepts                                       ---
+@comment ----------------------------------------------------------------
+@node Concepts, Guide, Introduction, Top
+@chapter Les concepts de ToolManager
+@cindex Concepts
+@cindex Introduction aux objets de ToolManager
+@cindex Concepts des programmes
+
+ToolManager 2.1 utilise une nouvelle approche orientée-objet pour fournir un
+système souple et extensible. Cette approche accroit plusieurs
+caractéristiques des versions 1.X de ToolManager, e.g.@: vous pouvez
+avoir, maintenant, des docks multiples.
+
+Un objet est un regroupement de données qui décrivent ces caractéristiques.
+Chaque objet a un nom et un type. Vous pouvez créer autant d'objets que vous
+voulez, mais le nom de chaque objet doit être unique, parce qu'il sera
+utilisé comme une référence pour cet objet.
+
+Actuellement, il y a sept différents types d'objets: Exec, Image,
+Sound, Menu, Icon, Dock et Access. Les trois premiers sont des objets
+primaires; ce qui veut dire qu'ils ne référencent pas d'autres objets.
+Ils fournissent les données ou services pour les objets complexes.
+
+Les quatre derniers types d'objets sont des objets complexes; ce qui
+veut dire qu'ils référencent des objets simples et reposent sur eux
+l'accés aux données ou services. La référence est faite par nom,
+et si aucun objet avec ce nom existe, l'objet complexe l'ignorera. A
+noter que cela peut reduire la fonctionnalité de l'objet complexe, e.g
+un objet Icon @emph{a besoin} de la donnée d'un objet Image, et si
+cet objet n'existe pas, une icône ne sera pas créée.
+
+Pour une description détaillée de tous les paramêtres voir @ref{Objets}.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chaptrique: Guide                                        ---
+@comment ----------------------------------------------------------------
+@node Guide, Distribution des fichiers, Concepts, Top
+@chapter Un tour guidé à travers ToolManager
+@cindex Guide
+@cindex Tour guidé
+@cindex Exemple
+
+Si vous n'avez pas compris un mot jusqu'à présent ? Confus par les
+objets, programmes et les liens ? Ne désespérez pas, ce qui suit va
+t'aider.
+
+Je voudrais maintenant te guider à travers un exemple pas-à-pas sur
+comment configurer ToolManager. Tout ce dont vous avez besoin est
+d'installer ToolManager et de lancer l'éditeur de préférences. Après
+chaque pas, utilise le boutton ``Test'' dans la fenêtre principale
+pour tester la configuration.
+
+Comme exemple, nous allons prendre l'afficheur de texte More du tiroir
+@file{SYS:Utilities}. D'abord, nous devons dire à ToolManager quel
+programme nous voulons utiliser. L'information sur les programmes est
+stockée dans Objets Exec. Séléctionne juste ``Exec'' comme type
+d'objet dans la fenêtre principale de l'éditeur de préférences et
+presse le boutton ``Créer''.
+
+Aprés cette action, tu verras la fenêtre ``Modifier l'objet Exec''.
+Maintenant, ouvre le tiroir Utilities de ta partition Workbench,
+deplace l'icône More pour l'amener dans la fenêtre d'édition. Comme tu
+peux le voir, l'éditeur a maintenant mis le nom de l'objet et la
+commande au nom de programme, et the répertoire courant à
+System:Utilities. Presse le boutton ``Ok'' pour utiliser ces
+paramêtres.
+
+Tu ne peux pas faire grand chose avec un objet Exec seul, aussi, comme
+prochain pas, nous voulons ajouter ce programme au menu Outils du
+Workbench. Sélectionne ``Menu'' comme type d'objet et presse le
+boutton ``Créer''. Maintenant tu verras la fenêtre ``Modifier objet
+Menu''. Change le nom de l'objet à ``Affichage Texte''.
+
+ToolManager doit savoir quel programme doît être lancé quand l'entrée
+du menu est séléctionnée, aussi nous associons un objet Exec à l'objet
+du menu. Press le bouton ``Objet Exec'' et sélectionne l'objet
+``More'' depuis la boîte de dialogue. Maintenant, presse le bouton
+``Ok'' et le boutton ``Test'' dans la fenêtre principale. Vous pouvez,
+maintenant, voir une entrée dans le menu ``Outils''. Selectionne un
+fichier texte depuis le Workbench et choisis la nouvelle entrée du
+menu. Le programme ``More'' sera lancé et affichera le texte.
+C'est facile, non ?
+
+Maintenant, nous allons créer un objet Icon sur le Workbench. Pour une
+icône, nous avons besoin d'une image, qui est stockée dans un objet
+Image. Choisis ``Image'' comme nouveau type d'objet et presse le
+boutton ``Créer''. La fenêtre ``Modification objet Image'' sera
+ouverte. Change le nom à ``Image pour More'' et ammène l'icône de More
+depuis le tiroir Utilities sur la fenêtre. Presse ``Ok'' pour utiliser
+ces paramêtres.
+
+Ensuite, nous allons créer un objet Icône. Choisis ``Icon'' comme type
+d'objet et presse le boutton ``Créer''. Change le nom de l'objet à
+``Voir Texte''. Presse le boutton ``Objet Exec'' et choisis l'objet
+``Image pour More'' depuis la boîte de dialogue. Mets la position X à
+100 et la position Y à 50. Presse le boutton ``Ok'' et le boutton
+``Test''. Après un bref delay, une icône apparaîtra dans le Workbench,
+sur laquelle tu pourras amener des icônes de tes fichiers texte pour
+les afficher.
+
+Je suis sûr que, maintenant, tu as une idée comment utiliser les
+objets ToolManager et de la façon de lier entre eux pour construire
+ton environnement. Maintenant, tu peux tester le reste des
+caractéristiques en essayant une à une. Tu peux aussi regarder la
+configuration démo dans le fichier @file{TM_Demo.prefs}
+
+@comment ----------------------------------------------------------------
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre: Distribution des fichiers                      ---
+@comment ----------------------------------------------------------------
+@node Distribution des fichiers, Objets, Guide, Top
+@chapter Description de tous les fichiers de la distribution
+@cindex Distribution des fichiers
+@cindex Référence: Distribution des fichiers
+
+La distribution de ToolManager 2.1 est consistée de plusieurs répertoires
+qui sont expliqués en dessous. A noter que la distribution est
+découpée en trois parties, aussi, il se peut que vous n'ayez pas tous
+les répertoires qui sont mentionnés en dessous.
+
+@menu
+* Docs::             Documentation
+* Goodies::          Paquetages de programmes additionels
+* Graphics::         Animations, Brosses & IcôNes
+* L::                Programmes de gestion
+* Libs::             Librairie de ToolManager
+* Locale::           Localisation des fichiers de gestion
+* Prefs::            Editeur de préférences de ToolManager
+* Programmers::      Fichiers support pour le programmeur
+* Scripts::          Scripts ARexx & Shell
+* Source::           Code complet des sources pour ToolManager 2.1
+* WBStartup::        Programmes d'utilitaires
+@end menu
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Distribution des fichiers/Docs                  ---
+@comment ----------------------------------------------------------------
+@node Docs, Goodies, , Distribution des fichiers
+@section Le répertoire de documentations
+@cindex AmigaGuide
+@cindex Documentation ASCII
+@cindex Documentation
+@cindex Répertoire de Documentations
+@cindex Documentaion des librairies
+@cindex Documentation imprimée
+@cindex @TeX{}
+@cindex Texinfo
+
+Ce répertoire contient la documentation de ToolManager. La documentation est
+disponible dans quatre formats différents et dans plusieurs langues.
+En plus, il y a un fichier au format AutoDoc décrivant l'interface de la
+librairie partagée de ToolManager.
+
+@table @asis
+@item Préfixe @file{TM_<language>}
+Ce fichier contient la documentation pour le langage spéficié.
+Actuellement les langages disponibles sont : l'Allemand, l'Anglais, le
+Français, le Svenska.
+
+@item Postfixe @file{.doc}
+Ce fichier contient la documentation sous forme d'un texte ASCII.
+
+@item Postfixe @file{.dvi}
+Ce fichier contient la documentation en format @TeX{}s DVI. Pour avoir
+un manuel imprimé, utilise ce fichier avec une commande pour imprimer
+du @TeX{}.
+
+@item Postfixe @file{.guide}
+Ce fichier contient la documentation au format AmigaGuide. Bien que ce soit
+seulement de l'ASCII avec quelques commandes, vous avez besoin d'AmigaGuide
+pour exploiter les liens hypertexte dedans.
+
+@item Postfixe @file{.tex}
+Ce fichier contient la documentation au format Texinfo, comme spécifié
+par la Free Software Foundation (FSF). Avec le paquetage de macros
+dans @file{texinfo.tex}, vous pouvez utiliser, ensemble, @TeX{} et
+@file{texindex} pour créér un fichier au format DVI (voir au-dessus).
+
+@item @file{toolmanager.doc}
+Ce fichier contient la description de l'interface de la librairie
+partagée au format AutoDoc.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Distribution des fichiers/Goodies                      ---
+@comment ----------------------------------------------------------------
+@node Goodies, Graphics, Docs, Distribution des fichiers
+@section Le répertoire de Goodies
+@cindex GetPubName
+@cindex Répertoire Goodies
+@cindex UPD
+@cindex Joueur de Son
+
+Ce répertoire contient des archives de programmes aditionnels qui sont très
+pratiques pour les opérations de ToolManager.
+
+@table @file
+@item GetPubName.lha
+Ce petit programme donne le nom de l'écran public le plus en avant soit sur
+stdout ou dans une variable d'environnement. Il a été écrit par
+Michael ``Mick'' Hohmann.
+
+@item upd1_20.lha
+Le programme @code{upd} a été écrit par Jonas Petersson. C'est un
+petit programme qui ouvre un port ARexx et attend des commandes. Via
+ARexx, vous pouvez ordonner @code{upd} pour jouer des fichiers son.
+ToolManager utilises cette caractéristique pour implémenter ses
+objects Sound. @xref{Sound}.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Distribution des Fichiers/Graphics              ---
+@comment ----------------------------------------------------------------
+@node Graphics, L, Goodies, Distribution des fichiers
+@section Le répertoire Graphics
+@cindex Répertoire Graphics
+@cindex Exemple d'images
+@cindex Images de Contribution
+
+Ce répertoire contient une riche collection d'images parmis celles que
+vous avez choisies comme vos favorites. Chargez-les comme des objets
+Images dans ToolManager (@pxref{Image}).
+
+Les fichiers sont contribués par diverses personnes
+(@pxref{Credits}). Chacun d'eux a un sous-répertoire séparé
+dans la distribution. Comme elles fichiers ont été crées par
+différents auteurs, ils viennent d'environnements différents (palette,
+profondeur, résolution, taille) et ont des styles différents. Ainsi,
+pas toutes les images peuvent ne pas avoir l'air bonnes pour votre machine.
+
+Pour différencier les formats d'images qui sont supportés par ToolManager,
+chaque fichier a un suffixe qui décrit le format du fichier :
+
+@table @file
+@item .anmb
+C'est un fichier IFF ANIM créé par un programme de dessin/animations.
+Il contient plusieurs images. Bien que ToolManager peut charger des
+fichiers ANIM en entier, vous devez utiliser quelque chose comme des
+``AnimBrush'' DPaint pour découper la partie intéressante de l'animation.
+
+@item .brush
+C'est un fichier IFF ILBM créé par un programme de dessin. Il contient
+seulement une image.
+
+@item .info
+C'est une icône normale Amiga créée avec IconEdit (ou quelque chose de
+similaire). Elle contient deux images.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Distribution des fichiers/L                     ---
+@comment ----------------------------------------------------------------
+@node L, Libs, Graphics, Distribution des fichiers
+@section Le répertoire L
+@cindex L répertoire
+@cindex WBStart-Handler
+@cindex WBStart 1.2
+
+Ce répertoire contient seulement un fichier, nommé
+@file{WBStart-Handler}. Vous @emph{devez} copier ce fichier dans le
+répertoire @file{L:}, ou sinon ToolManager ne sera pas capable de
+démarrer un objet Exec par la méthode du WB (@pxref{Exec}).
+
+Le paquetage complet WBstart 1.2 peut être trouvé sur une Disquette
+Fish #757
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Distribution des fichiers/Libs                  ---
+@comment ----------------------------------------------------------------
+@node Libs, Locale, L, Distribution des fichiers
+@section Le répertoire Libs
+@cindex Libs répertoire
+
+Ce programme contient seulement un fichier,
+@file{toolmanager.library}. C'est le programme principal pour
+ToolManager et doit être copié dans le répertoire @file{LIBS:}.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Distribution des fichiers/Locale                ---
+@comment ----------------------------------------------------------------
+@node Locale, Prefs, Libs, Distribution des fichiers
+@section Le répertoire Locale
+@cindex Catalogue des fichiers
+@cindex Langage (fichiers)
+@cindex Langages
+@cindex Locale répertoire
+@cindex Localisation
+@cindex Traductions
+
+Ce répertoire contient tous les fichiers pour le support Local de
+ToolManager. Comme locale.library est nouvelle avec V38, vous n'avez
+pas besoin de ces fichiers si vous utilisez V37. Si vous utilisez V38,
+choisissez les fichiers pour votre langue et copier-les aux endroits
+apropriées.
+
+@table @file
+@item Catalogs/<language>/toolmanager.catalog
+C'est un fichier de traduction pour un langage spécifié. Copiez le
+fichier pour votre langue dans le répertoire
+@file{LOCALE:Catalogs/<language>}.
+
+@item Languages/<language>.language
+Quelques langages ne sont pas fournis par la distribution standard
+Locale V38. Alors certains traducteurs ont rajouté un fichier
+@file{.language}, alors ToolManager peut utiliser ces fichiers de
+traductions. Copiez le fichier pour votre langue dans le répertoire
+@file{LOCALE:Languages}. Les langages additionnels disponibles sont:
+le Finlandais (suomi), Eefeler Platt (eiffel).
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Distribution des fichiers/Prefs                 ---
+@comment ----------------------------------------------------------------
+@node Prefs, Programmers, Locale, Distribution des fichiers
+@section Le répertoire Prefs
+@cindex Prefs répertoire
+
+L'éditeur de préferences de ToolManager et son icône résident dans ce
+répertoire. Copiez ces deux fichiers dans le répertoire
+@file{SYS:Prefs}. Pour plus d'informations sur l'éditeur voir
+@ref{Preferences}.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Distribution des fichiers/Programmeurs          ---
+@comment ----------------------------------------------------------------
+@node Programmers, Scripts, Prefs, Distribution des fichiers
+@section Le répertoire Programmers
+@cindex Compilation support
+@cindex Programmers répertoire
+
+Ce répertoire contient tous les fichiers qui sont nécessaires pour les
+différents langages et leurs compilateurs pour utiliser l'interface de la
+librairie partagée de ToolManager. Regardez dans le sous-répertoire
+@file{examples} pour quelques exemples sur comment utiliser cette
+interface. Pour une description complète de l'interface, lire le
+fichier @file{Docs/toolmanager.doc}.
+
+Actuellement, les langages/compilateurs supportés sont: AmigaOberon,
+DICE C, M2Amiga Modula-2, MANX Aztec C et SAS C.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Distribution des fichiers/Scripts               ---
+@comment ----------------------------------------------------------------
+@node Scripts, Source, Programmers, Distribution des fichiers
+@section Le répertoire Scripts
+@cindex ARexx scripts
+@cindex Scripts répertoire
+@cindex Shell scripts
+
+Ce repertoire contient une collection de scripts ARexx ou Shell qui peuvent
+être utilisés comme objets Exec dans ToolManager. A noter qu'ils peuvent
+être spécifiques à l'environnement ou shell des auteurs, alors il se peut
+que vous devez les modifier.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Distribution Fichiers/Source                    ---
+@comment ----------------------------------------------------------------
+@node Source, WBStartup, Scripts, Distribution des fichiers
+@section Le répertoire Source
+@cindex Source code
+@cindex Source répertoire
+@cindex Traducteurs
+
+Ce répertoire contient le code source complet de ToolManager 2.1 et de ses
+utilitaires. Chaque programme a son propre sous-répertoire. L'auteur
+fournit le code source comme un exemple pour la programmation OS 2.x/3.0.
+
+Le sous-répertoire @file{locale} a de l'interêt pour les traducteurs.
+Si votre langage n'est pas fourni dans cette version et vous voulez
+faire la traduction, regardez le fichier @file{empty.ct}. Remplissez
+juste les lignes vides et envoyez-moi le fichier. Il se peut qu'il
+soit inclus dans la prochaine version.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Distribution des fichiers/WBStartup             ---
+@comment ----------------------------------------------------------------
+@node WBStartup, , Source, Distribution des fichiers
+@section Le répertore WBStartup
+@cindex WBStartup répertoire
+
+Seulement un programme réside dans ce répertoire: @code{ToolManager}.
+Cet utilitaire démarre et arrête ToolManager 2.1. La plupart du temps,
+cet utilitaire sera dans le répertoire @file{SYS:WBStartup}, mais il
+peut être utilisé depuis le Shell aussi.
+
+@comment ----------------------------------------------------------------
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre: Objects                                        ---
+@comment ----------------------------------------------------------------
+@node Objets, Preferences, Distribution des fichiers, Top
+@chapter Référence des objets ToolManager
+@cindex Objets
+@cindex Référence: Objets ToolManager
+@cindex Objets ToolManager
+
+Ce chapitre décrit les objets de ToolManager dans le détail. Chaque
+objet a un type et un nom. Le nom est utilisé pour référencer l'objet.
+Il y a six différents types d'objets:
+
+@menu
+* Exec::       Exec objets
+* Image::      Image objets
+* Sound::      Sound objets
+* Menu::       Menu objets
+* Icon::       Icon objets
+* Dock::       Dock objets
+* Access::     Access objets
+@end menu
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Objets/Exec                                     ---
+@comment ----------------------------------------------------------------
+@node Exec, Image, , Objets
+@section Exec objets
+@cindex Exec objets
+
+Les objets Exec décrivent les programmes qui vont être lancés par
+ToolManager. Trois différents types de programmes sont supportés: CLI,
+Workbench et ARexx. Les trois types d'actions sont supportés : Dock,
+Hot Key, Network. Chaque objet Exec a les paramêtres
+suivants@footnote{Pour des raisons de traductions et des versions de
+Workbench V37/V38, les noms des objets sont en Anglais/Français}. Les
+valeurs par défaut sont mises entre paranthèses:
+
+@table @asis
+@item @code{Arguments/Paramètres} (Yes)
+Cet interupteur controle la transmission des paramètres au programme.
+Si un programme ne supporte pas les paramètres ou n'en a pas besoin,
+vous pouvez mettre sur off le passage de paramêtres.
+
+@item @code{Command/Commande}
+Le nom de fichier du programme à lancer. Ce nom peut être relatif au
+catalogue courant. Si le type est Dock, la commande décrit le nom de
+l'objet dock, qui doît être ouvert/fermé. Pour le type Hot Key, cette
+chaîne doit être une Chaîne de Description d'Entrée Commodités
+(@pxref{Raccourci-Clavier}). Une commande distante (type Network) est
+décrite comme @code{objet@@machine}, qui dit à ToolManager de lancer
+sur la @code{machine} l'objet Exec nommé @code{objet}.
+
+@item @code{Current Directory/Catalogue courant} (@file{SYS:})
+Le nom du catalogue courant pour le programme. Note: les programmes ARexx
+ignorent ce paramètre.
+
+@item @code{Delay/Délai} (0)
+Après activation d'un objet Exec, ToolManager attend pendant
+@code{Délai} secondes avant de lancer le programme. Si cette valeur
+est négative, le programme sera lancé chaque @code{Délai} secondes.
+Pour stopper un objet Exec qui attend son exécution, activez-le juste
+une fois encore. Note: Si @code{Délai} est positionné, le programme
+sera lancé sans arguments.
+
+@item @code{Exec Type/Mode Exec} (CLI)
+Cela spécifie le mode du programme. Il peut être un parmi cela: CLI,
+WB ou ARexx.
+
+@item @code{Hot Key/Raccourci-clavier}
+Vous pouvez mettre une touche d'appel pour chaque objet Exec. Si cette
+touche est pressée, le programme sera lancé. Note: Le programme sera
+lancé sans arguments.
+
+@item @code{Output File/Fichier de sortie} (@file{NIL:})
+C'est le nom du fichier pour le fichier de sortie. Il est seulement utile
+pour les programmes CLI.
+
+@item @code{Path/Chemin} (chemin pour les processus
+ToolManager)
+Cette chaine positionne le chemin de recherche pour le programme. Vous
+pouvez spécifier plusieurs répertoires en séparant les noms par des
+``;''. C'est seulement utile pour les programmes CLI.
+
+@item @code{Priority/Priorité} (0)
+Cela positionne la priorité du nouveau processus qui lancera le programme.
+
+@item @code{Public Screen/Ecran public} (défaut écran public)
+Vous pouvez positionner le nom de l'écran public qui devra être
+déplacé vers l'avant avant que le programme soit lancé. Cela marche
+seulement en conjonction avec le paramètre @code{To Front/Au premier plan}.
+
+@item @code{Stack/Pile} (4096)
+Ceci positionnne la pile d'exécution du nouveau processus qui lance le
+programme.
+
+@item @code{To Front/Au premier plan} (No)
+Si vous positionnez ce paramètre, l'écran public spécifié par @code{Public
+Screen/Ecran public} est déplacé au premier plan avant que le
+programme soit lancé.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Objets/Image                                   ---
+@comment ----------------------------------------------------------------
+@node Image, Sound, Exec, Objets
+@section Objets Image
+@cindex Image objets
+
+Les objets Image spécifient l'image qui va être utilisée par
+ToolManager pour les icônes ou les docks. Ce type d'objet a seulement
+un paramètre:
+
+@table @code
+@item File Name/Nom du fichier
+Cela spécifie le nom du fichier depuis lequel ToolManager devra lire
+les données images. ToolManager essaye de détecter le type de l'image
+automatiquement:
+
+@enumerate
+@item
+Il essaye de la charger comme une image IFF. Actuellement, ToolManager
+peut lire les fichiers ILBM (une image) ou ANIM (deux ou plusieurs images).
+
+@item
+Il essaye de la lire comme un fichier icône. Une icône peut avoir un
+ou deux images.
+@end enumerate
+@end table
+
+Les animations sont actuellement supportées seulement par les objects Dock.
+Les objets Icon comportent seulement la première et la seconde image d'une
+animation pour construire une icône à deux images. Si vous voulez une
+animation pour ToolManager, vous devez suivre ces règles de dessin:
+
+@table @asis
+@item Image 1
+Cela doit être une image qui représente un état inactif.
+
+@item Image 2
+Cela doit être une image qui représente un état sélectionné.
+Normalement, c'est une copie inversée de la première image.
+
+@item Image 3 to N-1
+Ce sont des images pour l'animation. Chaque image sera affichée
+pendant 1/3 de seconde.
+
+@item Image N
+Cette dernière image de l'animation sera affichée pendant une seconde. Après
+celle-la, la première sera de nouveau affichée.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Objets/Sound                                    ---
+@comment ----------------------------------------------------------------
+@node Sound, Menu, Image, Objets
+@section Sound objets
+@cindex Sound objets
+
+Un objet Sound peut être utilisé pour rendre ToolManager bruyant.
+ToolManager lui-même a aucune capacité interne pour jouer des sons, il
+utilise ARexx pour activer un démon externe jouant des sons. Ce type
+d'objet a deux paramètres:
+
+@table @code
+@item Command/Commande
+Cela positionne la commande ARexx que ToolManager envoye pour envoyer un
+joueur de sons externe. Pour @code{upd}, cela pourrait être quelque chose
+comme @code{file samples:boing}. @xref{Goodies}.
+
+@item Port ARexx
+Cela spécifie le port ARexx où ToolManager doit envoyer la @code{commande}.
+La valeur par défaut est @code{PLAY} qui est le port pour le programme
+@code{upd}.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Objets/Menu                                    ---
+@comment ----------------------------------------------------------------
+@node Menu, Icon, Sound, Objets
+@section Menu objets
+@cindex Menu objets
+
+Les objets Menu controlent les entrées dans le menu Outils/Tools du
+Workbench. Le nom de l'objet est utilisé comme le texte du menu. Pour
+activer un pareil objet, sélectionner juste le nom dans le menu. Les
+objets Menu marchent seulement quand le Workbench tourne.
+
+Ce type d'objet a deux paramètres:
+
+@table @code
+@item Exec Objet
+C'est le nom d'un objet Exec qui doit être activé quand l'entrée dans
+le menu est sélectionnée. Chaque icône qui est sélectionnée à ce
+moment sera utilisée comme un argument pour le programme.
+
+@item Sound Objet
+C'est le nom de l'objet Sound qui doit être activé quand l'entrée du
+menu est sélectionnée.
+@end table
+
+A noter pour les utilisateurs de ToolManager 1.X: Pour simuler le
+vieux outil de type ``Dummy'' créer juste un objet Menu et en
+spécifiant @emph{aucun} objet Sound et Exec.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Objets/Icon                                    ---
+@comment ----------------------------------------------------------------
+@node Icon, Dock, Menu, Objets
+@section Icon objets
+@cindex Icon objets
+
+Les objets Icon décrivent les icônes dans la fenêtre Workbench. Un
+objet peut être aussi bien activé en double-cliquant l'icône ou en
+ammenant une icône sur l'icône d'application. Les objets Icon ne
+fonctionnent seulement si le Workbench tourne.
+
+Les paramètres pour ce type d'objet sont les suivants:
+
+@table @asis
+@item @code{Exec Objet}
+C'est le nom d'un objet Exec qui devra être activé quand l'icône est sélectionnée.
+Chaque icône qui est amenée sur l'icône d'application sera utilisée comme argument
+pour le programme.
+
+@item @code{Image Objet}
+C'est le nom d'un objet Image. Le nom de cet objet est utilisé pour
+construire l'icône d'application.
+
+@item @code{Left Edge/Bord Gauche} (défaut: 0)
+Cela positionne le bord gauche pour l'icône d'application.
+
+@item @code{Show Name/Montrer le nom} (défaut: Oui)
+Si ce paramètre est mis, le nom de l'objet sera utilisé comme nom pour
+l'icône d'application.
+
+@item @code{Sound Objet}
+C'est le nom d'un objet Son qui devra être activé quand l'icône est activée.
+
+@item @code{Top Edge/Bord supérieur} (défaut: 0)
+Cela positionne le bord supérieur pour l'icône d'application.
+@end table
+
+Note: Le Workbench est @emph{très} pointu à propos de la position des
+icônes. Si vous spécifiez des coordonnées que le Workbench n'aime pas,
+il les ignorera et placera l'icône ailleurs.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Objets/Dock                                    ---
+@comment ----------------------------------------------------------------
+@node Dock, Access , Icon, Objets
+@section Dock objets
+@cindex Dock objets
+
+Les objets Dock décrivent des fenêtres. Ces fenêtres combinent
+plusieurs outils qui sont représentés par des images ou gadgets. Pour
+lancer un outil, cliquer juste sur son image ou gadget. Bien sûr, vous
+pouvez amener des icônes sur l'image ou le gadget pour le passer en
+argument pour l'outil.
+
+Chaque objet dock a plusieurs paramètres. Les valeurs par défaut sont
+mis entre paranthèses:
+
+@table @asis
+@item @code{Activated/Activée} (Oui)
+Une fenêtre dock peut être active (ouverte) ou inactive (fermée).
+
+@item @code{Backdrop/Arrière-plan} (Non)
+La fenêtre Dock doît aller immédiatement en arrière-plan aprés l'ouverture.
+
+@item @code{Centered/Centrée} (Non)
+Si ce paramètre est positionné, la fenêtre sera toujours centrée par rapport
+à la position courante de la souris à son ouverture.
+
+@item @code{Columns/Colonnes} (1)
+Ce paramètre détermine le nombre de colonnes d'outils. Les outils sont
+toujours classés par colonne, en commencant par la colonne la plus à
+gauche et en remplissant vers le haut en les classant vers la colonne
+la plus à droite.
+
+@item @code{Font/Police} (Police d'écran)
+Si vous avez une fenêtre dock avec le paramètre @code{Texte} mis, vous
+pouvez choisir la police pour les gadgets boutons avec ce paramètre.
+
+@item @code{Frontmost/Premier plan} (Non)
+Si vous mettez ce paramètre, la fenêtre dock sera toujours ouverte sur
+l'écran public le plus en avant.
+
+@item @code{Hot Key/Raccouci-clavier}
+Vous pouvez mettre un Raccouci-clavier pour chaque objet Dock. Si ce
+Raccouci-clavier est généré, l'état d'activitation de la fenêtre dock
+sera basculé; avec cela, elle sera fermée ou ouverte.
+
+@item @code{Left Edge/Bord gauche} (0)
+Ce paramètre positionne le bord gauche de la fenêtre dock. Si le paramètre
+@code{Centré} est mis, ce paramètre sera ignoré.
+
+@item @code{Menu} (Non)
+Vous pouvez ajouter un petit menu. Ce menu a deux entrées:
+
+@itemize
+@item @code{Close Dock/Fermer Dock}
+Ferme la fenêtre Dock
+
+@item @code{Quitter TM}
+Quitte ToolManager
+@end itemize
+
+@item @code{Pattern/Fond} (Non)
+La fenêtre dock ajuste automatiquement sa taille à l'image la plus
+large. Chaque entrée de la dock a la même taille, et les plus petites
+images sont centrées, alors elles ont une bordure transparente autour
+d'elles. Si vous n'aimez pas cette bordure transparente, mettez ce
+paramètre et la bordure sera remplie avec un motif.
+
+@item @code{PopUp/Sur demande} (Non)
+Quand ce paramètre est mis, la fenêtre dock sera automatiquement
+fermée après la sélection d'une entrée dans la Dock. Cela est
+spécialement pratique avec les paramètres @code{Centered/Centrée},
+@code{Frontmost/Premier plan} et un raccourci-clavier de la classe
+@code{rawmouse} (@pxref{Raccourci-Clavier}).
+
+@item @code{Public Screen/Ecran public} (Par défaut écran public)
+Spécifie l'écran public sur lequel la fenêtre dock doit être ouverte. Si la
+fenêtre dock a été ouverte avec un raccourci-clavier, l'écran public sera
+déplacé en avant après que la fenêtre eut été ouverte. Ce paramètre sera
+ignoré si le paramètre @code{Frontmost/Premier plan} est activé.
+
+@item @code{Sticky/Collée}
+Normallement, une fenêtre Dock garde sa dernière position quand vous
+la fermez et apparait à la même position quand vous la ré-ouvrez. Si
+vous voulez que la fenêtre Dock s'ouvre toujours à la même position,
+vous devez mettre ce paramêtre.
+
+@item @code{Texte} (Non)
+Vous pouvez choisir entre des gadgets images ou boutons dans les
+fenêtres dock avec ce paramètre. Les fenêtres dock à boutons sont
+specialement pratiques avec le paramètre @code{PopUp}
+
+@item @code{Title/Titre}
+Cela spécifie le titre de la fenêtre dock. Si vous mettez un titre, la
+fenêtre dock sera une fenêtre normale sous OS 2.0 avec une barre de
+déplacement, un gadget de fermeture, un gadget de profondeur, et une
+bordure. Si vous @emph{ne} mettez @emph{pas} de titre, vous aurez une
+fenêtre dock avec seulement une barre de déplacement et @emph{sans}
+bordure.
+
+@item @code{Top Edge/Bord supérieur} (0)
+Ce paramètre positionne le bord supérieur de la fenêtre dock. Si le
+paramètre @code{Centered/Centrée} est mis, ce paramètre sera ignoré.
+
+@item @code{Vertical} (Non)
+Si la fenêtre dock a un style de nouvelle fenêtre (i.e. : seulement
+une barre de déplacement et aucune bordure), ce paramètre positionne
+l'orientation de la barre de déplacement. Ce paramètre est ignoré si
+vous mettez un titre à la fenêtre avec le paramètre @code{Title/Titre}.
+@end table
+@comment ----------------------------------------------------------------
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Objets/Access                                  ---
+@comment ----------------------------------------------------------------
+@node Access, , Dock, Objets
+@section Access objets
+@cindex Access objets
+
+Les objets Access contrôlent les droits d'accés pour les demandes
+réseau. Par défaut, @emph{chaque} requête est refusée, aussi un
+ToolManager distant ne peut satisfaire l'opération de votre machine qu'en
+activant vos objets Exec. Avec des objets Access, vous pouvez
+permettre aux machines spécifiées d'activer vos objets Exec.
+Le nom d'un objet Access a une signification spéciale. Il est
+constitué avec le nom de la machine distante depuis laquelle la
+requête réseau a été envoyée. ToolManager utilise les trois étapes
+suivantes :
+
+@enumerate
+@item Complète avec le nom complet de la machine hôte
+
+@item Complète avec le nom réel
+
+@item Regarde pour l'objet Access appelé @code{anyone}
+@end enumerate
+
+Si l'objet correspondant est trouvé, alors cet objet est utilisé pour
+les droits d'accés de la machine distante. L'objet appelé
+@code{anyone} est utilisé pour n'importe quelle requête réseau, pour
+laquelle l'objet Access correspondant ne peut être trouvé.
+
+L'objet Access a seulement un paramêtre :
+
+@table @code
+@item Exec Objet
+Ce paramêtre peut être utilisé plusieurs fois et spécifie quels objets
+Exec peuvent être activés depuis la machine. Si vous n'avez spécifié
+@emph{aucun} nom d'objet, alors la machine distante peut activer
+@emph{tous} les objets Exec sur votre machine.
+@end table
+
+@comment ----------------------------------------------------------------
+@comment ----------------------------------------------------------------
+
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre: Préférences                                     ---
+@comment ----------------------------------------------------------------
+@node Preferences, Librairie, Objets, Top
+@chapter L'éditeur de préférences de ToolManager
+@cindex Configuration
+@cindex Préférences éditeur (de)
+@cindex Référence: Préférences éditeur (de)
+
+Avec l'éditeur de préférences, vous pouvez gérer la configuration globale de
+ToolManager. Cette configuration est chargée automatiquement quand
+vous lancez ToolManager. Pour lancer l'éditeur, double-cliquer juste
+son icône. Vous verrez la fenêtre principale.
+
+La plupart des gadgets dans les fenêtres de l'éditeur ont un
+raccourci-clavier. Ils sont marqués par un souligné (@code{_}). A
+noter que si une chaîne gadget est active, vous dez d'abord presser la
+touche return avant d'utiliser les raccourci-clavier.
+
+@menu
+* Fenêtre principale Gadgets:Fenetre principale Gadgets.
+* Fenêtre principale Menus:Fenetre principale Menus.
+* Fenêtre d'édition:Fenetre edition.
+* Fenêtre de création d'objets:Fenetre de creation objets.
+* Types des outils::
+* Arguments CLI::
+@end menu
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Préférences/Fenêtre principale Gadgets          ---
+@comment ----------------------------------------------------------------
+@node Fenetre principale Gadgets, Fenetre principale Menus, , Preferences
+@section Fenêtre principale Gadgets
+
+La fenêtre principale a plusieurs groupes de gadgets:
+
+@table @asis
+@item Type d'objet
+Avec un gadget cyclique, vous pouvez choisir le type d'objets que vous
+voulez créer ou éditer.
+
+@item Liste d'objets
+Ce gadget montre la liste de tous les objets du type courant. Vous pouvez
+selectionné un objet en cliquant sur son nom. Si vous double-cliquez
+un objet, une fenêtre d'édition sera ouverte.
+
+@item Déplacement d'objets
+Quand un objet est séléctionné, vous pouvez le déplacer dans la liste
+avec ces gadgets. Si vous cliquez sur le gadget @code{Sort/Trier}, les
+objets dans la liste seront classés par ordre alphabétique.
+
+@item Manipulation d'objets
+Ces gadgets manipulent les objets. Le gadget @code{New/Créer} crée un
+nouveau objet du type courant qui sera sélectionné automatiquement.
+Quand vous cliquez sur le gadget @code{Edit/Modifier}, un fenêtre
+d'édition pour l'objet séléctionné sera ouverte. Avec le gadget
+@code{Copy/Copier}, vous pouvez faire une copie de l'objet
+selectionné. Le gadget @code{Remove/Supprimer} efface l'objet sélectionné.
+
+@item Configuration
+Vous avez plusieurs choix pour sauver la configuration. Avec le gadget
+@code{Save/Sauver}, vous pouvez sauver la configuration de façon permanente
+dans le fichier @file{ENVARC:ToolManager.prefs}. Pour une modification temporaire,
+utilisez le gadget @code{Use/Utiliser}, qui sauvera la configuration dans le
+fichier @file{ENV:ToolManager.prefs}. Ce fichier ne survivra pas à un reset
+de la machine. Pour tester la nouvelle configuration sans quitter l'éditeur,
+utilisez le gadget @code{Test/Tester}. Le gadget @code{Cancel/Annuler} quittera
+l'éditeur sans sauvegarde.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Préférences/Menus Fenêtre principale            ---
+@comment ----------------------------------------------------------------
+@node Fenetre principale Menus, Fenetre edition, Fenetre principale Gadgets, Preferences
+@section Menus fenêtre princiale
+
+La fenêtre principale a plusieurs menus:
+
+@table @code
+@item Project/Projet
+Avec les sous-menus @code{Open/Ouvrir} et @code{Save as/Sauver comme},
+vous pouvez charger et sauver la configuration. Le sous-menu
+@code{About/A propos} ouvre une requête d'information. La séléction du
+sous-menu @code{Quit/Quitter} quittera l'éditeur sans sauvegarde.
+
+@item Edit/Modifier
+Avec ces sous-menus, vous pouvez rappeler des configurations plus vieilles.
+Le sous-menu @code{Last Saved/Reprendre état sauvegardé} charge la dernière
+configuration sauvée du fichier @file{ENVARC:ToolManager.prefs}. Avec
+le sous-menu @code{Restore/Reprendre valeurs initiales}, vous
+chargerez la configuration, qui était active avant d'ouvrir l'éditeur,
+du fichier @file{ENV:ToolManager.prefs}.
+
+@item Settings/Options
+Vous pouvez choisir le sous-menu @code{Create Icons/Créer les icônes}
+pour que le sous-menu @code{Save as/Sauver comme} crée ou non une icône.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Préférences/Fenêtres d'édition                  ---
+@comment ----------------------------------------------------------------
+@node Fenetre edition, Fenetre de creation objets, Fenetre principale Menus, Preferences
+@section Fenêtres de modification
+
+Chaque type d'objet a une fenêtre différente pour positionner les
+paramêtres des objets. Pour une liste détaillée de tous les paramètres
+voir @ref{Objets}.
+
+Chaque fenêtre d'édition a un gadget texte pour le nom de l'objet. Ce
+nom est important, parce qu'il est utilisé pour référencer cet objet.
+A noter qu'il n'y a actuellement pas de référence interne croisée.
+Alors si vous changez le nom d'un objet qui est déjà référencé par un
+autre objet, cette référence @emph{ne} sera @emph{pas} mise à jour.
+Vous devez le faire à la main.
+
+Les gadgets bouton dans les fenêtres d'édition ouvrent différents types de
+boîtes de dialogue. Vous pouvez choisir un objet en cliquant dessus et en
+pressant le gadget @code{Ok}, ou simplement en double-cliquant dessus. Pour
+quitter une boîte de dialogue sans modifications, utilisez le gadget
+@code{Cancel/Annuler}. Si vous voulez effacer un champs qui ne peut
+être seulement choisi par une boîte de dialogue, ouvrez-la et presser
+le gadget @code{Ok} @emph{sans} sélectionner l'objet.
+
+Les fenêtres d'édition pour les objets de type Exec et Image ont des
+caractéristiques supplémentaires. Vous pouvez simplement amener une icône
+dessus pour passer les paramètres de cette icône.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Preferences/Create Objects Window               ---
+@comment ----------------------------------------------------------------
+@node Fenetre de creation objets, Types des outils, Fenetre edition, Preferences
+@section Fenêtre de création d'objets.
+
+Si vous ammenez une icône sur la fenêtre principale, la fenêtre
+``Création d'objets'' sera ouverte. Ici, vous pouvez choisir que les
+objets soient créés depuis cette icône. Cela peut être utilisé pour
+ajouter un programme à votre configuration trés facilement et trés
+rapidement.
+
+Vous pouvez juste créer un objet Exec ou Image depuis une icône, si
+vous séléctionnez un des premiers choix. Mais, vous pouvez aussi créer
+un objet comple Menu et/ou Icon, si vous séléctionnez un des trois
+derniers choix.
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Préférences/Types d'outils                      ---
+@comment ----------------------------------------------------------------
+@node Types des outils, Arguments CLI, Fenetre de creation objets, Preferences
+@section Types d'outils
+@cindex Types d'outils
+
+Quand vous lancez l'éditeur de préférences depuis le Workbench, vous pouvez
+positionner plusieurs types d'outils (tooltypes) dans l'information de l'icône
+ou le fichier de configuration de l'icône pour la controler.
+
+@table @code
+@item USE
+Si vous positionnez ce type d'outils dans une icône pour un fichier de
+préférences, l'éditeur installera ce fichier comme le fichier de
+configuration courante.
+
+@item SAVE
+Si vous positionnez ce type d'outils dans une icône pour un fichier de
+préférences, l'éditeur installera ce fichier comme le fichier de
+configuration courante et permanente.
+
+@item PUBSCREEN
+Ce type d'outils dit à l'éditeur d'ouvrir sa fenêtre sur un écran public
+spécifique. Si vous n'invoquez pas ce type d'outils, l'écran public par défaut
+sera utilisé.
+
+@item CREATEICONS
+Quand ce type d'outils est mis à @code{YES}, l'éditeur créera une icône pour
+chaque fichier de préférences qui est créé avec le sous-menu @code{Save As/
+Sauver comme}.
+
+@item DEFAULTFONT
+L'éditeur normallement utilise la police de caractères de l'écran
+public pour dessiner ses gadgets. Si vous mettez ce type d'outil à
+@code{YES}, l'éditeur utilisera la police du système par défaut.
+
+@item XPOS
+Cela spécifie la position X initiale de la fenêtre principale de l'éditeur.
+
+@item YPOS
+Cela spécifie la position Y initiale de la fenêtre principale de l'éditeur.
+
+@item MINLISTCOLUMNS
+Cela spécifie le nombre minimum de colonnes dans la liste des gadgets.
+
+@item MINLISTROWS
+Cela spécifie le nombre minimum de lignes dans la liste des gadgets.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Préférences/Arguments CLI                       ---
+@comment ----------------------------------------------------------------
+@node Arguments CLI, , Types des outils, Preferences
+@section Arguments CLI
+@cindex Arguments CLI
+
+Quand l'éditeur est lancé depuis le shell, il utilise la ligne de commande
+suivante:
+
+@example
+FROM,EDIT/S,USE/S,SAVE/S,PUBSCREEN/K,DEFAULTFONT/S
+@end example
+
+@table @code
+@item FROM
+Ce paramètre spécifie le nom du fichier de préférences que l'éditeur devra
+chargé.
+
+@item USE
+Si vous utilisez ce paramètre, l'éditeur installera le fichier spécifié
+comme le paramètre @code{FROM} comme le fichier courant de configuration.
+
+@item SAVE
+Si vous utilisez ce paramètre, l'éditeur installera le fichier spécifié comme
+@code{FROM} comme le fichier courant et permanent de configuration.
+
+@item PUBSCREEN
+Ce paramètre dit à l'éditeur d'ouvrir ses fenêtres sur un écran public
+spécifique. Si vous ne positionnez pas ce type d'outil, l'écran public par
+défaut sera utilisé.
+
+@item DEFAULTFONT
+L'éditeur utilise normalement la police de caractères de l'écran public pour
+dessiner ses gadgets. Si vous utilisez ce paramètre, l'éditeur utilisera
+la police de caractères système par défaut.
+@end table
+
+@comment ----------------------------------------------------------------
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre: Librairie                                      ---
+@comment ----------------------------------------------------------------
+@node Librairie, Raccourci-Clavier, Preferences, Top
+@chapter L'interface de la librairie partagée de ToolManager
+@cindex Interface librairie
+@cindex Référence: Interface librairie
+@cindex Interface librairie partagée
+@cindex L'interface de la librairie partagée de ToolManager
+
+Le gestionnaire de ToolManager est mis dans une librairie partagée Amiga.
+Cette librairie offre plusieurs fonctions pour créer et manipuler les objets
+ToolManager, ainsi vous pouvez les utiliser dans vos programmes.
+
+Il y a actuellement six fonctions disponibles:
+
+@table @code
+@item AllocTMHandle()
+Pour créer des objets ToolManager, vous devez d'abord allouer
+un TMHandle. Ce gestionnaire stocke toutes les informations de vos objets et
+est utilisé pour les référencier. A noter que l'information stockée dans ce
+gestionnaire est @emph{seulement} accessible par par le programme qui les a
+créés.
+
+@item FreeTMHandle()
+Cette fonction libére un TMHandle et tous les objets ToolManager associés
+avec lui. Chaque @code{AllocTMHandle()} doit être terminé par un
+@code{FreeTMHandle()}!
+
+
+@item  CreateTMObjectTags()
+@itemx CreateTMObjectTagList()
+Cette fonction crée un objet ToolManager. Vous devez fournir un nom, le type
+d'objet et différents renseignements  pour les paramètres de l'objet. Le nom de l'objet
+est important, car il est utilisé pour référencer l'objet.
+
+@item  ChangeTMObjectTags()
+@itemx ChangeTMObjectTagList()
+Vous pouvez modifier les paramètres d'un objet ToolManager avec cette fonction.
+L'état de l'objet sera mis à jour pour refléter les nouveaux paramètres.
+A noter: Actuellement, les objets Image ne peuvent être modifiés.
+
+@item DeleteTMObject()
+Avec cette fonction, vous pouvez effacer un objet ToolManager. Si l'objet
+est lié aux autres objets, ces objets seront avertis pour mettre à jour
+leur états.
+
+@item QuitToolManager()
+Cette fonction dit au gestionnaire de ToolManager de quitter dès que possible.
+@end table
+
+La description complète de l'interface de la librairie est disponible au
+format AutoDoc (@pxref{Docs, Documentation}).
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre: HotKeys                                         ---
+@comment ----------------------------------------------------------------
+@node Raccourci-Clavier, Questions, Librairie, Top
+@chapter Comment définir un raccourci-clavier
+@cindex Introduction aux raccourci-claviers
+@cindex Raccourci Clavier
+@cindex Référence: Raccourci-Clavier
+
+Ce chapitre décrit comment définir un raccourci-clavier comme une Chaine de
+Description d'Entrées qui est alors interceptée par Commodities. Chaque fois
+qu'un raccourci clavier est activé, Commodities génère un évenement qui est
+utilisé par ToolManager pour activer des objets Exec ou pour basculer les objets
+Dock. Une chaine de description a la syntaxe suivante:
+
+@example
+[<class>] @{[-][<qualifier>]@} [-][upstroke] [<key code>]
+@end example
+
+Tous les mots clé sont insensibles aux majuscules.
+
+@code{class} décrit la classe InputEvent. Ce paramètre est optionnel et si il
+est manquant, le défaut @code{rawkey} est utilisé. @xref{Classes InputEvent}.
+Les `Qualifiers' sont des ``signaux'' qui peuvent être positionnés ou effacés
+le temps que le raccourci clavier est activé; sinon aucun évenement ne
+sera généré. Pour chaque `qualifier' qui doit être appelé, vous
+fournissez son mot clé. Tous les autres `qualifiers' sont attendus à
+être effacés par défaut. Si vous voulez ignorer un `qualifier', mettez juste
+un @code{-} avant son mot clé. @xref{Qualifiers}.
+
+Normalement, un événement d'une `Hot Key' est généré quand une touche est
+pressée. Si l'événement doit être généré quand la touche est relachée, fournissez
+le mot clé @code{upstroke}. Quand le fait de presser et de relacher d'une touche
+doivent générer un événement, utiliser @code{-upstroke}.
+
+Le code de touche est dépendant de la classe InputEvent. @xref{Codes de touche}.
+
+@menu
+* Classes InputEvent::
+* Qualifiers::
+* Codes de touche::
+* exemples de Raccourci-Clavier::
+@end menu
+
+Note: Choisissez vos touches d'appel @emph{carefully}, parce que Commodities
+a une priorité dans la chaîne du gestionnaire InputEvent (i.e.@: sera écrasé
+par les définitions existantes).
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Hot Keys/Classes Input Event                    ---
+@comment ----------------------------------------------------------------
+@node Classes InputEvent, Qualifiers, , Raccourci-Clavier
+@section Classes InputEvent
+@cindex Diskinserted
+@cindex Diskremoved
+@cindex InputEvent classes
+@cindex Rawkey
+@cindex Rawmouse
+
+Commodities supporte la plupart des classes InputEvent qui sont générées par
+l'input.device. Cette partie décrit ces classes qui sont les plus pratiques
+pour les touches d'appel de ToolManager.
+
+@table @code
+@item rawkey
+C'est la classe par défaut et couvre tous les événements clavier. Par exemple,
+@code{rawkey a} ou @code{a} crée un événement chaque fois que la touche ``a''
+est pressée. Vous devez spécifier un code de touche pour cette classe.
+@xref{rawkey key codes,rawkey}.
+
+@item rawmouse
+Cette classe décrit tous les événements des boutons de souris. Vous devez
+spécifier un code de touche pour cette classe. @xref{rawmouse key codes,rawmouse}.
+
+@item diskinserted
+Les événements de cette classe sont générés lorsqu'un disque est inséré dans un
+lecteur. Cette classe n'a pas de codes de touche.
+
+@item diskremoved
+Les événements de cette classe sont générés lorsqu'un disque est sorti d'un
+lecteur. Cette classe n'a pas de codes de touche.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+@comment Cette partie a été traduite par Marc Mendez
+@comment -------------------------------------------------------------------
+@comment - Section :  Raccourci-clavier: Raccourci-claviers/Qualificateurs -
+@comment -------------------------------------------------------------------
+@node Qualifiers, Codes de touche, Classes InputEvent, Raccourci-Clavier
+@section Qualificateurs
+@cindex Qualificateurs
+@cindex Liste: Qualificateurs
+
+Certains synonymes de mot-clés ont été rajoutés à la version 38 de
+``Commodities''. Ceci sont marqués avec une @code{*}.
+
+@table @asis
+@item @code{lshift}, @code{left_shift} *
+Touche Shift gauche.
+
+@item @code{rshift}, @code{right_shift} *
+Touche Shift droite.
+
+@item @code{shift}
+Touche Shift.
+
+@item @code{capslock}, @code{caps_lock} *
+Touche Majuscule.
+
+@item @code{caps}
+Touche Shift ou touche Majuscule.
+
+@item @code{control}, @code{ctrl} *
+Touche Controle.
+
+@item @code{lalt}, @code{left_alt} *
+Touche Alt gauche.
+
+@item @code{ralt}, @code{right_alt} *
+Touche Alt droite.
+
+@item @code{alt}
+Touche Alt.
+
+@item @code{lcommand}, @code{lamiga} *, @code{left_amiga} *, @code{left_command} *
+Touche Amiga gauche.
+
+@item @code{rcommand}, @code{ramiga} *, @code{right_amiga} *, @code{right_command} *
+Touche Amiga droite.
+
+@item @code{numericpad}, @code{numpad} *, @code{num_pad} *, @code{numeric_pad} *
+Ce mot clé @emph{doit} être utilisé pour n'importe quelle touche du
+clavier numerique.
+
+@item @code{leftbutton}, @code{lbutton} *, @code{left_button} *
+Bouton gauche de la souris. Voir la note ci-dessous.
+
+@item @code{midbutton}, @code{mbutton} *, @code{middlebutton} *, @code{middle_button} *
+Bouton du milieu de la souris. Voir la note ci-dessous.
+
+@item @code{rbutton}, @code{rightbutton} *, @code{right_button} *
+Bouton droit de la souris. Voir la note ci-dessous.
+
+@item @code{repeat}
+Ce qualificateur doit être précisé quand la répétition-clavier est
+active. Il n'est utile que pour la classe @code{rawkey} d'évenement d'entrée.
+@end table
+
+Note: La version 37 de ``Commodities'' contient une erreur qui empêche
+l'utilisation de @code{leftbutton}, @code{midbutton} et @code{rbutton}
+comme qualificateurs. Cette erreur a été corrigé dans la version 38.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment ---    Section:  Raccourci-claviers/Codes de touches         ---
+@comment ----------------------------------------------------------------
+@node Codes de touche, exemples de raccourci-clavier, Qualifiers, Raccourci-Clavier
+@section Codes de touches
+
+Chaque classe d'évenement d'entrée a ses propres codes de touche:
+
+@menu
+* rawkey:rawkey key codes.
+* rawmouse:rawmouse key codes.
+@end menu
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+
+@comment ------------------------------------------------------------------
+@comment - Sous-section:Raccourci-claviers/Codes de touches/Codes Clavier -
+@comment ------------------------------------------------------------------
+@node rawkey key codes, rawmouse key codes, , Codes de touche
+@subsection Key codes for InputEvent class @code{rawkey}
+@cindex Key codes for @code{rawkey}
+@cindex List: @code{rawkey} key codes
+
+
+Certains mot-clés et des synonymes ont été rajoutés à la version 38 de
+``Commodities''. Ceci sont marqués avec une @code{*}.
+
+@table @asis
+@item @code{a}-@code{z}, @code{0}-@code{9}, @dots{}
+Caractères ASCII.
+
+@item @code{f1}, @code{f2}, @dots{}, @code{f10}, @code{f11} *, @code{f12} *
+Touches de fonctions.
+
+@item  @code{up}, @code{cursor_up} *, @code{down}, @code{cursor_down} *
+@itemx @code{left}, @code{cursor_left} *, @code{right}, @code{cursor_right} *
+Touches fléchées.
+
+@item  @code{esc}, @code{escape} *, @code{backspace}, @code{del}, @code{help}
+@itemx @code{tab}, @code{comma}, @code{return}, @code{space}, @code{spacebar} *
+Touches spéciales.
+
+@item  @code{enter}, @code{insert} *, @code{delete} *
+@itemx @code{page_up} *, @code{page_down} *, @code{home} *, @code{end} *
+Touches du clavier numérique. Chacun de ces codes de touche
+@emph{doit} utilisé le qualificateur @code{numericpad} !
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Sous-section: Raccourci-claviers/Codes de touches/Codes
+de la souris ---
+@comment ----------------------------------------------------------------
+@node rawmouse key codes, , rawkey key codes, Codes de touche
+@subsection Key codes for InputEvent class @code{rawmouse}
+@cindex Key codes for @code{rawmouse}
+@cindex List: @code{rawmouse} key codes
+
+Ces mots-clé ont été ajoutés à la version 38 de ``Commodities''. Ils
+ne sont pas disponibles dans la version 37.
+
+@table @code
+@item mouse_leftpress
+Appuyer sur le bouton gauche de la souris.
+
+@item mouse_middlepress
+Appuyer sur le bouton du milieu de la souris.
+
+@item mouse_rightpress
+Appuyer sur le bouton droit de la souris.
+@end table
+
+Note: Pour utiliser un de ces codes de touche, vous devez également
+préciser la qualificateur correspondant, par exemple
+
+@example
+rawmouse leftbutton mouse_leftpress
+@end example
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section:  Raccourci-claviers/Exemples de raccourcis.     ---
+@comment ----------------------------------------------------------------
+@node exemples de Raccourci-Clavier, , Codes de touche, Raccourci-Clavier
+@section Exemples de raccourci-clavier
+@cindex Exemples de raccourci-clavier
+
+@table @code
+@item ralt t
+Maintenir enfoncé la touche Alt de droite et presser ``t''
+
+@item ralt lalt t
+Maintenir enfoncé les touches Alt de gauche @emph{et} de droite et presser ``t''
+
+@item alt t
+Maintenir enfoncé la touche Alt et presser ``t''
+
+@item rcommand f2
+Maintenir enfoncé la touche Amiga de droite et presser la seconde
+touche de fonction.
+
+@item numericpad enter
+Maintenir enfoncé la touche Entrer du clavier numérique.
+
+@item rawmouse midbutton leftbutton mouse_leftpress
+Maintenir enfoncé le bouton du milieu de la souris et presser la
+bouton gauche de la souris.
+
+@item diskinserted
+Insérer une disquette dans n'importe quel lecteur.
+@end table
+
+@comment ----------------------------------------------------------------
+@comment ----------------------------------------------------------------
+
+@comment ----------------------------------------------------------------
+@comment --- Chapter: Questions                                       ---
+@comment ----------------------------------------------------------------
+@node Questions, Historique, Raccourci-Clavier, Top
+@appendix Les questions les plus posées sur ToolManager
+@cindex Questions
+@cindex Réponses
+
+Voici les questions les plus demandées sur ToolManager:
+
+@itemize @minus
+@item Pourquoi ToolManager ne peut-il pas créer de multiples menus ou
+sous-menus ``Outils'' ?
+
+Les menus ou sous-menus multiples ne sont pas actuellement supportés
+pas le système d'exploitation. Pour les créer, vous devez le
+@code{bricoler}, ce qui rend un système instable. Je n'ai pas voulu
+produire un logiciel instable, alors, je n'inplémenterais pas une
+pareille chose dans ToolManager.
+
+@item Les programmes WB ne veulent pas se lancer, mais tous les autres
+types Exec marchent bien.
+
+ToolManager se base sur le programme @code{L:WBStart-Handler} pour
+lancer les programmes WB. Il y a deux raisons, pour lesquelles
+ToolManager ne peut pas executer ce programme:
+
+@itemize
+@item Le fichier @file{L:WBStart-Handler} n'existe pas. SVP, copier-le
+depuis l'archive de distribution.
+
+@item Le flag d'execution (e) n'est pas mis sur le fichier. Utilise la
+commande suivante pour mettre ce flag : @code{protect L:WBStart-Handler +e}
+@end itemize
+
+@item Comment puis-je créer une dock horizontale ?
+
+Mets juste le nombre de colonnes aux nombres d'entrées de l'objet dock.
+
+@item Comment puis-je créer une fenêtre de sortie pour les programmes CLI ?
+
+Les fenêtres de sortie peuvent être créées en utilisant le device
+@code{CON:}. Utilise le nom de fichier suivant pour créer une fenêtre
+auto-ouvrante avec un gadget de fermeture qui ne se ferme qu'après la
+fin du programme :
+
+@example
+CON:10/10/640/100/Output-Window/AUTO/CLOSE/WAIT
+@end example
+
+Le device @code{CON:} a beaucoup d'options, svp consulter votre manuel
+AmigaDOS pour plus d'informations.
+
+@item Comment puis-je mettre les arguments au milieu de la ligne de commande
+CLI/Arexx ?
+
+Normalement, tous les arguments sont passés à la ligne de commande.
+Pour insérer les arguments n'importe où dans la ligne de commande,
+ToolManager utilise la même syntaxe @code{[]}, que celle qui est
+utilisée par la commande AmigaShell @code{alias}. Aussi, par exemple :
+
+@example
+Dir [] all
+@end example
+
+insérera tous les arguments avant le mot clé @code{all}.
+
+@item Comment puis-je effacer le lien d'un objet complexe à un objet simple ?
+
+Aprés avoir pressé le boutton ``xxx Objet'', presser le boutton ``Ok''
+@emph{sans} sélectionner un objet. Cela signifie que vous avez choisi
+aucun objet, et alors le lien sera effacé.
+
+@item Comme puis-je créer des sous-docks ?
+
+Vous devez utiliser des objets Exec du type Dock. Mettez de pareils
+objets dans les entrées de votre dock principale et ils pourront
+ouvrir/fermer les autres docks.
+
+@item ToolManager est mort aprés le lancement d'une commande Réseau.
+
+Il y a actuellement un problème avec le logiciel via réseau, qui
+n'annule pas les requêtes locales. Aussi, si votre machine est appelée
+@code{Hôte1} et vous avez un objet Exec du type Network avec la
+commande @code{Objet@@Hôte1}, ToolManager bouclera quand vous
+l'activerez. SVP, utiliser seulement les noms des machines distantes !!!
+@end itemize
+
+@comment ----------------------------------------------------------------
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre: Historique                                     ---
+@comment ----------------------------------------------------------------
+@node Historique, Credits, Questions, Top
+@appendix L'Historique de ToolManager
+@cindex Historique
+@cindex Versions de programmes
+@cindex Versions
+
+@comment ----------------------------------------------------------------
+@comment Note to translators:
+@comment This chapter should normally not be translated
+@comment ----------------------------------------------------------------
+
+@table @asis
+@item 2.1, Release date 16.05.1993
+
+
+@itemize @minus
+
+@item New Exec object types: Dock, Hot Key, Network
+
+@item New Dock object flags: Backdrop, Sticky
+
+@item New object type: Access
+
+@item Network support
+
+@item Editor main window is now an AppWindow
+
+@item Gadget keyboard shortcuts in the preferences editor
+
+@item New tooltypes for the preferences editor
+
+@item Several bug fixes
+
+@item Enhanced documentation
+
+@end itemize
+
+
+@item 2.0, Release date 26.09.1992
+
+
+@itemize @minus
+
+@item Complete new concept (object oriented)
+
+@item (Almost) Complete rewrite
+
+@item ToolManager is now split up into two parts
+
+@item Main handler is now embedded into a shared library
+
+@item Configuration is now handled by a Preferences program
+
+@item Configuration file format has changed again :-) It is an IFF File now
+and resides in ENV:
+
+@item Multiple Docks and multi-column Docks
+
+@item Docks with new window design
+
+@item Dock automatically detects largest image size
+
+@item Sound support
+
+@item Direct ARexx support for Exec objects
+
+@item ToolManager can be used without the Workbench. If the Workbench isn't
+running, it won't use any App* features.
+
+@item Locale support
+
+@item Path from Workbench will be used for CLI tools
+
+@item Seperate Handler Task for starting WB processes
+
+@end itemize
+
+
+@item 1.0 upto 1.5
+Please look into the english documentation for further information.
+
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre: Crédits                                         ---
+@comment ----------------------------------------------------------------
+@node Credits, Index, Historique, Top
+@appendix L'auteur voudrait remercier@dots{}
+@cindex Crédits
+@cindex Remerciements
+
+ToolManager est passé par plusieurs étapes majeures dans son évolution
+depuis sa première implementation à la mi-1990. Ce développement
+n'aurait pas être possible si je n'avais pas reçu autant de réactions
+de la part de beaucoup d'utilisateurs de ToolManager. Beaucoup d'idées
+et de caractéristiques en sont inspirées@dots{}
+
+Par conséquent, je voudrais remercier:
+
+@table @asis
+@item Pour les pré-tests, les idées et le rapport d'erreurs:
+
+La section Amiga de notre club informatique local (Computerclub an der RWTH Aachen),
+Olaf 'Olsen' Barthel, Georg Hessmann (Gucky), Markus Illenseer (ill), Klaus
+Melchior, Rickard Olsson (Richie), Matthias Scheler (Tron), Ralph Schmidt
+(laire), Roger Westerlund (Budda), Juergen Weinelt, Brian Wright (SteveVai),
+Petra Zeidler (stargazer) et beaucoup d'autres@dots{}
+
+@item Matthew Dillon
+
+Sans votre @strong{excellent} DICE et beaucoup d'autres de vos outils,
+ToolManager n'existerait pas!
+
+@item Pour leur excellent travail graphique:
+
+Andreas Harrenberg, Georg Hessmann, Michael ``Mick'' Hohmann, Markus
+Illenseer, Oliver Koenen, Klaus Melchior, Rickard Olsson, Jan Peter, Matthias
+Scheler, Brian Wright
+
+@item Pour les traductions :
+
+Tomi Blinnikka (suomi), Jorn Halonen (norsk), Dr.@: Peter Kittel (deutsch),
+Jasper Kehlet (dansk), Klaus Melchior (eifel), Rickard Olsson (svenska),
+Rullier Pascal & Marc Schaefer (français), Tor Rune Skoglund (norsk),
+Reinhard Spisser (italiano), Andrea Suatoni (italiano)
+
+@item Tous les copains de West Chester:
+
+Pour le dévelopement de l'Amiga et de son superbe système d'exploitation.
+
+@item Tous les utilisateurs qui m'ont envoyé de l'argent:
+
+Je n'en avais pas demandé dans les versions 1.x, mais c'est agréable
+de voir que quelqu'un apprecie mon travail.
+
+@item Tous les utilisateurs qui m'ont envoyé un mot:
+
+J'aime vraiment lire vos lettres!
+
+@item et tous ce que j'ai oublié de mentionner@dots{}
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapitre non-numéroté: Index                             ---
+@comment ----------------------------------------------------------------
+@node Index, , Credits, Top
+@unnumbered Index
+
+
+@printindex cp
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Table des matières                                       ---
+@comment --- (apparaît seulement dans le manuel imprimé               ---
+@comment ----------------------------------------------------------------
+@contents
+@comment ----------------------------------------------------------------
+
+@comment This is REALLY the end :-)
+@comment C'est VRAIMENT la fin *8)
+
+@bye

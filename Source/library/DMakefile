@@ -1,0 +1,48 @@
+#
+# DMakefile V2.1
+#
+# Makefile for ToolManager 2.1 (Library)
+#
+# (c) 1990-93 Stefan Becker
+#
+PRE    = t:symbolslib.m
+FLAGS  = -3.0 -mi -mRR -ms
+IDIRS  = -I //Programmers/include -I ///network/include
+#CFLAGS = $(FLAGS) -DDEBUG $(IDIRS) -proto -H$(PRE)=ToolManagerLib.h -c
+CFLAGS = $(FLAGS) $(IDIRS) -proto -H$(PRE)=ToolManagerLib.h -c
+AFLAGS =
+#LFLAGS = $(FLAGS) -L///network -s
+LFLAGS = $(FLAGS) -L///network
+LIBS   = -l0 -ldebug -lamiga30 -lamiga30s -lnetwork -lc
+
+ASRCS = libasm.a
+AOBJS = $(ASRCS:"*.a":"T:*.o")
+CSRCS = LibInit.c handler.c data.c tmhandle.c objects.c execobj.c imageobj.c \
+        soundobj.c menuobj.c iconobj.c dockobj.c accessobj.c rexx.c \
+        workbench.c readiff.c hotkey.c locale.c safety.c config.c
+COBJS = $(CSRCS:"*.c":"T:*.o")
+OBJS  = $(AOBJS) $(COBJS)
+
+DEST  = //libs/toolmanager.library
+
+all : $(DEST)
+
+$(DEST) : $(OBJS)
+         dcc $(LFLAGS) -o %(left) $(OBJS) $(LIBS)
+
+$(AOBJS) : $(ASRCS)
+         das $(AFLAGS) -o %(left) %(right)
+
+$(AOBJS) : DMakefile
+
+$(COBJS) : $(CSRCS)
+         dcc $(CFLAGS) -o %(left) %(right)
+
+$(COBJS) : $(PRE)
+
+$(PRE) : ToolManagerLib.h //programmers/include/libraries/toolmanager.h \
+         DMakefile
+         -Delete %(left) QUIET
+
+clean :
+         -Delete $(PRE) $(OBJS) QUIET

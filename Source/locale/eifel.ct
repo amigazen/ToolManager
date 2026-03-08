@@ -1,0 +1,384 @@
+## version $VER: toolmanager.catalog 3.0 (16.5.1993)
+## codeset 0
+## language eifel
+;
+; Eifel_TM.ct
+;
+; ToolManager 2.1 (locale translation file)
+;
+; (c) 1990-93 Stefan Becker
+;
+; Translation done by: kMel-Soft, Klaus Melchior
+;
+MSG_WINDOW_TOP_GAD
+Nom Anfaan
+; Top;
+MSG_WINDOW_UP_GAD
+No Ovve
+; Up;
+MSG_WINDOW_DOWN_GAD
+No Unnge
+; Down;
+MSG_WINDOW_BOTTOM_GAD
+Nom Ännk
+; Bottom;
+MSG_WINDOW_REMOVE_GAD
+Fott domot
+; Remove;
+MSG_WINDOW_NAME_GAD
+Opjekt _naam
+; Object _Name;
+MSG_WINDOW_COMMAND_GAD
+Bef_ähl
+; Co_mmand;
+MSG_WINDOW_HOTKEY_GAD
+Tastebefä_hl
+; _Hot Key;
+MSG_WINDOW_PUBSCREEN_GAD
+Schoerm v_ör jedderenne
+; _Public Screen;
+MSG_WINDOW_POSITION_OPEN_LABEL
+Mach dat Positions-Fünster opp...
+; Open Position Window...;
+MSG_WINDOW_POSITION_CLOSE_LABEL
+Mach et wedder zoh...
+; Close Position Window;
+MSG_WINDOW_LEFTEDGE_GAD
+_Lönke Äck
+; _Left Edge;
+MSG_WINDOW_TOPEDGE_GAD
+_Ovveste Äck
+; _Top Edge;
+MSG_WINDOW_EXEC_GAD
+_Usszohführendes Opjekt...
+; _Exec Object...;
+MSG_WINDOW_IMAGE_GAD
+_Jemohltes Opjekt...
+; _Image Object...;
+MSG_WINDOW_SOUND_GAD
+_Museekspellendes Opjekt...
+; _Sound Object...;
+MSG_WINDOW_OK_GAD
+_Ömmer
+; _OK;
+MSG_WINDOW_CANCEL_GAD
+_Doch net
+; _Cancel;
+MSG_MAINWIN_TITLE
+ToolManager-Ehsteller
+; ToolManager Preferences;
+MSG_MAINWIN_TYPE_GAD
+_Opjekt Tüp
+; _Object Type;
+MSG_MAINWIN_TYPE_EXEC_CYCLE_LABEL
+Usszohführendes
+; Exec;
+MSG_MAINWIN_TYPE_IMAGE_CYCLE_LABEL
+Jemohltes
+; Image;
+MSG_MAINWIN_TYPE_SOUND_CYCLE_LABEL
+Museekspellendes
+; Sound;
+MSG_MAINWIN_TYPE_MENU_CYCLE_LABEL
+Menüs
+; Menu;
+MSG_MAINWIN_TYPE_ICON_CYCLE_LABEL
+Beldcher
+; Icon;
+MSG_MAINWIN_TYPE_DOCK_CYCLE_LABEL
+Beldcherraahm
+; Dock;
+MSG_MAINWIN_TYPE_ACCESS_CYCLE_LABEL
+Dat daschste
+; Access;
+MSG_MAINWIN_LIST_GAD
+Opjekt Leest
+; Object List;
+MSG_MAINWIN_SORT_GAD
+So_rteer et
+; So_rt;
+MSG_MAINWIN_NEW_GAD
+Ä _neüt...
+; _New...;
+MSG_MAINWIN_EDIT_GAD
+Ännd_ere...
+; _Edit...;
+MSG_MAINWIN_COPY_GAD
+Ko_pere...
+; Co_py;
+MSG_MAINWIN_SAVE_GAD
+_Speecher et
+; _Save;
+MSG_MAINWIN_USE_GAD
+Br_uuch et
+; _Use;
+MSG_MAINWIN_TEST_GAD
+Probeer e_t
+; _Test;
+MSG_MAINWIN_PROJECT_MENU_LABEL
+Projekt
+; Project;
+MSG_MAINWIN_OPEN_MENU_LABEL
+Oppmache...
+; Open...;
+MSG_MAINWIN_OPEN_MENU_SHORTCUT
+O
+; O;
+MSG_MAINWIN_APPEND_MENU_LABEL
+Drahhänge...
+; Append...;
+MSG_MAINWIN_SAVEAS_MENU_LABEL
+Speecher et füür...
+; Save As...;
+MSG_MAINWIN_SAVEAS_MENU_SHORTCUT
+A
+; A;
+MSG_MAINWIN_ABOUT_MENU_LABEL
+Övver...
+; About...;
+MSG_MAINWIN_QUIT_MENU_LABEL
+Opphüüre
+; Quit;
+MSG_MAINWIN_QUIT_MENU_SHORTCUT
+Q
+; Q;
+MSG_MAINWIN_EDIT_MENU_LABEL
+Füürjove
+; Edit;
+MSG_MAINWIN_LASTSAVED_MENU_LABEL
+Wat te lästens jespeechert häst
+; Last Saved;
+MSG_MAINWIN_LASTSAVED_MENU_SHORTCUT
+L
+; L;
+MSG_MAINWIN_RESTORE_MENU_LABEL
+Wat te fürher jehappt häst
+; Restore;
+MSG_MAINWIN_RESTORE_MENU_SHORTCUT
+F
+; R;
+MSG_MAINWIN_SETTINGS_MENU_LABEL
+Eestellunge
+; Settings;
+MSG_MAINWIN_CREATEICONS_MENU_LABEL
+Beldscher mache?
+; Create Icons?;
+MSG_MAINWIN_CREATEICONS_MENU_SHORTCUT
+B
+; I;
+MSG_MAINWIN_WRITE_ERROR
+Dat '%s' kann isch net beschrieve!
+; Couldn't write to file '%s'!;
+MSG_EXECWIN_TITLE
+Usszohführendes Opjekt ändere
+; Edit Exec Object;
+MSG_EXECWIN_NEWNAME
+Ä neu usszohführendes Opjekt
+; New Exec Object;
+MSG_EXECWIN_EXECTYPE_GAD
+Us_sführ Tüp
+; _Exec Type;
+MSG_EXECWIN_CURRENTDIR_GAD
+Jetzije _Verzeechnis
+; Current _Directory;
+MSG_EXECWIN_OUTPUT_GAD
+_Ussjeve noh
+; O_utput File;
+MSG_EXECWIN_PATH_GAD
+Ver_zeechnis
+; Pa_th;
+MSG_EXECWIN_STACK_GAD
+_Stäck-Jrüsst
+; _Stack;
+MSG_EXECWIN_PRIORITY_GAD
+W_ichtechkeet
+; P_riority;
+MSG_EXECWIN_DELAY_GAD
+Waartezi_g
+; Dela_y;
+MSG_EXECWIN_ARGUMENTS_GAD
+_Arjumente
+; _Arguments;
+MSG_EXECWIN_TOFRONT_GAD
+Janz noh _Vüür
+; To _Front;
+MSG_IMAGEWIN_TITLE
+Ändere jemohltes Opjekt
+; Edit Image Object;
+MSG_IMAGEWIN_NEWNAME
+Ä neu jemohltes Opjekt
+; New Image Object;
+MSG_IMAGEWIN_FILE_GAD
+_Datejnaam
+; _File Name;
+MSG_SOUNDWIN_TITLE
+Ändere museekspellendes Opjekt
+; Edit Sound Object;
+MSG_SOUNDWIN_NEWNAME
+Ä neu museekspellendes Opjekt
+; New Sound Object;
+MSG_SOUNDWIN_AREXX_GAD
+_Arexx-Dingens
+; _ARexx Port;
+MSG_MENUWIN_TITLE
+Ändere Menü-Opjekt
+; Edit Menu Object;
+MSG_MENUWIN_NEWNAME
+Ä neu Menü-Opjekt
+; New Menu Object;
+MSG_ICONWIN_TITLE
+Ändere Beldche
+; Edit Icon Object;
+MSG_ICONWIN_NEWNAME
+Ä neu Beldche
+; New Icon Object;
+MSG_ICONWIN_SHOWNAME_GAD
+_Zäisch der Naam
+; S_how Name;
+MSG_DOCKWIN_TITLE
+Ändere Beldcherraahm
+; Edit Dock Object;
+MSG_DOCKWIN_NEWNAME
+Ä neue Beldcherraahm
+; New Dock Object;
+MSG_DOCKWIN_TITLE_GAD
+_Fünsternaam
+; _Window Title;
+MSG_DOCKWIN_COLUMNS_GAD
+_Spahlde
+; Column_s;
+MSG_DOCKWIN_FONT_GAD
+_Zeechesatz...
+; _Font...;
+MSG_DOCKWIN_ACTIVATED_GAD
+Akt_eveert
+; Act_ivated;
+MSG_DOCKWIN_BACKDROP_GAD
+Doh_önger
+; _Backdrop;
+MSG_DOCKWIN_CENTERED_GAD
+In der Me_dde
+; Centere_d;
+MSG_DOCKWIN_FRONTMOST_GAD
+Ömmer nohfüh_r
+; F_rontmost;
+MSG_DOCKWIN_MENU_GAD
+_Menü
+; _Menu;
+MSG_DOCKWIN_PATTERN_GAD
+M_üsterche
+; P_attern;
+MSG_DOCKWIN_POPUP_GAD
+Noh f_ühr komme
+; Pop _Up;
+MSG_DOCKWIN_STICKY_GAD
+Kleve blie_ve
+; Stick_y;
+MSG_DOCKWIN_TEXT_GAD
+S_chrieves
+; Te_xt;
+MSG_DOCKWIN_VERTICAL_GAD
+Län_gs älang
+; _Vertical;
+MSG_DOCKWIN_EDITTOOLS_GAD
+Ändere de Enträje...
+; _Edit Tools List...;
+MSG_DOCKLISTWIN_TITLE
+Ändere de Beldcherraahm-Enträje
+; Edit Tools List;
+MSG_DOCKLISTWIN_TOOLS_GAD
+Beldcherraahmenträje
+; Tool List;
+MSG_DOCKLISTWIN_NEW_GAD
+Ä _neüt
+; _New;
+MSG_ACCESSWIN_TITLE
+Ändere wat de daschst
+; Edit Access Object;
+MSG_ACCESSWIN_NEWNAME
+Wat de neu daschst
+; New Access Object;
+MSG_ACCESSWIN_ENTRIES_GAD
+Usszohführendes Opjekt
+; Exec objects;
+MSG_ACCESSWIN_ADD_GAD
+_Jet dazoh
+; _Add;
+MSG_SELECTWIN_TITLE
+Macht Opjekts
+; Create objects;
+MSG_SELECTWIN_OBJECT_GAD
+O_pjekts för zoh mache
+; O_bjects to create;
+MSG_SELECTWIN_MENU_MX_LABEL
+Usszohführe un Menüs
+; Exec & Menu;
+MSG_SELECTWIN_ICON_MX_LABEL
+Usszohführe, Beldscher un Menüs
+; Exec, Image & Icon;
+MSG_SELECTWIN_MENUICON_MX_LABEL
+Usszohführe, Jemohltes, Menüs un Beldscher
+; Exec, Image, Menu & Icon;
+MSG_MOVEWIN_DRAG_GAD
+Träck mich!
+; Move me!;
+MSG_FILEREQ_TITLE_FILE
+Wat fürn Datej
+; Select File;
+MSG_FILEREQ_TITLE_DRAWER
+Wat für ä Verzeechnis
+; Select Drawer;
+MSG_FILEREQ_OK_GAD
+Joh wa
+; Ok;
+MSG_FILEREQ_SAVE_GAD
+Speecher et
+; Save;
+MSG_FILEREQ_CANCEL_GAD
+Doch net
+; Cancel;
+MSG_FONTREQ_TITLE
+Wat für ne Zeechesatz
+; Choose Font;
+MSG_LISTREQ_TITLE_EXEC
+Wat für ä usszohführendes Opjekt
+; Choose Exec Object;
+MSG_LISTREQ_TITLE_IMAGE
+Wat für ä jemohltes Opjekt
+; Choose Image Object;
+MSG_LISTREQ_TITLE_SOUND
+Wat für ä museekspellendes Opjekt
+; Choose Sound Object;
+MSG_LISTREQ_TITLE_DOCK
+Wat für ne Beldcherraahm
+; Choose Dock Object;
+MSG_LISTREQ_TITLE_PUBSCREEN
+Wat für ne Schöerm vör jedderenne
+; Choose Public Screen;
+MSG_HOSTREQ_TITLE
+Wat für ne Naam für et Netz-Jedöns
+; Choose Host/Realm Name;
+MSG_HANDLER_COMMODITIES_DESCRIPTION
+Et maaht jett us der Wörkbank
+; Extends Workbench's usability;
+MSG_HANDLER_DOCK_MENU_LABEL
+Beldcherraahm-Menü
+; Dock Menu;
+MSG_HANDLER_CLOSE_MENU_LABEL
+Maach de Beldcherraahm zooh
+; Close Dock;
+MSG_HANDLER_CLOSE_MENU_SHORTCUT
+Z
+; C;
+MSG_HANDLER_QUIT_MENU_LABEL
+Opphüüre met TM
+; Quit TM;
+MSG_HANDLER_QUIT_MENU_SHORTCUT
+Q
+; Q;
+MSG_UTILITIES_QUITREQ_TEXT
+Willste wirklech opphüüre?
+; Quit ToolManager?;
+MSG_UTILITIES_QUITREQ_GAD
+Jooh|Nee
+; Yes|No;

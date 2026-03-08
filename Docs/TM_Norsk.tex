@@ -1,0 +1,2146 @@
+\input amigatexinfo
+\input ntexinfo
+@c %**start of header
+@setfilename TM_Norks.info
+@settitle ToolManager 2.1 Dokumentasjon
+@setchapternewpage on
+@set xrefstring se
+@set Xrefstring Se
+@c %**end of header
+
+
+@comment
+@comment  TM_Norsk.tex V2.1
+@comment
+@comment  Norwegian documentation for ToolManager (Texinfo format)
+@comment
+@comment  (c) 1990-1993 Stefan Becker
+@comment
+
+
+@comment ----------------------------------------------------------------
+@comment --- Title & Copyright Page (for printed manual)              ---
+@comment ----------------------------------------------------------------
+@titlepage
+
+@title{ToolManager}
+@subtitle{En utvidelse til Amiga Workbench}
+@subtitle{}
+@subtitle{Version 2.1}
+@subtitle{16 Mai 1993}
+
+@page
+@vskip 0pt plus 1filll
+
+@comment ----------------------------------------------------------------
+@comment Note to translators:
+@comment Translate this page and then copy it to the node "Copyright"
+@comment Both pages must be identical!
+@comment ----------------------------------------------------------------
+
+Opphavsrett @copyright{} 1990-93 Stefan Becker
+
+Tillatelse gis til å distribuere intakte kopier av denne manualen så fremt
+opphavsrettnotisen og denne tillatelsesnotisen følger med alle kopier.
+
+@ignore
+Tillatelse gis til å bearbeide denne filen med TeX og skrive ut resultatet,
+så fremt utskriften bærer en kopi-tillatelse identisk til denne. (Utenom
+denne paragrafen som ikke er relevant i den trykte manualen.)
+@end ignore
+
+Det er ingen som helst garanti at programmene som er beskrevet i dette
+dokumentet er 100% pålitelige. Du bruker dette materialet på egen risiko.
+Forfatteren @strong{kan ikke} bli gjort skyldig i skader som er forårsaket
+av disse programmene.
+
+Denne pakken kan distribueres fritt, men opphavsretten innehas av Stefan
+Becker. Dette betyr at du kan kopiere den fritt så lenge du ikke tar mer
+penger for den en et rimelig kopieringsbeløp. Dette beløpet @strong{må ikke}
+overstige USD 5 or DEM 5.
+
+@strong{Denne grensen gjelder også tyske Public-Domain forhandlere!!}
+
+Tillatelse gis til å inkludere pakken i Public-Domain samlinger, spesielt
+Fred Fishs Amiga Disk bibliotek (inkludert CD ROM versjoner).
+Distribusjonsfilen kan lastes opp på Bulletin Board systemer eller FTP
+servere. Hvis du ønsker å distribuere dette programmet, @strong{må} du
+bruke de originale distribusjonsarkivene @file{ToolManager2_1bin.lha},
+@file{ToolManager2_1gfx.lha} og @file{ToolManager2_1src.lha}.
+
+Ingen av disse programmene eller kildekoden (samt deler av den) kan bli
+inkludert eller brukt i kommersielle programmer uten forfatterens skriftlige
+tillatelse.
+
+@strong{Ingen} av disse programmene @strong{eller} kildekoden (samt deler av
+den) kan bli brukt på maskiner som blir brukes til forskning, utvikling,
+bygging, testing eller produksjon av våpen eller andre militære områder.
+Dette gjelder også maskiner brukt til opplæring av personer for @strong{alle}
+de nevnte formålene.
+
+@end titlepage
+@headings double
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Top Node (not printed)                                   ---
+@comment ----------------------------------------------------------------
+@ifinfo
+@node Topp, Opphavsrett, (dir), (dir)
+@top ToolManager 2.1 dokumentasjon
+
+@menu
+Kapitler for @emph{alle} brukere:
+
+* Opphavsrett::               Opphavsrett og andre lovligheter
+* Viktig::                    Viktige notiser
+* Forfatterens adresse::      Hvor du kan sende feil meldinger, kommentarer
+                              og donasjoner
+
+Kapitler for utålmodige brukere:
+
+* Rask installasjon::         Hvordan raskt installere ToolManager 2.1
+
+Kapitler for førstegangs brukere:
+
+* Introduksjon::              Hva er ToolManager?
+* Konsepter::                 Konseptene bak ToolManager
+* Opplæring:Opplaering.       Litt ToolManager undervisning
+* Distribusjonsfiler::        Beskrivelse av alle filer
+
+Referanse kapitler:
+
+* Objekter::                  ToolManagers objektreferanse
+* Innstillinger::             ToolManagers innstillingsprogram
+* Bibliotek::                 ToolManagers bibliotekgrensesnitt
+* Start-taster::              Hvordan definere en start-tast
+
+Appendikser:
+
+* Spørsmål:Spoersmaal.        De mest spurte spørsmålene om ToolManager
+* Historie::                  ToolManagers historie
+* Takk til::                  Forfatteren vil takke@dots{}
+* Indeks::                    Indeks til dette dokumentet
+@end menu
+
+@end ifinfo
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Kapittel: Opphavsrett (for Info/AmigaGuide dokument)     ---
+@comment ----------------------------------------------------------------
+@ifinfo
+@node Opphavsrett, Viktig, Topp, Topp
+@chapter Opphavsrett og andre rettslige saker
+@cindex Opphavsrett
+@cindex Distribusjon
+@cindex Rettslige saker
+@cindex Tillatelser
+@cindex Forbud
+
+Opphavsrett @copyright{} 1990-93 Stefan Becker
+
+Tillatelse gis til å distribuere intakte kopier av denne manualen så fremt
+opphavsrettnotisen og denne tillatelsesnotisen følger med alle kopier.
+
+@ignore
+Tillatelse gis til å bearbeide denne filen med TeX og skrive ut resultatet,
+så fremt utskriften bærer en kopi-tillatelse identisk til denne. (Utenom
+denne paragrafen som ikke er relevant i den trykte manualen.)
+@end ignore
+
+Det er ingen som helst garanti at programmene som er beskrevet i dette
+dokumentet er 100% pålitelige. Du bruker dette materialet på egen risiko.
+Forfatteren @strong{kan ikke} bli gjort skyldig i skader som er forårsaket
+av disse programmene.
+
+Denne pakken kan distribueres fritt, men opphavsretten innehas av Stefan
+Becker. Dette betyr at du kan kopiere den fritt så lenge du ikke tar mer
+penger for den en et rimelig kopieringsbeløp. Dette beløpet @strong{må ikke}
+overstige USD 5 or DEM 5.
+
+@strong{Denne grensen gjelder også tyske Public-Domain forhandlere!!}
+
+Tillatelse gis til å inkludere pakken i Public-Domain samlinger, spesielt
+Fred Fishs Amiga Disk bibliotek (inkludert CD ROM versjoner).
+Distribusjonsfilen kan lastes opp på Bulletin Board systemer eller FTP
+servere. Hvis du ønsker å distribuere dette programmet, @strong{må} du
+bruke de originale distribusjonsarkivene @file{ToolManager2_1bin.lha},
+@file{ToolManager2_1gfx.lha} og @file{ToolManager2_1src.lha}.
+
+Ingen av disse programmene eller kildekoden (samt deler av den) kan bli
+inkludert eller brukt i kommersielle programmer uten forfatterens skriftlige
+tillatelse.
+
+@strong{Ingen} av disse programmene @strong{eller} kildekoden (samt deler av
+den) kan bli brukt på maskiner som blir brukes til forskning, utvikling,
+bygging, testing eller produksjon av våpen eller andre militære områder.
+Dette gjelder også maskiner brukt til opplæring av personer for @strong{alle}
+de nevnte formålene.
+
+@end ifinfo
+@comment ----------------------------------------------------------------
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Kapittel: Viktig                                          ---
+@comment ----------------------------------------------------------------
+@node Viktig, Forfatterens adresse, Opphavsrett, Topp
+@chapter Viktige notiser
+@cindex GiftWare
+@cindex Viktige notiser
+@cindex V38 (og høyere) muligheter
+
+Velkommen til den vidunderlige ToolManager 2.1 :-)
+
+@itemize @minus
+
+@item
+ToolManager og dets konsepter har forandret seg drastisk (@pxref{Historie})
+siden versjon 1.5.
+
+@item
+Fra og med versjon 2.0 av ToolManager er dette programmet @emph{GiftWare}.
+Hvis du liker og bruker programmet ofte, bør du sende en liten donasjon for
+å honorere arbeidet forfatteren har gjort med dette programmet. Jeg foreslår
+en donasjon på US $10-$20 eller 10-20 DM. Ikke send sjekker eller kontanter
+fra utlandet, da disse ofte koster mer å veksle enn de er verdt.
+
+Hvis du ikke sender donasjonen eller ikke har råd, trenger du ikke å føle deg
+slem for det. Vær bare snill og send meg et kort som sier at du bruker
+ToolManager. (Jeg liker fan mail :-). @xref{Forfatterens adresse}.
+
+@item
+Brukere av ToolManager 1.X/2.0 kan starte med kapitlet for hurtiginstallasjon
+(@pxref{Rask installasjon}). Noen saker har ikke forandret seg og resten er
+ganske lett å finne ut selv med prøv-og-feil metoden. For en detaljert
+beskrivelse  av de nye konseptene kan du lese referanse delen av dette
+dokumentet (@pxref{Objekter}).
+
+Du @strong{må} fjerne en evt. kjørende ToolManager 1.X/2.0 ellers vil ikke
+den nye versjonen virke. Dette fordi den nye versjonen ikke kan lese de gamle
+1.X konfigurasjons filene (Beklager).
+
+@item
+Førstegangsbrukere bør lese hele manualen for å forstå konseptet og formålet
+til programmet. Start med @ref{Introduksjon}.
+
+@item
+ToolManager 2.1 bruker noen av AmigaOS Versjon V38s (og høyere) muligheter.
+Den støtter også nettverksmulighetene i det nye AmigaOS'et som forhåpentlig-
+vis vil være tilgjengelig snart for all Amigabrukere. Hvis du fremdeles bruker
+versjon 2.0 (heretter V37) trenger du ikke bekymre deg siden ToolManager ikke
+er avhengig av disse mulighetene. Alle ekstra muligheter er merket i dette
+dokumentet.
+@end itemize
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Kapittel: Forfatterens adresse                           ---
+@comment ----------------------------------------------------------------
+@node Forfatterens adresse, Rask installasjon, Viktig, Topp
+@chapter Hvor sender du feilrapporter, kommentarer & donasjoner
+@cindex Adresse
+@cindex Feilrapporter
+@cindex Kommentarer
+@cindex Donasjoner
+@cindex E-Mail
+@cindex Internet adresse
+@cindex Postadresse
+
+Forfatteren kan nåes på følgende adresser:
+
+@table @asis
+@item Postadresse:
+
+@example
+
+     Stefan Becker
+     Holsteinstrasse 9
+     D-W-5100 Aachen
+     GERMANY
+
+@end example
+
+Vennligst bruk følgende adresse etter 1. juli 93:
+
+@example
+
+     Stefan Becker
+     Holsteinstrasse 9
+     D-W-52068 Aachen
+     GERMANY
+
+@end example
+
+@item Internet elektronisk post:
+
+@example
+
+stefanb@@pool.informatik.rwth-aachen.de
+@end example
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Kapittel: Rask installasjon                              ---
+@comment ----------------------------------------------------------------
+@node Rask installasjon, Introduksjon, Forfatterens adresse, Topp
+@chapter Rask installasjon av ToolManager 2.1
+@cindex Rask installasjon
+@cindex Installasjon (rask)
+
+Installasjon av ToolManager 2.1 består av fire deler:
+
+@table @asis
+@item @file{Libs/toolmanager.library} @result{} @file{LIBS:}
+Dette er hovedprogrammet til ToolManager. Det håndterer alle program,
+menyer, ikoner og dokker (@pxref{Bibliotek}).
+
+@item @file{Prefs/ToolManager*} @result{} @file{SYS:Prefs}
+Dette er programmet for innstillinger (@pxref{Innstillinger}).
+
+@item @file{WBStartup/ToolManager*} @result{} @file{SYS:WBStartup}
+Med dette verktøyet kan du starte og stoppe ToolManager. Hvis det ligger
+i WBStartup katalogen vil ToolManager alltid bli startet når maskinen din
+starter opp.
+
+@item @file{L/WBStart-Handler} @result{} @file{L:}
+Dette programmer starter programmer med Workbench sin start metode. Det er
+en separat prosess, så du kan avslutte ToolManager selv om du har programmer
+kjørende, startet med WB metoden.
+@end table
+
+Etter å ha kopiert disse filene, bør du avslutte alle eldre versjoner av
+ToolManager og dobbel-klikke ToolManager ikonet som er i @file{WBStartup}
+katalogen. Nå kan du starte innstillingsprogrammet og prøve deg frem. (Bruk
+``Test''-knappen istedet for ``Bruk''-knappen mens du tester.) Du burde
+kunne finne ut av det meste med prøving og feiling, men nærmere informasjon
+finnes i ToolManagers objektbeskrivelser (@pxref{Objekter}).
+
+Distribusjonen inkluderer et eksempel på en konfigurasjonsfil, nemlig
+@file{TM_Demo.prefs}. Du kan hente den inn i innstillingsprogrammet med
+menyvalget @code{Hente}.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Kapittel: Introduksjon                                    ---
+@comment ----------------------------------------------------------------
+@node Introduksjon, Konsepter, Rask installasjon, Topp
+@chapter Hva er ToolManager?
+@cindex Introduksjon til ToolManager
+
+ToolManager er et fleksibelt program for å holde styr på programmer i ditt
+arbeidsmiljø. Det kan starte Workbench og CLI programmer, ARexx skript og
+generere start-tast sekvenser. Det kan til og med sende kommandoer til en
+ToolManager som kjører på en annen maskin. Brukergrensesnittet består av
+menyer, ikoner eller dokk-vinduer. Hvis du liker en støyende maskin, kan du
+koble en lyd til hvilke som helst objekt @xref{Lyd,Lydobjekter}.
+
+ToolManager kan legge til program til Workbenchs @code{Tools} meny. Hvis du
+velger et slikt menyvalg vil programmet som assosieres med det, startes.
+Alle valgte ikoner på Workbenchen vil bli brukt som argument til programmet.
+Dette er bare tilgjengelig hvis Workbench kjører. @xref{Meny,Menyobjekter}.
+
+ToolManager kan legge til ikoner på Workbench vinduet. Når du dobbel-klikker
+et slikt ikon, vil programmet som det er tilknyttet startes. Hvis du dropper
+andre ikoner over dette ikonet, vil programmet starte med disse ikonene som
+argument. Dette er bare tilgjengelig hvis Workbench kjører.
+@xref{Ikon,Ikonobjekter}.
+
+ToolManager kan lage et såkalt dokkvindu av en samling programmer. Dette
+vinduet kan åpnes på hver offentlige skjerm. Hvert program er representert
+av et bilde eller en knapp. For å starte et program trenger du bare klikke
+på bildet eller knappen. Hvis dokkvinduet er åpnet på Workbench skjermen
+og Workbench kjører, kan du også droppe ikoner på bildet eller knappen for
+å starte programmet med argumenter. @xref{Dokk,Dokkobjekter}.
+
+I tillegg kan du legge til en start-tast til hvert program. Hvis du trykker
+denne start-tast, vil programmet starte. Merk deg at @emph{ingen} argumenter
+kan bli sendt til programmet hvis du bruker denne start metoden.
+@xref{Program,Programobjekter}.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Kapittel: Konsepter                                      ---
+@comment ----------------------------------------------------------------
+@node Konsepter, Opplaering, Introduksjon, Topp
+@chapter Konseptene bak ToolManager
+@cindex Konsepter
+@cindex Introduksjon til ToolManager objekter
+@cindex Programkonsepter
+
+ToolManager 2.1 bruker en ny objekt-orientert vinkling for å gi et fleksibelt
+og ekspanderbart system. Denne vinklingen gjorde det mulig å forbedre
+ToolManager over 1.X versjoner, f.eks.: flere dokkvinduer åpne samtidig.
+
+Et objekt er en samling av data som beskriver dets muligheter. Hvert objekt
+har et navn og en type. Du kan skape så mange objekter som du ønsker av hver
+type, men navnet på objektene må være ulike, fordi navnet blir brukt som
+referanse til objektet.
+
+For tiden er det syv forskjellige objekt typer: Program, Bilde, Lyd, Meny,
+Ikon, Dokk og Aksess. De første tre er primitive objekt; det betyr at de ikke
+refererer til andre objekt. De supplerer data eller tjenester til de andre,
+komplekse objektene.
+
+De siste fire objektene er komplekse objekt; det betyr at de refererer til
+primitive objekt og er avhengig av dem for med hensyn til data eller tjen-
+ester. Referansene gjøres med navn, og hvis ingen primitive objekt med dette
+navnet eksisterer så vil det komplekse objektet overse det. Merk deg at dette
+kan redusere funksjonaliteten til det komplekse objektet, f.eks et ikonobjekt
+@emph{trenger} data fra et bildeobjekt, så hvis ikke dette objektet finnes
+vil det ikke bli laget noe ikon.
+
+For en detaljert beskrivelse av alle objektene, see @ref{Objekter}.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapter: Tutorial                                        ---
+@comment ----------------------------------------------------------------
+@node Opplaering, Distribusjonsfiler, Konsepter, Topp
+@chapter En tur gjennom ToolManagers muligheter
+@cindex Muligheter
+@cindex Opplæring
+@cindex Tur
+@cindex Eksempel
+
+Har du ikke forstått et ord inntil nå? Forvirret av objekter, programmer og
+lenker? Ikke fortvil, hjelp er på vei.
+
+Jeg vil lede deg gjennom et steg-for-steg eksempel om hvordan man skal stille
+inn ToolManager. Alt du trenger å gjøre er å installere ToolManager og kjøre
+innstillingsprogrammet. Etter hvert steg, trykk ``Test''-knappen i hovedvinduet
+for å teste konfigurasjonen.
+
+Som et eksempel bruker vi tekst fremviseren More som ligger i katalogen
+@file{SYS:Utilities}. Først må vi fortelle ToolManager hvilke program vi
+ønsker å bruke. Informasjon om programmer er lagret i programobjekter. Bare
+velg ``Program'' som objekttype i hovedvinduet til innstillingsprogrammet
+og trykk ``Nytt''-knappen.
+
+Etter å ha trykket denne knappen vil du se ``Endre programobjekt''-vinduet.
+Åpne Utilities-katalogen på Workbench partisjonen, flytt More-ikonet ut av
+katalogen og dropp det på editorvinduet. Som du kan se har editoren satt
+navnet på objektet, kommandoen til programnavnet og den aktuelle katalogen
+til System:Utilities. Trykk ned ``OK''-knappen for å bruke denne innstilling.
+
+Du kan ikke gjøre så mye med et programobjekt alene, så i neste omgang ønsker
+vi å legge dette programmet i ``Verktøy''-menyen til Workbench. Velg ``Meny''
+som objekttype og trykk ``Nytt'' knappen. Nå vil du se ``Endre
+menyobjekt''-vinduet. Forandre objektets navn til ``Vis Tekst''.
+
+ToolManager må vite hvilket program det skal starte når menyvalget
+gjøres, så vi lenker bare et programobjekt til menyobjektet. Trykk ned
+``Programobjekt''-knappen og velg objektet ``More'' fra fil-velgeren. Nå
+kan du trykke ``OK''-knappen og ``Test'' knappen i hovedvinduet. Du kan nå
+se ditt menyobjekt i ``Verktøy''-menyen. Velg en tekstfil på Workbench-
+skjermen (klikk et ikon) og velg ditt nye menyvalg. Programmet ``More'' skal
+nå starte og vise frem tekstfilen du valgte. Dette var vel lett?
+
+Nå kan vi gå et skritt videre og lage et ikonobjekt på Workbench-skjermen.
+Til et ikon trenger vi bildedata som er lagret i et bildeobjekt. Velg
+``Bilde'' som objekttype og trykk ``Nytt'' knappen. ``Endre
+bildeobjekt''-vinduet vil nå åpnes. Forandre navnet til ``Bilde for More'' og
+dropp More ikonet fra Utilities-katalogen i vinduet. Trykk ned ``OK''-knappen
+for å bruke innstillingene.
+
+I det neste steget vil vi skape ikonobjektet. Velg ``Ikon'' som objekttype
+og trykk ``Nytt''-knappen. Forandre objektnavnet til ``Vis Tekst''. Trykk ned
+``Programobjekt''-knappen og velg objektet ``More'' fra fil-velgeren. Trykk
+ned ``Bildeobjekt''-knappen og velg objektet ``Bilde for More'' fra
+filvelgeren. Sett X posisjonen til 100 og Y posisjonen til 50. Trykk ned
+``OK''- knappen og ``Test''-knappen. Etter en kort pause vil et ikon dukke opp
+på Workbench-skjermen. På denne kan du nå droppe ikonene til tekstfilene dine
+for å vise dem.
+
+Jeg er sikker på at du nå har en viss peiling hvordan du kan bruke ToolManager
+objekter og på hvilken måte du kan lenke dem sammen for å bygge ditt miljø.
+Nå kan du finne ut resten ved å prøve en ting av gangen. Du kan også ta en titt
+på filen @file{TM_Demo.prefs} for å finne ut mer om div. innstillinger.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Kapittel: Distribusjonsfiler                             ---
+@comment ----------------------------------------------------------------
+@node Distribusjonsfiler, Objekter, Opplaering, Topp
+@chapter Beskrivelse av alle filene i distribusjonen
+@cindex Distribusjonsfiler
+@cindex Referanse: Distribusjonsfiler
+
+Den komplette ToolManager 2.1 distribusjonen består av flere kataloger som
+er forklart nedenfor. Merk at distribusjonen er delt opp i tre deler, så du
+har kanskje ikke alle katalogene.
+
+@menu
+* Docs::             Dokumentasjon
+* Goodies::          Ekstra programpakker
+* Graphics::         Animasjoner, brusher & ikoner
+* L::                Supportprogrammer
+* Libs::             ToolManagers bibliotek
+* Locale::           Locale support filer
+* Prefs::            ToolManagers innstillingsprogram
+* Programmers::      Programmeringsfiler
+* Scripts::          ARexx & Shell skript
+* Source::           Komplett kildekode til ToolManager 2.1
+* WBStartup::        Forskjellige verktøy
+@end menu
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Distributionsfiler/Docs                         ---
+@comment ----------------------------------------------------------------
+@node Docs, Goodies, , Distribusjonsfiler
+@section Katalogen Docs
+@cindex AmigaGuide
+@cindex ASCII dokumentasjon
+@cindex Dokumentasjon
+@cindex Docs-katalogen
+@cindex Bibliotek dokumentasjon
+@cindex Skrevet dokumentasjon
+@cindex @TeX{}
+@cindex Texinfo
+
+Denne katalogen inneholder dokumentasjonen til ToolManager. Dokumentasjonen
+er tilgjengelig i fire ulike format og flere språk. I tillegg er det en fil
+i AutoDoc format som beskriver ToolManagers delte bibliotekgrensesnitt.
+
+@table @asis
+@item Prefix @file{TM_<language>}
+Disse filene inneholder denne filen for det spesifiserte språket. Følgende
+språk er tilgjengelig: Deutsch, English, Français, Norsk, Svenska.
+
+@item Postfix @file{.doc}
+Denne filen inneholder dokumentasjonen i ren ASCII tekst.
+
+@item Postfix @file{.dvi}
+Denne filen inneholder dokumentasjonen i @TeX{}s DVI format. For å få en
+utskrift av manualen kjører du denne filen gjennom en @TeX{} printerdriver.
+
+@item Postfix @file{.guide}
+Denne filen innehilder dokumentasjonen i AmigaGuide format. Selv om det er
+ren ASCII med noen kommandoer, trenger du AmigaGuide for å utnytte
+hypertextlenkene i fila.
+
+@item Postfix @file{.tex}
+Denne filen inneholder dokumentasjonen i Texinfo format, som spesifisert av
+Free Software Foundation (FSF). Sammen med makropakken @file{texinfo.tex}
+kan du bruke @TeX{} og @file{texindex} for å lage en fil i DVI format (se
+ovenfor).
+
+@item @file{toolmanager.doc}
+Denne filen inneholder en beskrivelse av ToolManagers delte bibliotek
+grensesnitt i AutoDoc format. @end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Distribusjonsfiler/Goodies                      ---
+@comment ----------------------------------------------------------------
+@node Goodies, Graphics, Docs, Distribusjonsfiler
+@section Katalogen Goodies
+@cindex DeleteTool
+@cindex GetPubName
+@cindex Goodies-katalogen
+@cindex UPD
+@cindex Sound player
+
+Denne katalogen inneholder ekstra programpakker som er nyttig for ToolManager.
+
+@table @file
+@item GetPubName.lha
+Dette lille programmet skriver ut navnet på den offentlige skjermen som er i
+front, enten til stdout eller til en miljøvariabel. Den er laget av Michael
+''Mick'' Hohmann.
+
+@item upd1_20.lha
+Programmet @code{upd} er laget av Jonas Petersson. Det er et lite program som
+åpner en ARexx port og venter på kommandoer. Via ARexx kan du ordre @code{upd}
+til å spille av samplede filer. ToolManager bruker denne funksjonen til å
+imple- mentere lydobjekter. @xref{Lyd,Lydobjekter}. @end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Distribusjonsfiler/Graphics                     ---
+@comment ----------------------------------------------------------------
+@node Graphics, L, Goodies, Distribusjonsfiler
+@section Katalogen Graphics
+@cindex Graphics-katalogen
+@cindex Eksempler på bilder
+@cindex Tildelte bilder
+
+Denne katalogen inneholder en rik samling av bilder som du kan bruke. Bare
+last dem inn som bildeobjekter i ToolManager (@pxref{Bilde,Bildeobjekter}).
+
+Filene ble donert av forskjellige personer (@pxref{Takk til}). Hver av dem
+fikk en separat underkatalog i distribusjonen. Ettersom filene ble laget av
+forskjellige personer har de også forskjellig stil, palett, størrelse, dybde
+og oppløsning. Det er ikke sikkert alle bildene ser bra ut på din maskin.
+
+For å skjelne mellom de forskjellige bildeformatene som er understøttet av
+ToolManager, så har hver fil en beskrivende suffiks.
+
+@table @file
+@item .anmb
+Dette er en IFF ANIM fil laget av et tegne/animasjons program. Det kan
+inneholde flere bilder. Selv om ToolManager kan laste inn komplette ANIM filer,
+må du bruke noe sånt som DPaints ``AnimBrush'' funksjon for å hente ut de
+interessante delene av animasjonen.
+
+@item .brush
+Dette er en IFF ILBM fil laget av et tegneprogram. Den inneholder bare et
+bilde.
+
+@item .info
+Dette er et normalt Amiga ikon laget av IconEdit (eller noe lignende). Den
+kan inneholde et eller to bilder.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Distribusjonsfiler/L                            ---
+@comment ----------------------------------------------------------------
+@node L, Libs, Graphics, Distribusjonsfiler
+@section Katalogen L
+@cindex L-katalogen
+@cindex WBStart-Handler
+@cindex WBStart 1.2
+
+Denne katalogen inneholder bare en fil, nemlig @file{WBStart-Handler}. Du
+@emph{må} kopiere denne filen til katalogen @file{L:}, ellers vil ikke
+ToolManager klare å starte noen programobjekt med WB
+(@pxref{Program,Programobjekter}).
+
+Den komplette pakken WBStart 1,2 finnes på Fish disk nr 757.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Distribusjonsfiler/Libs                         ---
+@comment ----------------------------------------------------------------
+@node Libs, Locale, L, Distribusjonsfiler
+@section Katalogen Libs
+@cindex Libs-katalogen
+
+Denne katalogen inneholder bare en fil, @file{toolmanager.library}. Dette er
+hoved programmet til ToolManager og det må kopieres til @file{LIBS:} katalogen.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Distribusjonsfiler/Locale                       ---
+@comment ----------------------------------------------------------------
+@node Locale, Prefs, Libs, Distribusjonsfiler
+@section Katalogen Locale
+@cindex Catalog filer
+@cindex Språkfiler
+@cindex Språk
+@cindex Locale-katalogen
+@cindex Lokalisering
+@cindex Oversettelser
+
+Denne katalogen inneholder alle filene for ToolManagers Locale support.
+Ettersom locale.library er nytt med V38, trenger du ikke kopiere disse filene
+hvis du bruker V37. Hvis du bruker V38, velg filene for ditt språk og kopier
+dem til de respektive plassene.
+
+@table @file
+@item Catalogs/<språk>/toolmanager.catalog
+Dette er oversettingsfilen for det spesifiserte språket. Kopier filen for ditt
+språk til katalogen @file{LOCALE:Catalogs/<språk>}.
+
+@item Languages/<språk>.language
+Noen språk er ikke støttet av den standardiserte V38 Locale distribusjonen.
+Så noen av oversetterene har donert en @file{.language} fil, slik at
+ToolManager kan bruke deres oversettingsfiler. Kopier filen for ditt språk til
+katalogen @file{LOCALE:Languages}. Ekstra språk er: Finnish (suomi), Eefeler
+Platt (eifel).
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Distribusjonsfiler/Prefs                        ---
+@comment ----------------------------------------------------------------
+@node Prefs, Programmers, Locale, Distribusjonsfiler
+@section Katalogen Prefs
+@cindex Prefs-katalogen
+
+ToolManagers innstillingsprogram og dets ikon er i denne katalogen. Kopier
+begge filene til katalogen @file{SYS:Prefs}. For nærmere informasjon om
+programmet se @ref{Innstillinger}.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Distribusjonsfiler/Programmers                  ---
+@comment ----------------------------------------------------------------
+@node Programmers, Scripts, Prefs, Distribusjonsfiler
+@section Katalogen Programmers
+@cindex Kompilatorstøtte
+@cindex Programmers-katalogen
+
+Denne katalogen inneholder alle filer som trengs for de forskjellige
+maskinspråkene og deres kompilatorer for å bruke ToolManagers delte
+bibliotekgrensesnitt.
+
+Ta en titt på underkatalogen @file{examples} for noen eksempler hvordan du
+kan bruke dette grensesnittet. For en komplett grensesnitt beskrivelse, les
+fila @file{Docs/toolmanager.doc}.
+
+Språk/kompilatorer som støttes ved dette tidspunkt: AmigaOberon, DICE C,
+M2Amiga Modula-2, MANX Aztec C og SAS C.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Distribusjonsfiler/Skript                       ---
+@comment ----------------------------------------------------------------
+@node Scripts, Source, Programmers, Distribusjonsfiler
+@section Katalogen Scripts
+@cindex ARexx skript
+@cindex Scripts-katalogen
+@cindex Shell skript
+
+Denne katalogen inneholder en samling ARexx og Shell skript som kan brukes
+i ToolManagers programobjekt. Merk at de kan være spesielt tilpasset for
+forfatterens miljø, så du må kanskje forandre dem.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Distribusjonsfiler/Kildekode                    ---
+@comment ----------------------------------------------------------------
+@node Source, WBStartup, Scripts, Distribusjonsfiler
+@section Katalogen Source
+@cindex Kildekode
+@cindex Source-katalogen
+@cindex Oversettere
+
+Denne katalogen inneholder komplett kildekode til ToolManager 2.1 og dets
+verktøy. Hvert program har sin egen underkatalog. Forfatteren gir denne
+kildekoden som et eksempel for programmering under OS 2.x/3.0.
+
+@file{locale} underkatalogen er av interesse for oversettere. Hvis ditt
+språk ikke er understøttet i denne versjonen og du ønkser å oversette,
+ta en titt på filen @file{empty.ct}. Bare fyll inn de tomme linjene og
+send filen til meg. Kanskje blir den inkludert i den neste versjonen.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Distribusjonsfiler/WBStartup                    ---
+@comment ----------------------------------------------------------------
+@node WBStartup, , Source, Distribusjonsfiler
+@section Katalogen WBStartup
+@cindex WBStartup-katalogen
+
+Det er bare et program i denne katalogen: @code{ToolManager}. Dette verktøyet
+starter og stopper ToolManager 2.1. For det meste av tiden vil denne filen
+holde til i @file{SYS:WBStartup} katalogen, men den kan brukes fra Shell også.
+
+@comment ----------------------------------------------------------------
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Kapittel: Objekter                                       ---
+@comment ----------------------------------------------------------------
+@node Objekter, Innstillinger, Distribusjonsfiler, Topp
+@chapter ToolManager objektreferanse
+@cindex Objekter
+@cindex Referanse: ToolManager objekter
+@cindex ToolManager objekter
+
+Dette kapitell beskriver ToolManager objektene in detalj. Hvert objekt har
+en type og et navn. Navnet refererer til et objekt. Det er seks forskjellige
+typer objekt:
+
+@menu
+* Program::    Programobjekter
+* Bilde::      Bildeobjekter
+* Lyd::        Lydobjekter
+* Meny::       Menyobjekter
+* Ikon::       Ikonobjekter
+* Dokk::       Dokkobjekter
+* Aksess::     Aksessobjekter
+@end menu
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Objekter/Program                                ---
+@comment ----------------------------------------------------------------
+@node Program, Bilde, , Objekter
+@section Programobjekter
+@cindex Programobjekter
+
+Et programobjekt beskriver program eller hendelser som er startet av
+ToolManager. Tre ulike typer program støttes: CLI, Workbench and ARexx.
+Programobjekt tar følgende argumenter: (Standardverdier i parantes.)
+
+@table @asis
+@item @code{Argument} (Ja)
+Dette flagget kontrollerer om argument skal sendes til programmet eller ikke.
+Om programmet ikke støtter eller trenger argument, kan du sette dette flagget
+til `Nei'.
+
+@item @code{Kommando}
+Navnet til programmt eller hendelsen som skal startes. Dette navnet kan
+være relativt til den aktuelle katalogen. Hvis typen er dokk, vil kommandoen
+beskrive navnet til dokkobjektet, som burde bli åpnet/lukket. For typen
+start-tast må denne strengen være Commodities Input Description String
+(@pxref{Start-taster}). En fjernkommando (nettverksobjekt) er beskrevet som
+@code{objekt@@maskein}. Denne forteller ToolManager som kjører på
+@code{machine} å aktivisere programobjektet @code{objekt}.
+
+@item @code{Aktuell katalog} (@file{SYS:})
+Navnet på programmets aktuelle katalog. Merk: ARexx program overser denne
+parameteren.
+
+@item @code{Pause} (0)
+Etter å ha aktivert et programobjekt vil ToolManager vente @code{Pause} sek.
+før den starter programmet. Hvis denne verdien er negativ, vil programmet
+bli startet hvert @code{Pause} sek. For å stoppe et programobjekt som venter
+på å kjøre, er det bare å aktivere det på nytt. Merk: Hvis @code{Pause} er
+satt, vil programmet startes uten argumenter.
+
+@item @code{Programtype} (CLI)
+Spesifiserer typen til programmet eller hendelsen. Kan være en av: CLI, WB,
+ARexx, dokk, start-tast eller nettverk.
+
+@item @code{Start-tast}
+Du kan spesifisere en start-tast for hvert programobjekt. Hvis denne start-tast
+hendelsen genereres, vil programmet bli startet. Merk: Programmet vil bli
+startet uten argumenter.
+
+@item @code{Utdatafil} (@file{NIL:})
+Filnavn til utdatafilen. Kan bare brukes med CLI program.
+
+@item @code{Sti} (sti fra ToolManager prosess)
+Denne strengen setter programmets søkesti. Du kan spesifisere flere kataloger
+ved separere dem med et ``;''. Fungerer bare i sammenheng med CLI-program.
+
+@item @code{Prioritet} (0)
+Setter prioriteten til den nye prosessen som kjører programmet.
+
+@item @code{Offentlig skjerm} (standard offentlige skjerm)
+Setter navnet på den allmenne skjermen som skal flyttes til front før
+programmet starter. Fungerer bare i sammenheng med @code{Til front}
+parameteren.
+
+@item @code{Stakk} (4096)
+Setter stakkstørrelsen til den nye prosessen som kjører programmet.
+
+@item @code{Til front} (Nei)
+Hvis du setter dette flagget til ``Ja'' så flyttes den offentlige skjermen
+spesifisert i @code{Offentlig skjerm} til front før programmet starter.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Objects/Image                                   ---
+@comment ----------------------------------------------------------------
+@node Bilde, Lyd, Program, Objekter
+@section Bildeobjekter
+@cindex Bildeobjekter
+
+Bildeobjekter spesifiserer bildedataene som brukes av ToolManager for ikoner
+eller dokker. Dette objektet tar bare et parameter:
+
+@table @code
+@item Filnavn
+Spesifiserer navnet på fila som ToolManager skal lese bildet fra. ToolManager
+prøver å finne ut hvilken type fil det er:
+
+@enumerate
+@item
+ToolManager forsøker å lese den som en IFF fil. ToolManager kan for øyeblikket
+lese ILBM (et bilde) eller ANIM (to eller flere bilder) filer.
+
+@item
+ToolManager forsøker å lese den som en ikon fil. Et ikon kan inneholde et eller
+to bilder.
+@end enumerate
+@end table
+
+Animasjoner støttes for øyeblikket bare av dokkobjekter. Ikonobjekter henter
+bare de to første bildene fra animasjonen for å lage et ikon. Hvis du ønsker å
+lage en animasjon for ToolManager, bør du følge disse retningslinjene:
+
+@table @asis
+@item Bilde 1
+Dette bør være et bilde som viser ikonets inaktive status.
+
+@item Bilde 2
+Dette bør være et bilde som viser ikonets aktive status. Normalt er dette en
+reversert kopi av det første bildet.
+
+@item Bilde 3 to N-1
+Dette er bildene for selve animasjonen. Hvert bilde vises i ca. 1/3 sekund.
+
+@item Bilde N
+Det siste bildet i animasjonen vises i et sekund. Etter dette vil det første
+bildet vises igjen.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Objekter/Lyd                                    ---
+@comment ----------------------------------------------------------------
+@node Lyd, Meny, Bilde, Objekter
+@section Lydobjekter
+@cindex Lyobjekter
+
+Et lydobjekt kan brukes til å gjøre ToolManager støyende. ToolManager selv
+har ikke noe mulighet til å spille av lyder, den bruker ARexx til å aktivere
+en ekstern lydavspiller. Dette objektet tar to parametere:
+
+@table @code
+@item Kommando
+Denne spesifiserer hvilken ARexx kommando som ToolManager sender for å
+aktivisere den eksterne lydavspilleren. For @code{upd} skulle dette bli noe
+sånt som @code{file samples:boing} som forteller @code{upd} til å spille av IFF
+samplingen @file{samples:boing}. @xref{Goodies}.
+
+@item ARexx Port
+Denne spesifiserer ARexx porten hvor ToolManager skal sende @code{command}.
+Standard er @code{PLAY} som er porten for programmet @code{upd}.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Seksjon: Objekter/Meny                                    ---
+@comment ----------------------------------------------------------------
+@node Meny, Ikon, Lyd, Objekter
+@section Menyobjekter
+@cindex Menyobjekter
+
+Menyobjekter kontrollerer alternativene i Workbenchs ``Verktøy''-meny.
+Objektnavnet blir brukt som menytekst. For å aktivisere et slikt objekt er det
+bare å velge menyalternativet. Merk: Virker bare hvis Workbench kjører.
+
+Dette objektet tar to parametre:
+
+@table @code
+@item Programobjekt
+Navnet på et programobjekt som skal aktiviseres når meny alternativet er valgt.
+Alle ikoner som er valgt på dette tidspunkt vil bli brukt som
+argumenter til programmet.
+
+@item Lydobjekt
+Navnet på et lydobjekt som skal aktiviseres når menyalternativet er valgt.
+@end table
+
+Merknad til ToolManager 1.X brukere: For å simulere den gamle verktøystypen
+``Dummy'' er det bare å lage et menyobjekt og @emph{ikke} spesifisere noe
+program- eller lydobjekt.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment TRS tar over her....
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Objects/Icon                                    ---
+@comment ----------------------------------------------------------------
+@node Ikon, Dokk, Meny, Objekter
+@section Ikonobjekter
+@cindex Ikonobjekter
+
+Ikonobjekter beskriver applikasjonsikoner i Workbench-vinduet. Et slikt
+objekt kan aktiviseres ved å dobbeltklippe det eller å slippe noen ikoner
+på applikasjonsikonet. Ikonobjekter virker bare når Workbench'en er i gang.
+
+Parametrene for denne objekttypen er følgende:
+
+@table @asis
+@item @code{Programobjekt}
+Dette er navnet til et programobjekt som skal startes når ikonet blir valgt.
+Alle ikoner som blir sluppet oppå applikasjonsikonet vil bli brukt som
+argumenter til programmet.
+
+@item @code{Bildeobjekt}
+Dette er navnet til et bildeobjekt. Bildedataene til dette obejktet blir brukt
+til å lage applikasjonsikonet.
+
+@item @code{Venstre kant} (standardverdi: 0)
+Dette setter den venstre kanten til applikasjonsikonet.
+
+@item @code{Vis navn} (standardverdi: Ja)
+Hvis denne parameteren er satt vil navnet til programobjektet bli brukt som
+navnet til applikasjonsikonet
+
+@item @code{Lydobjekt}
+Dette er navnet til et lydobjekt som skal aktiviseres når ikonet blir valgt.
+
+@item @code{Øverste kant} (standardverdi: 0)
+Dette setter den øverste kanten til applikasjonsikonet.
+@end table
+
+NB: Workbench er @emph{veldig} streng på plasseringen av ikoner. Hvis du
+spesifiserer koordinater som den ikke liker, vil den ignorere dem og plassere
+ikonet et annet sted på skjermen.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Objects/Dock                                    ---
+@comment ----------------------------------------------------------------
+@node Dokk, Aksess, Ikon, Objekter
+@section Dokkobjekter
+@cindex Dokkobjekter
+
+Dokkobjekter beskriver vinduer. Disse vinduene kombinerer flere verktøy som
+er representert med bilder eller trykk-knapper. For å starte et slikt verktøy
+er det bare å trykke på bildet eller trykk-knappen. Du kan selvsagt også slippe
+ikoner på bildet eller trykk-knappen for å bruke dem som argumenter til
+ verktøyet.
+
+Hver dokk har flere parametre. Standardverdiene vises i parantes:
+
+@table @asis
+@item @code{Aktivisert} (Ja)
+En dokk kan være aktiv (åpen) eller ikke (stengt).
+
+@item @code{I bakgrunnen} (Nei)
+Dette forteller dokk-vinduet at det ikke skal komme fremst av vinduene når det
+åpnes.
+
+@item @code{Sentrert} (Nei)
+Hvis denne parameteren er satt vil satt vil vinduet alltid bli sentrert til den
+nåværende mus-posisjonen når det åpnes.
+
+@item @code{Kolonner} (1)
+Denne parameteren setter antall verktøykolonner. Verktøy blir alltid sortert
+rekkevis, fra venstre kolonne mot kolonnen lengst til høyre.
+
+@item @code{Skrifttype} (Skjermens skrifttype)
+Hvis du har en dokk med parameteren @code{Text} satt, kan du velge skrifttypen
+til trykk-knappene med denne parameteren.
+
+@item @code{Fremst} (Nei)
+Hvis du setter denne parameteren vil dokk-vinduet alltid åpnes på den
+offentlige skjermen som er lengst fram.
+
+@item @code{Start-tast}
+Du kan sette en start-tast for dokk-objektet. Hvis denne start-tasten trykkes
+vil akiveringsstatusen til dokk-vinduet bli byttet om; dvs det vil bli åpnet
+eller lukket.
+
+@item @code{Venstre kant} (0)
+Denne parameteren setter venstrekanten til dokk-vinduet. Hvis parameteren
+@code{Sentrert} er satt, vil denne parameteren bli ignorert.
+
+@item @code{Meny} (Nei)
+Du kan ha en liten meny til hvert dokk-vindu. Denne menuen har to valg:
+
+@itemize
+@item @code{Steng dokk}
+Stenger dokk-vinduet.
+
+@item @code{Avslutt TM}
+Avslutter ToolManager
+@end itemize
+
+@item @code{Mønster} (Nei)
+Dokk-vinduet justerer seg selv til det største bilde i det. Hvert bilde i
+dokken har samme størrelse, og mindre bilder sentreres samt at de får en blank
+ramme rundt dem. Hvis de ikke liker denne blanke rammen kan du sette denne
+parameteren. Dermed vil rammen bli fylt med et mønster istedet.
+
+@item @code{Autosteng} (Nei)
+Når dennen parameteren er satt vil dokken automatisk bli stengt etter at et
+objekt i den er valgt. Dette er spesielt nyttig sammen med parametrene
+@code{Sentrert}, @code{Fremst} og en start-tast av typen @code{rawmouse}
+(@pxref{Start-taster}).
+
+@item @code{Offentlig skjerm} (Standard offentlig skjerm)
+Spesifiserer hvilken offentlig skjerm som dokken skal åpnes på. Hvis dokken er
+ble åpnet v.h.a. en startt-tast vil den offentlige skjermen bli flyttet fremst
+etter at dokk-vinduet har blitt åpnet. Denne parameteren vil bli ignorert hvis
+parameteren @code{Fremst} er satt.
+
+@item @code{Fast plass} (Nei)
+Vanligvis lagrer dokk-vinduet sin siste posisjon når du stenger det og kommer
+på den plassen når du åpner dokken igjen. Hvis du vil at dokken alltid skal
+komme på samme posisjon må du sette denne parameteren.
+
+@item @code{Tekst} (Nei)
+Du kan velge mellom bilder og trykk-knapper i dokk-vinduer med denne
+parameteren. Trykk-knapper er spesielt nyttige når de blir brukt sammen med
+parameteren @code{Autosteng}.
+
+@item @code{Tittel}
+Dette spesifiserer tittelen til dokk-vinduet. Hvis du skriver inn en tittel vil
+dokken bli et vanlig OS 2.0 vindu med dragbar, stengeknapp og dybdeknapp og
+ramme. Hvis du @emph{ikke} spesifiserer en tittel vil du få et dokk-vindu med
+bare dragbar og @emph{ingen} ramme.
+
+@item @code{Øverste kant} (0)
+Denne parameteren setter øverste kant til dokk-vinduet. Hvis parameteren
+@code{Centered} er satt vil denne parameteren bli ignorert.
+
+@item @code{Loddrett} (Nei)
+Hvis dokk-vinduet bare har en dragbar og ingen ramme, setter denne parameteren
+retningen til dragbar'en. Denne parameteren blir ignorert hvis du har skrevet
+inn en tittel til vinduet med parameteren @code{Tittel}.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Objects/Access                                  ---
+@comment ----------------------------------------------------------------
+@node Aksess, , Dokk, Objekter
+@section Aksessobjekter
+@cindex Aksessobjekter
+
+Aksessobjekter kontrollerer aksessrettighetene for nettverksforespørsler.
+Standard er at @emph{alle} forespørsler blir nektet, slik at en ToolManager
+utenfor maskinen ikke skal ødelegge operasjonene på din maskin ved å aktivisere
+noen av dine programobjekter. Med aksessobjekter kan du la spesifiserte
+maskiner aktivisere noen av dine programobjekter.
+
+Navnet til et aksessobjekt har en spesiell mening. Det blir sammenlignet med
+navnet til fjernmaskinen som sendte netverksforespørselen. ToolManager bruker
+følgende tre trinn for denne sammenligningen:
+
+@enumerate
+@item Sammenligne med det komplette vertsnavnet
+
+@item Sammenligne med ``realm''-navnet
+
+@item Se etter aksessobjektet med navn @code{anyone}
+@end enumerate
+
+Hvis et korresponderende objekt blir funnet så blir dette objektet brukt til
+aksessrettighetene til fjernmaskinen. Objektet med navn @code{anyone} blir
+brukt for alle nettverksforespørsler som ikke har et korresponderende
+aksessobjekt.
+
+Aksessobjektets har bare en parameter:
+
+@table @code
+@item Programobjekt
+Denne parameteren kan bli brukt flere ganger. Den spesifiserer hvilke
+programobjekter som kan bli aktivisert fra fjernmaskinen. Hvis du ikke
+spesifiserer @emph{noen} objektnavn kan fjernmaskinen aktivisere @emph{alle}
+programobjekter på din maskin.
+@end table
+
+@comment ----------------------------------------------------------------
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapter: Preferences                                     ---
+@comment ----------------------------------------------------------------
+@node Innstillinger, Bibliotek, Objekter, Topp
+@chapter ToolManager innstillinger
+@cindex Konfigurasjon
+@cindex Innstillinger
+@cindex Referanse: Innstillinger
+
+Med programmet for innstillinger kan du handtere den komplette konfigurasjonen
+av ToolManager. Denne konfigurasjonen hentes automastisk når du starter
+ToolManager. Programmet for innstillinger startes automatisk ved å dobbelklikke
+på dets ikon. Du vil da få fram hovedvinduet.
+
+Det fleste av knappene i innstillingsvinduene kan velges fra tastaturet ved å
+trykke en bestemt ``kortvalgstast''. Denne tasten er underlinjert (@code{_}).
+Merk at hvis du holder på å skrive inn en tekststreng, må du først trykke
+tasten RETURN før du kan bruke kortvalgstaster.
+
+@menu
+* Knappene i hovedvinduet::
+* Menyene til hovedvinduet::
+* Vinduet for å lage objekter:Vinduet for aa lage objekter.
+* Endringsvinduer::
+* Verktøytyper:Verktoeytyper.
+* CLI argumenter::
+@end menu
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Preferences/Main Window Gadgets                 ---
+@comment ----------------------------------------------------------------
+@node Knappene i hovedvinduet, Menyene til hovedvinduet, , Innstillinger
+@section Knappene i hovedvinduet
+
+Hovedvinduet har flere objektgrupper:
+
+@table @asis
+@item Objekttype
+Med denne knappen kan du velge hvilken objekttype som du ønsker å lage eller
+endre.
+
+@item Objektliste
+Denne listen viser alle objektene av en type. Du kan velge et objekt ved å
+klikke på navnet. Hvis du dobbeltklikker på navnet vil et endringsvindu bli
+åpnet.
+
+@item Flytt objekt
+Når et objekt er valgt kan du flytte det opp og ned i listen med disse
+knappene. Hvis du klikker på @code{Sorter}-knappen vil navnene i listen bli
+sortert alfabetisk.
+
+@item Behandle objekt
+Disse knappene behandler objekter. @code{Nytt} lager et nytt objekt av
+objekttypen som er valgt. Når du klikker på @code{Endre} vil det bli åpnet et
+endringsvindu for det valgte objektet. Med @code{Kopier} kan du lage en kopi av
+det valgte objektet. @code{Slett} sletter det valgte objektet.
+
+@item Konfigurasjon
+Du har flere valgmuligheter for å lagre konfigurasjonen. Med @code{Lagre} kan
+du lagre konfigurasjonen permanent på fila @file{ENVARC:ToolManager.prefs}. For
+å kun bruke innstilingene midlertidig må du bruke knappen @code{Bruk}. Denne
+vil lagre konfigurasjonen på fila @file{ENV:ToolManager.prefs}. Denne fila
+overlever ikke en reset av maskinen. For å teste konfigurasjonen uten å forlate
+programmet: Bruk @code{Test}-knappen. @code{Avbryt} går ut av programmet uten å
+lagre noe som helst.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Preferences/Main Window Menus                   ---
+@comment ----------------------------------------------------------------
+@node Menyene til hovedvinduet, Vinduet for aa lage objekter, Knappene i hovedvinduet, Innstillinger
+@section Menyene til hovedvinduet
+
+Hovedvinduet har flere menyvalg:
+
+@table @code
+@item Prosjekt
+Med menyvalget @code{Hente} og @code{Lagre som} kan du hente og lagre
+konfigurasjonen. Menyvalget @code{Info} åpner et informasjonsvindu. Menyvalget
+@code{Avslutt} vil gå ut av programmet uten å lagre.
+
+@item Endre
+Med disse menyvalgene gjenopprette gamle konfigurasjonen. @code{Sist lagret}
+henter inn den sist lagrede konfigurasjonen fra fila
+@file{ENVARC:ToolManager.prefs}. Med menyvalget @code{Gjenopprett} kan du hente
+inn den konfigurasjonen som var gjeldende før du startet opp programmet. Denne
+hentes fra fila @file{ENV:ToolManager.prefs}.
+
+@item Innstillinger
+Med menyvalget @code{Lage ikoner} kan du velge om menyvalget @code{Lagre som}
+skal lage et ikon for konfigurasjonsfila eller ikke.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Preferences/Create Objects Window               ---
+@comment ----------------------------------------------------------------
+@node Vinduet for aa lage objekter, Endringsvinduer, Menyene til hovedvinduet, Innstillinger
+@section Vinduet for å lage objekter
+
+Hvis du slipper et ikon oppå hovedvinduet vil vinduet ``Lage objekter'' åpnes.
+Her kan du velge hva slags type objekt som skal lages fra dette ikonet. Dette
+kan brukes til å legge til et program til din konfigurasjone på en enkel og
+rask måte.
+
+Du kan bare lage et programobjekt eller et bildeobjekt fra ikonet hvis du
+velger en av de to første valgmulighetene. Men du kan også lage en komplett
+meny og/eller ikonobjekt hvis du velger en av de tre siste valgmulighetene.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Preferences/Edit Windows                        ---
+@comment ----------------------------------------------------------------
+@node Endringsvinduer, Verktoeytyper, Vinduet for aa lage objekter, Innstillinger
+@section Endringsvinduer
+
+Hver objekttype har forskjellige endringsvinduer for å sette objektets
+parametre. For en detaljert liste over alle objektparametre; se
+@ref{Objekter}.
+
+Alle endringsvinduer har et felt for objektnavnet. Dette navnet er viktig siden
+det blir brukt som referanse til objektet. Merk at det ikke er innebygget noen
+kryssreferanse. Det betyr at hvis du forandrer navnet til et objekt som blir
+referert til fra et annet, vil denne referanse @emph{ikke} bli oppdatert. Du må
+updatere denne referansen manuelt.
+
+Trykk-knappene i endringsvinduene åpner forskjellige typer vinduer. Du kan
+velge en ting ved å klikke på det og trykke @code{OK}, eller du kan
+dobbeltklikke den. For å gå ut av vinduet uten endringer, trykk
+@code{Avbryt}-knappen. Hvis du vil renske et felt som bare kan velges via et
+vindu, åpne vinduet og trykk @code{OK}-knappen @emph{uten} å velge noe.
+
+Endringsvinduet for objekttypene program og bilde har en ekstra mulighet: Du
+kan ganske enkelt slippe et ikon på dem for å sette parametrene fra dette
+ikonet.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Preferences/Tooltypes                           ---
+@comment ----------------------------------------------------------------
+@node Verktoeytyper, CLI argumenter, Endringsvinduer, Innstillinger
+@section Verktøytyper
+@cindex Verktøytyper
+
+Når du starter innstillingsprogrammet fra Workbench har du mulighet til
+å sette flere verktøytyper i programikonet eller i konfigurasjonsfilas
+ikon for å kontrollere programmet.
+
+@table @code
+@item USE
+Hvis du setter denne verktøytypen i et ikon for en innstillingsfil vil
+innstillingsprogrammet innstallere denne fila som nåværende konfigurasjon.
+
+@item SAVE
+Hvis du setter denne verktøytypen i et ikon for en innstillingsfil vil
+innstillingsprogrammet innstallere denne fila som nåværende og permanent
+konfigurasjon.
+
+@item PUBSCREEN
+Denne verktøytypen forteller innstillingsprogrammet at det skal startes på
+den spesifiserte offentlige skjermen. Hvis du ikke setter denne verktøytypen
+vil nåværende offentlige skjerm bli brukt.
+
+@item CREATEICONS
+Når denne verktøytypen er satt til @code{YES} vil editoren lage et ikon
+for hver innstillingsfil som blir laget med menyvalget @code{Lagre som}.
+
+@item DEFAULTFONT
+Innstillingsprogrammet bruker vanligvis skrifttypen til den offentlige
+skjermen til å tegne trykk-knappene. Hvis denne verktøytypen er satt til
+@code{YES} vil den vanlige systemskrifttypen bli brukt istedet.
+
+@item XPOS
+Denne spesifiserer startposisjonen i x-retning til innstillingsprogrammet.
+
+@item YPOS
+Denne spesifiserer startposisjonen i y-retning til innstillingsprogrammet.
+
+@item MINLISTCOLUMNS
+Denne spesifiserer det minste antall kolonner i listeoversiktene til
+innstillingsprogrammet.
+
+@item MINLISTROWS
+Denne spesifiserer det minste antall kolonner i listeoversiktene til
+innstillingsprogrammet.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Preferences/CLI Arguments                       ---
+@comment ----------------------------------------------------------------
+@node CLI argumenter, , Verktoeytyper, Innstillinger
+@section CLI argumenter
+@cindex CLI argumenter
+
+Når programmet for innstillinger startes fra et shell bruker det følgende
+syntaks for kommandolinjeargumenter:
+
+@example
+FROM,EDIT/S,USE/S,SAVE/S,PUBSCREEN/K,DEFAULTFONT/S
+@end example
+
+@table @code
+@item FROM
+Denne parameteren spesifiserer navnet til innstillingsfila som
+innstillingsprogrammet skal hente inn.
+
+@item USE
+Hvis du setter denne parameteren vil innstillingsprogrammet installere fila
+spesifisert ved @code{FROM}-parameteren som nåværende konfigurasjon.
+
+@item SAVE
+Hvis du setter denne parameteren vil innstillingsprogrammet installere fila
+spesifisert ved @code{FROM}-parameteren som nåværende og permanent
+konfigurasjon.
+
+@item PUBSCREEN
+Denne parameteren forteller innstillingsprogrammet at det skal startes på
+den spesifiserte offentlige skjermen. Hvis du ikke setter denne verktøytypen
+vil nåværende offentlige skjerm bli brukt.
+
+@item DEFAULTFONT
+Innstillingsprogrammet bruker vanligvis skrifttypen til den offentlige
+skjermen til å tegne trykk-knappene. Hvis denne parameteren brukes, vil
+innstillingsprogrammet bruke den vanlige systemskrifttypen istedet.
+@end table
+
+@comment ----------------------------------------------------------------
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapter: Library                                         ---
+@comment ----------------------------------------------------------------
+@node Bibliotek, Start-taster, Innstillinger, Topp
+@chapter ToolManagers bibliotekgrensesnitt
+@cindex Bibliotekgrensesnitt
+@cindex Referanse: Bibliotekgrensesnitt
+@cindex ToolManagers bibliotekgrensesnitt
+
+ToolManagers ``handler'' er bygget inn i et Amiga bibliotek (``shared
+library''). Dette biblioteket tilbyr flere forskjellige funksjoner for å lage
+og manipulere ToolManager objekter, slik at du kan bruke dem i dine egne
+programmer.
+
+Det er for øyeblikket seks tilgjengelige funksjoner:
+
+@table @code
+@item AllocTMHandle()
+For å lage ToolManager objekter må du først allokere en TMHandle. Denne
+handleren lagrer all informasjon om dine objekter og blir brukt som referanse
+til dem. Merk at informasjonen som er lagret i denne handleren @emph{bare} er
+tilgjengelig fra programmet som lager den.
+
+@item FreeTMHandle()
+Denne funksjonen frigjør en TMHandle og alle ToolManager objekter som er
+assosiert via den. Hver @code{AllocTMHandle()} må ha en @code{FreeTMHandle()}!
+
+@item  CreateTMObjectTags()
+@itemx CreateTMObjectTagList()
+Denne funksjonen lager et ToolManager objekt. Du må supportere et navn,
+objekttypen and forskjellige ``tags'' for objektparametrene. Navnet til
+objektet er viktig siden det blir brukt som referanse til objektet.
+
+@item  ChangeTMObjectTags()
+@itemx ChangeTMObjectTagList()
+Du kan modifisere parametrene til et ToolManager objekt med denne funksjonen.
+Objekttilstanden vil bli oppdatert til de nye parametrene. NB: Bildeobjekter
+kan ikke modifiseres (ennå).
+
+@item DeleteTMObject()
+Med denne funksjonen kan du slette et ToolManager objekt. Hvis objeket er
+linket til andre objekter til de fortalt om endringen og deres tilstand vil bli
+endret.
+
+@item QuitToolManager()
+Denne funksjonen forteller ToolManagers handler at den skal slutte så snart
+som mulig.
+@end table
+
+Det komplette biblioteksgrensesnittet er tilgjengelig i AutoDoc format.
+(@pxref{Docs, Dokumentasjon}).
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapter: HotKeys                                         ---
+@comment ----------------------------------------------------------------
+@node Start-taster, Spoersmaal, Bibliotek, Topp
+@chapter Hvordan definere en start-tast?
+@cindex Introduksjon til start-taster
+@cindex Start-taster
+@cindex Referanse: Start-taster
+
+Dette kapitlet beskriver hvordan man definerer en start-tast som en inndata
+beskrivelsesstreng (``Input Description String'') som så blir parset av
+Commodities. Hver gang en start-tast blir aktivisert lager Commodities
+en hendelse som blir brukt av ToolManager til å starte programobjekter eller
+stenge/åpne dokkobjekter. En beskrivelesstrng har følgende syntaks:
+
+@example
+[<klasse>] @{[-][<kvalifikator>]@} [-][opptrykk] [<tastkode>]
+@end example
+
+Store og små bokstaver skilles ikke i nøkkelordene.
+
+@code{klasse} beskriver en InputEvent klasse. Denne parameteren er valgfri, og
+hvis den ikke oppgis brukes standardverdien @code{rawkey}. @xref{InputEvent
+klasser}.
+
+@code{kvalifikator}er er ``signaler'' som må/ikke må være satt når start-tasten
+blir aktivisert, ellers vil det ikke bli generert noen hendelse. For hver
+kvalifikator som må være satt må du ha med dette nøkkelordet. Alle andre som
+ikke oppgis blir sett på som ikke satt. Hvis du vil ignorere en kvalifikator;
+sett bare @code{-} foran dens nøkkelord. @xref{Kvalifikatorer}.
+
+Normalt vil en start-tast hendelse bli generert når en tast trykkes ned. Hvis
+hendelsen skulle bli generert når tasten slippes opp må du legge til
+nøkkelordet @code{opptrykk}. Hvis det skal genereres en hendelse både når
+tasten trykkes ned og slippes opp, bruk: @code{-opptrykk}.
+
+@code{tastkode} avhenger av klassen til InputEvent. @xref{Tastkoder}.
+
+@menu
+* InputEvent klasser::
+* Kvalifikatorer::
+* Tastkoder::
+* Eksempler på start-taster: Eksempler paa start-taster.
+@end menu
+
+Merk: Velg start-startene dine @emph{nøye} fordi Commodities har en høy
+prioritet i InputEvent handler kjeden. (Dvs: Den vil overta definisjoner som
+allerede brukes.)
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Hot Keys/Input Event classes                    ---
+@comment ----------------------------------------------------------------
+@node InputEvent klasser, Kvalifikatorer, , Start-taster
+@section InputEvent klasser
+@cindex Diskinserted
+@cindex Diskremoved
+@cindex InputEvent klasser
+@cindex Rawkey
+@cindex Rawmouse
+
+Commodities støtter de fleste InputEvent klasser som blir generert av
+input.device. Denne seksjonen beskriver de klassene som er mest nyttige å
+bruke som start-taster i ToolManager.
+
+@table @code
+@item rawkey
+Dette er standardklassen og den dekker alle tastaturhendelser. For eksempel
+@code{rawkey a} eller @code{a} lager en hendelse hver gang tasten ``a''
+trykkes. Du må spesifisere en tastkode for denne klassen. @xref{rawkey
+tastkoder,rawkey}.
+
+@item rawmouse
+Denne klassen beskriver alle hendelsene som kan lages med museknappene. Du må
+spesifisere en tastkode for denne klassen. @xref{rawmouse tastkoder,rawmouse}.
+
+@item diskinserted
+Hendelser i denne klassen genereres nå en disk blir satt inn i en
+diskettstasjon. Denne klassen har ingen tastkoder.
+
+@item diskremoved
+Hendelser i denne klassen genereres nå en disk blir satt inn i en
+diskettstasjon. Denne klassen har ingen tastkoder.
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Hot Keys/Qualifiers                             ---
+@comment ----------------------------------------------------------------
+@node Kvalifikatorer, Tastkoder, InputEvent klasser, Start-taster
+@section Kvalifikatorer
+@cindex Kvalifikatorer
+@cindex Liste: Kvalifikatorer
+
+Noen nøkkelord ble lagt til i Commodities V38. Disse er merket med en @code{*}.
+
+@table @asis
+@item @code{lshift}, @code{left_shift} *
+Venstre shift-tast.
+
+@item @code{rshift}, @code{right_shift} *
+Høyre shift-tast.
+
+@item @code{shift}
+Hvilken som helst shift-tast.
+
+@item @code{capslock}, @code{caps_lock} *
+Tasten ``Caps Lock''.
+
+@item @code{caps}
+Enten ``Caps Lock' eller shift.
+
+@item @code{control}, @code{ctrl} *
+Kontroll-tasten (`Ctrl'').
+
+@item @code{lalt}, @code{left_alt} *
+Venstre alt-tast.
+
+@item @code{ralt}, @code{right_alt} *
+Høyre alt-tast.
+
+@item @code{alt}
+Hvilken som helst alt-tast.
+
+@item @code{lcommand}, @code{lamiga} *, @code{left_amiga} *, @code{left_command} *
+Venstre Amiga/kommando-tast.
+
+@item @code{rcommand}, @code{ramiga} *, @code{right_amiga} *, @code{right_command} *
+Høyre Amiga/kommando-tast.
+
+@item @code{numericpad}, @code{numpad} *, @code{num_pad} *, @code{numeric_pad} *
+Dette nøkkelordet @emph{må} brukes for alle tastene på talltastaturet.
+
+@item @code{leftbutton}, @code{lbutton} *, @code{left_button} *
+Venstre museknapp. Se merknad under.
+
+@item @code{midbutton}, @code{mbutton} *, @code{middlebutton} *, @code{middle_button} *
+Midtre museknapp. Se merknad under.
+
+@item @code{rbutton}, @code{rightbutton} *, @code{right_button} *
+Høyre museknapp. Se merknad under.
+
+@item @code{repeat}
+Denne kvalifikatoren er satt når tastaturrepetisjon er aktivt. Bare nyttig for
+InputEvent-klassen @code{rawkey}.
+@end table
+
+Merk: Commodities V37 har en feil som forhindrer at @code{leftbutton},
+@code{midbutton} og @code{rbutton} kan brukes som kvalifikatorer. Denne feilen
+er rettet opp i V38.
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Hot Keys/Key codes                              ---
+@comment ----------------------------------------------------------------
+@node Tastkoder, Eksempler paa start-taster, Kvalifikatorer, Start-taster
+@section Tastkoder
+
+Hver InputEvent klasse har sine egne tastkoder:
+
+@menu
+* rawkey tastkoder::.
+* rawmouse tastkoder::
+@end menu
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Subsection: Hot Keys/Key codes/rawkey key codes          ---
+@comment ----------------------------------------------------------------
+@node rawkey tastkoder, rawmouse tastkoder, , Tastkoder
+@subsection Tastkoder for InputEvent-klassen @code{rawkey}
+@cindex Tastkoder for @code{rawkey}
+@cindex Liste: @code{rawkey} tastkoder
+
+Noen nøkkelord ble lagt til i Commodities V38. Disse er merket med en @code{*}.
+
+@table @asis
+@item @code{a}-@code{z}, @code{0}-@code{9}, @dots{}
+ASCII tegn.
+
+@item @code{f1}, @code{f2}, @dots{}, @code{f10}, @code{f11} *, @code{f12} *
+Funksjonstaster.
+
+@item  @code{up}, @code{cursor_up} *, @code{down}, @code{cursor_down} *
+@itemx @code{left}, @code{cursor_left} *, @code{right}, @code{cursor_right} *
+Kursortaster.
+
+@item  @code{esc}, @code{escape} *, @code{backspace}, @code{del}, @code{help}
+@itemx @code{tab}, @code{comma}, @code{return}, @code{space}, @code{spacebar} *
+Spesialtaster.
+
+@item  @code{enter}, @code{insert} *, @code{delete} *
+@itemx @code{page_up} *, @code{page_down} *, @code{home} *, @code{end} *
+Taster på talltastaturet. Sammen med hver av disse må kvalifikatoren
+@code{numericpad} brukes!
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Subsection: Hot Keys/Key codes/rawmouse key codes        ---
+@comment ----------------------------------------------------------------
+@node rawmouse tastkoder, , rawkey tastkoder, Tastkoder
+@subsection Tastkoder for InputEvent-klassen @code{rawmouse}
+@cindex Tastkoder for @code{rawmouse}
+@cindex Liste: @code{rawmouse} tastkoder
+
+Disse nøkkelordene ble lagt til i V38 av Commodities. De finnes ikke i V37.
+
+@table @code
+@item mouse_leftpress
+Trykk venstre musetast.
+
+@item mouse_middlepress
+Trykk midtre musetast.
+
+@item mouse_rightpress
+Trykk høyre musetast.
+@end table
+
+Merk: For å kunne bruke en av disse tastkodene må du også sette den
+korresponderende kvalifikatoren. For eksempel:
+
+@example
+rawmouse leftbutton mouse_leftpress
+@end example
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Section: Hot Keys/Hot Key examples                       ---
+@comment ----------------------------------------------------------------
+@node Eksempler paa start-taster, , Tastkoder, Start-taster
+@section Eksempler på start-taster
+@cindex Eksempler på start-taster
+
+@table @code
+@item ralt t
+Hold ned høyre Alt-tast og trykk ``t''
+
+@item ralt lalt t
+Hold ned venstre @emph{og} høyre Alt-tast og trykk ``t''
+
+@item alt t
+Hold ned hvilken som helst Alt-tast og trykk ``t''
+
+@item rcommand f2
+Hold ned høyre Amiga-tast og trykk den andre funksjonstasten
+
+@item numericpad enter
+Trykk Enter på talltastaturet
+
+@item rawmouse midbutton leftbutton mouse_leftpress
+Hold ned midtre musetast og trykk venstre museknapp
+
+@item diskinserted
+Sett inn en disk i en diskettstasjon
+@end table
+
+@comment ----------------------------------------------------------------
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapter: Questions                                       ---
+@comment ----------------------------------------------------------------
+@node Spoersmaal, Historie, Start-taster, Topp
+@appendix Spørsmål og svar om ToolManager
+@cindex Spørsmål
+@cindex Svar
+
+Her er svarene til de vansligste spørsmålene om ToolManager:
+
+@itemize @minus
+@item Hvorfor kan ikke ToolManager lage flere ``Tools''-menyer eller sub-menyer?
+
+Flere menyer eller sub-menyer er for tiden ikke støttet av systemprogramvaren.
+For å lage dem må du @emph{``hack'e''} dem inn i systemet, noe som kan
+resultere i et ustabilt system. Jeg har ikke lyst til å lage ustabli
+programvare, så jeg vil ikke implementere slikt i ToolManager.
+
+@item WB programmer vil ikke starte, men alle andre programtypene virker.
+
+ToolManager bruker programmet @code{L:WBStart-Handler} for å starte
+WB-programmer. Det er to årsaker til at ToolManager ikke kan starte dette
+programmet:
+
+@itemize
+@item Fila @file{L:WBStart-Handler} finnes ikke. Vennligst kopier den inn fra
+distribusjonsarkivet.
+
+@item Flagget ``execute'' (e) er ikke satt på fila. Bruk følgende kommando til å sette
+flagget: @code{protect L:WBStart-Handler +e}
+@end itemize
+
+@item Hvordan lager jeg horisontale dokk-vinduer?
+
+Sett antall kolonner til antallet objekter i dokkobjektet.
+
+@item Hvordan lager jeg et utdatavindu for CLI programmer?
+
+Utdatavinduer lages med enheten @code{CON:}. Bruk følgende filnavn til å lage
+et vindu som åpner seg automatisk og har stengeknapp, og som ikke stenger seg
+med en gang programmet er ferdig:
+
+@example
+CON:10/10/640/100/Utdata-vindu/AUTO/CLOSE/WAIT
+@end example
+
+@code{CON:}-enheten har mange opsjoner, se i din AmigaDOS manual for mer
+informasjon.
+
+@item Hvordan setter jeg inn argumenter i midten av en CLI/Arexx kommandolinje?
+
+Normalt legges alle argumenter til slutten av kommandolinja. For å sette inn
+argumenter hvor som helst i kommandolinja bruker ToolManager samme @code{[]}
+syntaks som det som brukes av kommandoen @code{alias} i AmigaShell. For
+eksempel:
+
+@example
+Dir [] all
+@end example
+
+vil sette inn alle argumentene før nøkkelordet @code{all}.
+
+@item Hvordan sletter jeg en lenke fra et komplekst objekt til et enkelt objelt?
+
+Etter å ha valgt knappen ``xxx objekt'', trykk bare ``OK''-knappen
+@emph{without} å velge et objekt. Dette betyr at du ikke velger noe objekt og
+derfor vil lenken bli slettet.
+
+@item Hvordan lager jeg sub-dokker?
+
+Du må bruke programobjekter av typen dokk. Legg slike objekter inn i
+hoveddokken og de vil dermed åpne/stenge andre dokker.
+
+@item ToolManager henger seg etter å ha startet en nettverkskommando.
+
+Det er et problem med netverksprogramvaren som mangler en lokal timeout
+forespørsel. Så hvis din maskin kalles @code{Vert1} og du har et programobjekt
+av typen nettverk, med kommandoen @code{Objekt@@Vert1}, vil ToolManager gå i
+deadlock når du aktiviseren den. Bruk kun navn til fjernmaskiner!
+@end itemize
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapter: History                                         ---
+@comment ----------------------------------------------------------------
+@node Historie, Takk til, Spoersmaal, Topp
+@appendix ToolManagers historie
+@cindex Historie
+@cindex Programversjoner
+@cindex Versjoner
+
+På ordre fra Stefan Becker skal dette kapitlet ikke oversettes!
+
+@comment ----------------------------------------------------------------
+@comment Note to translators:
+@comment This chapter should normally not be translated
+@comment ----------------------------------------------------------------
+
+@table @asis
+@item 2.1, Release date 16.05.1993
+
+
+@itemize @minus
+
+@item New Exec object types: Dock, Hot Key, Network
+
+@item New Dock object flags: Backdrop, Sticky
+
+@item New object type: Access
+
+@item Network support
+
+@item Editor main window is now an AppWindow
+
+@item Gadget keyboard shortcuts in the preferences editor
+
+@item New tooltypes for the preferences editor
+
+@item Several bug fixes
+
+@item Enhanced documentation
+
+@end itemize
+
+
+@item 2.0, Release date 26.09.1992, Fish Disk #752
+
+
+@itemize @minus
+
+@item Complete new concept (object oriented)
+
+@item (Almost) Complete rewrite
+
+@item ToolManager is now split up into two parts
+
+@item Main handler is now embedded into a shared library
+
+@item Configuration is now handled by a Preferences program
+
+@item Configuration file format has changed again :-) It is an IFF File now
+and resides in ENV:
+
+@item Multiple Docks and multi-column Docks
+
+@item Docks with new window design
+
+@item Dock automatically detects largest image size
+
+@item Sound support
+
+@item Direct ARexx support for Exec objects
+
+@item ToolManager can be used without the Workbench. If the Workbench isn't
+running, it won't use any App* features.
+
+@item Locale support
+
+@item Path from Workbench will be used for CLI tools
+
+@item Seperate Handler Task for starting WB processes
+
+@end itemize
+
+
+@item 1.0 upto 1.5
+Please look into the english documentation for further information.
+
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Chapter: Credits                                         ---
+@comment ----------------------------------------------------------------
+@node Takk til, Indeks, Historie, Topp
+@appendix Forfatteren vil takke@dots{}
+@cindex Takk til
+
+ToolManager har gjennomgått flere utviklingsfaser siden den første
+implementasjonen midt i 1990. Dette utviklingen har ikke vært mulig hvis jeg
+ikke hadde fått en enorm tilbakemelding fra forskjellige brukere av
+ToolManager. Mange idéer og muligheter har blitt lagt til på grunn av
+dette@dots{}
+
+Derfor vil jeg takke:
+
+@table @asis
+@item For alfa/betatesting, idéer og feilrapporter:
+
+Amigaseksjonen av vår lokale computerklubb (Computerclub an der RWTH Aachen),
+Olaf 'Olsen' Barthel, Georg Hessmann (Gucky), Markus Illenseer (ill), Klaus
+Melchior, Rickard Olsson (Richie), Matthias Scheler (Tron), Ralph Schmidt
+(laire), Roger Westerlund (Budda), Juergen Weinelt, Brian Wright (SteveVai),
+Petra Zeidler (stargazer) og mange andre@dots{}
+
+@item Matthew Dillon
+
+Uten ditt @strong{utmerkede} C utviklingssystem DICE og forskjellige andre
+verktøy ville ikke ToolManager eksistere!
+
+@item For deres glimrende grafiske arbeid:
+
+Andreas Harrenberg, Georg Hessmann, Michael ``Mick'' Hohmann, Markus
+Illenseer, Oliver Koenen, Klaus Melchior, Rickard Olsson, Jan Peter, Matthias
+Scheler, Brian Wright
+
+@item For oversettelsene:
+
+Tomi Blinnikka (suomi), Jorn Halonen (norsk), Dr.@: Peter Kittel (deutsch),
+Jasper Kehlet (dansk), Klaus Melchior (eifel), Rickard Olsson (svenska),
+Rullier Pascal (français), Marc Schaefer (français), Tor Rune Skoglund (norsk),
+Reinhard Spisser (italiano), Andrea Suatoni (italiano)
+
+@item Alle gutter og jenter i West Chester:
+
+For utviklingen av Amiga og det superbe operativsystemet.
+
+@item Alle brukerne som sendte meg penger:
+
+Jeg spurte ikke etter det i 1.X-versjonene, men det er hyggelig å se at noen
+setter pris på arbeidet mitt.
+
+@item Alle brukerne som sendte meg et brev:
+
+Jeg likte virkelig brevene deres!
+
+@item og alle dem jeg glemte å nevne@dots{}
+@end table
+
+@comment ----------------------------------------------------------------
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Unnumbered chapter: Index                                ---
+@comment ----------------------------------------------------------------
+@node Indeks, , Takk til, Topp
+@unnumbered Indeks
+
+
+@printindex cp
+
+@comment ----------------------------------------------------------------
+
+
+
+
+
+@comment ----------------------------------------------------------------
+@comment --- Table of Contents (appears only in printed manual)       ---
+@comment ----------------------------------------------------------------
+@contents
+@comment ----------------------------------------------------------------
+
+@comment Dette ER faktisk slutten :-)
+
+@bye
