@@ -1,0 +1,58 @@
+#
+# SAS/C smakefile for ToolManager locale (CatComp catalogues).
+# Run from Source/locale: smake
+# Builds toolmanager.h, empty.ct, and per-language toolmanager.catalog.
+# Requires CatComp from the NDK or AmigaOS.
+# All locale source files (.cd, .ct) must be encoded in Latin-1 (ISO-8859-1).
+#
+desc = toolmanager.cd
+head = toolmanager.h
+empty = empty.ct
+catdir = Locale/Catalogs
+
+all: $(head) $(empty) $(catdir)/deutsch/toolmanager.catalog $(catdir)/eifel/toolmanager.catalog $(catdir)/francais/toolmanager.catalog $(catdir)/italiano/toolmanager.catalog $(catdir)/nederlands/toolmanager.catalog $(catdir)/norsk/toolmanager.catalog $(catdir)/suomi/toolmanager.catalog $(catdir)/svenska/toolmanager.catalog
+
+$(head): $(desc)
+	CatComp $(desc) CFILE $(head)
+
+$(empty): $(desc)
+	CatComp $(desc) CTFILE $(empty)
+
+$(catdir)/deutsch/toolmanager.catalog: deutsch.ct $(desc)
+	-makedir $(catdir)/deutsch
+	CatComp $(desc) deutsch.ct CATALOG $(catdir)/deutsch/toolmanager.catalog
+
+$(catdir)/eifel/toolmanager.catalog: eifel.ct $(desc)
+	-makedir $(catdir)/eifel
+	CatComp $(desc) eifel.ct CATALOG $(catdir)/eifel/toolmanager.catalog
+
+$(catdir)/francais/toolmanager.catalog: francais.ct $(desc)
+	-makedir $(catdir)/francais
+	CatComp $(desc) francais.ct CATALOG $(catdir)/francais/toolmanager.catalog
+
+$(catdir)/italiano/toolmanager.catalog: italiano.ct $(desc)
+	-makedir $(catdir)/italiano
+	CatComp $(desc) italiano.ct CATALOG $(catdir)/italiano/toolmanager.catalog
+
+$(catdir)/nederlands/toolmanager.catalog: nederlands.ct $(desc)
+	-makedir $(catdir)/nederlands
+	CatComp $(desc) nederlands.ct CATALOG $(catdir)/nederlands/toolmanager.catalog
+
+$(catdir)/norsk/toolmanager.catalog: norsk.ct $(desc)
+	-makedir $(catdir)/norsk
+	CatComp $(desc) norsk.ct CATALOG $(catdir)/norsk/toolmanager.catalog
+
+$(catdir)/suomi/toolmanager.catalog: suomi.ct $(desc)
+	-makedir $(catdir)/suomi
+	CatComp $(desc) suomi.ct CATALOG $(catdir)/suomi/toolmanager.catalog
+
+$(catdir)/svenska/toolmanager.catalog: svenska.ct $(desc)
+	-makedir $(catdir)/svenska
+	CatComp $(desc) svenska.ct CATALOG $(catdir)/svenska/toolmanager.catalog
+
+clean:
+	-delete $(head) $(empty) quiet
+	-delete $(catdir)/deutsch/toolmanager.catalog $(catdir)/eifel/toolmanager.catalog quiet
+	-delete $(catdir)/francais/toolmanager.catalog $(catdir)/italiano/toolmanager.catalog quiet
+	-delete $(catdir)/nederlands/toolmanager.catalog $(catdir)/norsk/toolmanager.catalog quiet
+	-delete $(catdir)/suomi/toolmanager.catalog $(catdir)/svenska/toolmanager.catalog quiet

@@ -1,0 +1,499 @@
+## version $VER: toolmanager.catalog 3.0 (16.5.1993)
+## codeset 0
+## language français
+;
+; français.ct
+;
+; ToolManager 2.1 (locale translation file)
+;
+; (c) 1990-93 Stefan Becker
+;
+; Translation done by:Marc SCHAEFER  <sysadm@alphanet.ch>
+;                 and Pascal Rullier <rullier@platon.emi.u-bordeaux.fr>
+; NOTE: Exec/Image/Sound/Menu/Icon/Dock/Access have NOT been translated.
+;
+MSG_WINDOW_TOP_GAD
+Premier Objet
+; Top
+;
+MSG_WINDOW_UP_GAD
+Précédent
+; Up
+;
+MSG_WINDOW_DOWN_GAD
+Suivant
+; Down
+;
+MSG_WINDOW_BOTTOM_GAD
+Dernier Objet
+; Bottom
+;
+MSG_WINDOW_REMOVE_GAD
+Supprimer
+; Remove
+;
+MSG_WINDOW_NAME_GAD
+Nom de l'_Objet
+; Object _Name
+;
+MSG_WINDOW_COMMAND_GAD
+Co_mmande
+; Command
+;
+MSG_WINDOW_HOTKEY_GAD
+_Raccourci-clavier
+; Hot Key
+;
+MSG_WINDOW_PUBSCREEN_GAD
+Ecran Pu_blic
+; _Public Screen
+;
+MSG_WINDOW_POSITION_OPEN_LABEL
+Positionnement...
+; Open Position Window...
+;
+MSG_WINDOW_POSITION_CLOSE_LABEL
+Terminer positionnement
+; Close Position Window
+;
+MSG_WINDOW_LEFTEDGE_GAD
+Bord Gauche
+; Left Edge
+;
+MSG_WINDOW_TOPEDGE_GAD
+Bord Supérieur
+; Top Edge
+;
+MSG_WINDOW_EXEC_GAD
+Objet _Exec...
+; Exec Object...
+;
+MSG_WINDOW_IMAGE_GAD
+Objet _Image...
+; Image Object...
+;
+MSG_WINDOW_SOUND_GAD
+Objet _Sound...
+; Sound Object...
+;
+MSG_WINDOW_OK_GAD
+O_K
+; OK
+;
+MSG_WINDOW_CANCEL_GAD
+_Annuler
+; Cancel
+;
+MSG_MAINWIN_TITLE
+Configuration ToolManager
+; ToolManager Preferences
+;
+MSG_MAINWIN_TYPE_GAD
+Type d'_Objet
+; Object Type
+;
+MSG_MAINWIN_TYPE_EXEC_CYCLE_LABEL
+Exec
+; Exec
+;
+MSG_MAINWIN_TYPE_IMAGE_CYCLE_LABEL
+Image
+; Image
+;
+MSG_MAINWIN_TYPE_SOUND_CYCLE_LABEL
+Sound
+; Sound
+;
+MSG_MAINWIN_TYPE_MENU_CYCLE_LABEL
+Menu
+; Menu
+;
+MSG_MAINWIN_TYPE_ICON_CYCLE_LABEL
+Icon
+; Icon
+;
+MSG_MAINWIN_TYPE_DOCK_CYCLE_LABEL
+Dock
+; Dock
+;
+MSG_MAINWIN_TYPE_ACCESS_CYCLE_LABEL
+Access
+; Access
+;
+MSG_MAINWIN_LIST_GAD
+Liste d'objets
+; Object List
+;
+MSG_MAINWIN_SORT_GAD
+T_rier
+; Sort
+;
+MSG_MAINWIN_NEW_GAD
+_Créer...
+; New...
+;
+MSG_MAINWIN_EDIT_GAD
+_Modifier...
+; Edit...
+;
+MSG_MAINWIN_COPY_GAD
+Co_pier
+; Copy
+;
+MSG_MAINWIN_SAVE_GAD
+_Sauver
+; Save
+;
+MSG_MAINWIN_USE_GAD
+_Utiliser
+; Use;
+MSG_MAINWIN_TEST_GAD
+_Tester
+; Test
+;
+MSG_MAINWIN_PROJECT_MENU_LABEL
+Projet
+; Project
+;
+MSG_MAINWIN_OPEN_MENU_LABEL
+Ouvrir...
+; Open...
+;
+MSG_MAINWIN_OPEN_MENU_SHORTCUT
+O
+; O
+;
+MSG_MAINWIN_APPEND_MENU_LABEL
+Ajouter...
+; Append...
+;
+MSG_MAINWIN_SAVEAS_MENU_LABEL
+Sauver sous...
+; Save As...
+;
+MSG_MAINWIN_SAVEAS_MENU_SHORTCUT
+A
+; A
+;
+MSG_MAINWIN_ABOUT_MENU_LABEL
+A propos...
+; About...
+;
+MSG_MAINWIN_QUIT_MENU_LABEL
+Quitter
+; Quit
+;
+MSG_MAINWIN_QUIT_MENU_SHORTCUT
+Q
+; Q;
+MSG_MAINWIN_EDIT_MENU_LABEL
+Modifier
+; Edit
+;
+MSG_MAINWIN_LASTSAVED_MENU_LABEL
+Reprendre dernier état sauvegardé
+; Last Saved
+;
+MSG_MAINWIN_LASTSAVED_MENU_SHORTCUT
+E
+; L
+;
+MSG_MAINWIN_RESTORE_MENU_LABEL
+Reprendre valeurs initiales
+; Restore
+;
+MSG_MAINWIN_RESTORE_MENU_SHORTCUT
+R
+; R
+;
+MSG_MAINWIN_SETTINGS_MENU_LABEL
+Options
+; Settings
+;
+MSG_MAINWIN_CREATEICONS_MENU_LABEL
+Créer les icônes?
+; Create Icons?
+;
+MSG_MAINWIN_CREATEICONS_MENU_SHORTCUT
+I
+; I
+;
+MSG_MAINWIN_WRITE_ERROR
+Ne peut pas écrire le fichier '%s' !
+; Couldn't write to file '%s'!
+;
+MSG_EXECWIN_TITLE
+Modifier l'objet Exec
+; Edit Exec Object
+;
+MSG_EXECWIN_NEWNAME
+Nouvel objet Exec
+; New Exec Object;
+MSG_EXECWIN_EXECTYPE_GAD
+Mode _Exec
+; Exec Type
+;
+MSG_EXECWIN_CURRENTDIR_GAD
+_Tiroir courant
+; Current _Directory
+;
+MSG_EXECWIN_OUTPUT_GAD
+_Fichier sortie
+; Output File
+;
+MSG_EXECWIN_PATH_GAD
+_Chemin
+; Path
+;
+MSG_EXECWIN_STACK_GAD
+_Pile
+; Stack
+;
+MSG_EXECWIN_PRIORITY_GAD
+Pr_iorité
+; P_riority;
+MSG_EXECWIN_DELAY_GAD
+_Délai
+; Delay
+;
+MSG_EXECWIN_ARGUMENTS_GAD
+Ar_guments
+; _Arguments
+;
+MSG_EXECWIN_TOFRONT_GAD
+A_u premier plan
+; To Front
+;
+MSG_IMAGEWIN_TITLE
+Modification d'objet Image
+; Edit Image Object
+;
+MSG_IMAGEWIN_NEWNAME
+Nouvel objet Image
+; New Image Object
+;
+MSG_IMAGEWIN_FILE_GAD
+Nom du _Fichier
+; _File Name
+;
+MSG_SOUNDWIN_TITLE
+Modification d'objet Sound
+; Edit Sound Object
+;
+MSG_SOUNDWIN_NEWNAME
+Nouvel objet Sound
+; New Sound Object
+;
+MSG_SOUNDWIN_AREXX_GAD
+Port A_Rexx
+; _ARexx Port
+;
+MSG_MENUWIN_TITLE
+Modification d'objet Menu
+; Edit Menu Object
+;
+MSG_MENUWIN_NEWNAME
+Nouvel objet Menu
+; New Menu Object
+;
+MSG_ICONWIN_TITLE
+Modification d'objet Icon
+; Edit Icon Object
+;
+MSG_ICONWIN_NEWNAME
+Nouvel objet Icon
+; New Icon Object
+;
+MSG_ICONWIN_SHOWNAME_GAD
+_Montrer le nom
+; S_how Name
+;
+MSG_DOCKWIN_TITLE
+Modification d'objet Dock
+; Edit Dock Object
+;
+MSG_DOCKWIN_NEWNAME
+Nouvel objet Dock
+; New Dock Object
+;
+MSG_DOCKWIN_TITLE_GAD
+_Nom de la Fenêtre
+; _Window Title
+;
+MSG_DOCKWIN_COLUMNS_GAD
+Colonne_s
+; Column_s
+;
+MSG_DOCKWIN_FONT_GAD
+_Police...
+; _Font...
+;
+MSG_DOCKWIN_ACTIVATED_GAD
+Ac_tivée
+; Act_ivated
+;
+MSG_DOCKWIN_BACKDROP_GAD
+Arr_ière-plan
+; _Backdrop
+;
+MSG_DOCKWIN_CENTERED_GAD
+C_entrée
+; Centere_d
+;
+MSG_DOCKWIN_FRONTMOST_GAD
+Pre_mier plan
+; F_rontmost;
+MSG_DOCKWIN_MENU_GAD
+Men_u
+; _Menu
+;
+MSG_DOCKWIN_PATTERN_GAD
+_Fond
+; P_attern;
+MSG_DOCKWIN_POPUP_GAD
+Sur _Demande
+; Pop _Up
+;
+MSG_DOCKWIN_STICKY_GAD
+Co_llée
+; Stick_y;
+MSG_DOCKWIN_TEXT_GAD
+Te_xte
+; Te_xt;
+MSG_DOCKWIN_VERTICAL_GAD
+_Verticale
+; _Vertical
+;
+MSG_DOCKWIN_EDITTOOLS_GAD
+Modifier la liste d'outils...
+; _Edit Tools List...
+;
+MSG_DOCKLISTWIN_TITLE
+Modification de la liste d'outils
+; Edit Tools List
+;
+MSG_DOCKLISTWIN_TOOLS_GAD
+Liste d'outils
+; Tool List
+;
+MSG_DOCKLISTWIN_NEW_GAD
+_Nouveau
+; _New
+;
+MSG_ACCESSWIN_TITLE
+Modification d'objet Access
+; Edit Access Object
+;
+MSG_ACCESSWIN_NEWNAME
+Nouvel objet Access
+; New Access Object
+;
+MSG_ACCESSWIN_ENTRIES_GAD
+Objets Exec
+; Exec objects
+;
+MSG_ACCESSWIN_ADD_GAD
+A_jouter
+; _Add
+;
+MSG_SELECTWIN_TITLE
+Créer des objets
+; Create objects
+;
+MSG_SELECTWIN_OBJECT_GAD
+_Création d'Objets
+; O_bjects to create
+;
+MSG_SELECTWIN_MENU_MX_LABEL
+Exec & Menu
+; Exec & Menu
+;
+MSG_SELECTWIN_ICON_MX_LABEL
+Exec, Image & Icon
+; Exec, Image & Icon
+;
+MSG_SELECTWIN_MENUICON_MX_LABEL
+Exec, Image, Menu & Icon
+; Exec, Image, Menu & Icon;
+MSG_MOVEWIN_DRAG_GAD
+Déplacer moi!
+; Move me!
+;
+MSG_FILEREQ_TITLE_FILE
+Choix d'un fichier
+; Select File;
+MSG_FILEREQ_TITLE_DRAWER
+Choix d'un tiroir
+; Select Drawer
+;
+MSG_FILEREQ_OK_GAD
+Ok
+; Ok
+;
+MSG_FILEREQ_SAVE_GAD
+Sauver
+; Save
+;
+MSG_FILEREQ_CANCEL_GAD
+Annuler
+; Cancel
+;
+MSG_FONTREQ_TITLE
+Choix de la police
+; Choose Font
+;
+MSG_LISTREQ_TITLE_EXEC
+Choix d'un objet Exec
+; Choose Exec Object
+;
+MSG_LISTREQ_TITLE_IMAGE
+Choix d'un objet Image
+; Choose Image Object
+;
+MSG_LISTREQ_TITLE_SOUND
+Choix d'un objet Sound
+; Choose Sound Object
+;
+MSG_LISTREQ_TITLE_DOCK
+Choix d'un objet Dock
+; Choose Dock Object
+;
+MSG_LISTREQ_TITLE_PUBSCREEN
+Choix d'un Ecran Public
+; Choose Public Screen
+;
+MSG_HOSTREQ_TITLE
+Choix d'un hôte
+; Choose Host/Realm Name;
+MSG_HANDLER_COMMODITIES_DESCRIPTION
+Etend la facilité d'emploi du WB
+; Extends Workbench's usability
+;
+MSG_HANDLER_DOCK_MENU_LABEL
+Menu Dock
+; Dock Menu
+;
+MSG_HANDLER_CLOSE_MENU_LABEL
+Fermer Dock
+; Close Dock
+;
+MSG_HANDLER_CLOSE_MENU_SHORTCUT
+F
+; C
+;
+MSG_HANDLER_QUIT_MENU_LABEL
+Quitter TM
+; Quit TM
+;
+MSG_HANDLER_QUIT_MENU_SHORTCUT
+Q
+; Q
+;
+MSG_UTILITIES_QUITREQ_TEXT
+Quitter ToolManager ?
+; Quit ToolManager?
+;
+MSG_UTILITIES_QUITREQ_GAD
+Oui|Non
+; Yes|No
+;
