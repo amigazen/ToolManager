@@ -1,0 +1,25 @@
+#
+# SAS/C smakefile for toolmanager.library link library (C varargs stubs).
+# Run from Programmers/dlib: smake
+# Builds tm.lib from create.c and change.c for linking with SAS/C programs.
+# For full LVO stubs use Programmers/slib (asm + tmlib.c) instead.
+#
+inc = /include
+opts = NOLINK INCLUDEDIR=$(inc)
+
+objs = create.o change.o
+dest = tm.lib
+
+all: $(dest)
+
+$(dest): $(objs)
+	oml $(dest) r $(objs)
+
+create.o: create.c
+	sc $(opts) create.c
+
+change.o: change.c
+	sc $(opts) change.c
+
+clean:
+	-delete \#?.o $(dest) quiet
