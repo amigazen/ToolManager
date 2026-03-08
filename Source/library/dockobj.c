@@ -96,11 +96,11 @@ static void SafeCloseWindow(struct Window *w)
  Forbid();
 
  /* Remove all messsages for this window */
- msg=GetHead(&w->UserPort->mp_MsgList);
+ msg=(struct IntuiMessage *)GetHead(&w->UserPort->mp_MsgList);
  while (msg)
   /* Does this message point to the window? */
   if (msg->IDCMPWindow==w) {
-   struct IntuiMessage *nextmsg=GetSucc(msg);
+   struct IntuiMessage *nextmsg=(struct IntuiMessage *)GetSucc((struct Node *)msg);
 
    /* Yes. Remove it from port */
    Remove((struct Node *) msg);
@@ -112,7 +112,7 @@ static void SafeCloseWindow(struct Window *w)
    msg=nextmsg;
   }
    /* No. Get pointer to next message */
-  else msg=GetSucc(msg);
+  else msg=(struct IntuiMessage *)GetSucc((struct Node *)msg);
 
  /* clear UserPort so Intuition will not free it */
  w->UserPort=NULL;
@@ -123,12 +123,12 @@ static void SafeCloseWindow(struct Window *w)
  /* turn multitasking back on */
  Permit();
 
- DEBUG_PRINTF("Closing window\n");
+ DEBUG_PUTSTR("Closing window\n");
 
  /* and really close the window */
  CloseWindow(w);
 
- DEBUG_PRINTF("Window closed\n");
+ DEBUG_PUTSTR("Window closed\n");
 }
 
 /* Pattern */
@@ -172,7 +172,7 @@ static void OpenDockWindow(struct TMObjectDock *tmobj)
 
    /* Get a pointer to the public screen list */
    if (pubsclist=LockPubScreenList()) {
-    struct PubScreenNode *pubscnode=GetHead(pubsclist);
+    struct PubScreenNode *pubscnode=(struct PubScreenNode *)GetHead(pubsclist);
     UBYTE namebuf[MAXPUBSCREENNAME+1];
 
     /* Scan list */
@@ -185,7 +185,7 @@ static void OpenDockWindow(struct TMObjectDock *tmobj)
      }
 
      /* get a pointer to next node */
-     pubscnode=GetSucc(pubscnode);
+     pubscnode=(struct PubScreenNode *)GetSucc((struct Node *)pubscnode);
     }
 
     /* Release public screen list */
@@ -836,11 +836,11 @@ struct TMObject *CreateTMObjectDock(struct TMHandle *handle, char *name,
      OpenDockWindow(tmobj);
 
     /* All OK */
-    return(tmobj);
+    return((struct TMObject *)tmobj);
    }
 
    /* Free resources */
-   if (tmobj->do_CxObj) SafeDeleteCxObjAll(tmobj->do_CxObj,&tmobj->do_Link);
+   if (tmobj->do_CxObj) SafeDeleteCxObjAll((struct CxObj *)tmobj->do_CxObj,&tmobj->do_Link);
   }
   FreeTools(tmobj);
  }
@@ -858,7 +858,7 @@ BOOL DeleteTMObjectDock(struct TMObjectDock *tmobj)
  DeleteAllLinksTMObject((struct TMObject *) tmobj);
 
  /* Free resources */
- if (tmobj->do_CxObj) SafeDeleteCxObjAll(tmobj->do_CxObj,&tmobj->do_Link);
+ if (tmobj->do_CxObj) SafeDeleteCxObjAll((struct CxObj *)tmobj->do_CxObj,&tmobj->do_Link);
 
  /* Close window and free its resources */
  if (tmobj->do_Window) CloseDockWindow(tmobj);
@@ -877,9 +877,9 @@ BOOL DeleteTMObjectDock(struct TMObjectDock *tmobj)
 }
 
 /* Change a Dock object */
-struct TMObject *ChangeTMObjectDock(struct TMHandle *handle,
-                                    struct TMObjectDock *tmobj,
-                                    struct TagItem *tags)
+BOOL ChangeTMObjectDock(struct TMHandle *handle,
+                        struct TMObjectDock *tmobj,
+                        struct TagItem *tags)
 {
  struct TagItem *ti,*tstate;
  struct DockTool *dt;
@@ -908,7 +908,7 @@ struct TMObject *ChangeTMObjectDock(struct TMHandle *handle,
                         }
                         break;
    case TMOP_HotKey:    if (tmobj->do_CxObj) {
-                         SafeDeleteCxObjAll(tmobj->do_CxObj,&tmobj->do_Link);
+                         SafeDeleteCxObjAll((struct CxObj *)tmobj->do_CxObj,&tmobj->do_Link);
                          tmobj->do_CxObj=NULL;
                         }
 
@@ -987,7 +987,7 @@ struct TMObject *ChangeTMObjectDock(struct TMHandle *handle,
 
   /* Commodities error? */
   if (CxObjError(Broker)) {
-   SafeDeleteCxObjAll(tmobj->do_CxObj,&tmobj->do_Link);
+   SafeDeleteCxObjAll((struct CxObj *)tmobj->do_CxObj,&tmobj->do_Link);
    tmobj->do_CxObj=NULL;
   }
  }
@@ -1288,7 +1288,7 @@ void HandleIDCMPEvents(void)
                                  ItemAddress(tmobj->do_Menu,menunum);
 
                                 /* Which menu selected? */
-                                switch(GTMENUITEM_USERDATA(menuitem)) {
+                                switch((ULONG)GTMENUITEM_USERDATA(menuitem)) {
                                  case MENU_CLOSE: closewindow=TRUE;
                                                   break;
                                  case MENU_QUIT:  Closing=TRUE;

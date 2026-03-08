@@ -8,18 +8,18 @@
 
 #include "ToolManagerLib.h"
 
-/* Bitmap header (BMHD) structure */
-struct BitMapHeader {
-                     UWORD w,h;                   /* Width, height in pixels */
-                     WORD  x,y;
-                     UBYTE nplanes;               /* Number of planes */
-                     UBYTE Masking;               /* Masking */
-                     UBYTE Compression;           /* Compression algorithm */
-                     UBYTE pad1;
-                     UWORD TransparentColor;
-                     UBYTE XAspect,YAspect;
-                     WORD  PageWidth, PageHeight;
-                    };
+/* IFF BMHD chunk layout (avoid conflict with datatypes/pictureclass.h BitMapHeader) */
+struct IFF_BMHD {
+                UWORD w,h;                   /* Width, height in pixels */
+                WORD  x,y;
+                UBYTE nplanes;               /* Number of planes */
+                UBYTE Masking;               /* Masking */
+                UBYTE Compression;           /* Compression algorithm */
+                UBYTE pad1;
+                UWORD TransparentColor;
+                UBYTE XAspect,YAspect;
+                WORD  PageWidth, PageHeight;
+               };
 #define MSK_HASMASK   1
 #define COMP_NO       0
 #define COMP_BYTERUN1 1
@@ -47,14 +47,14 @@ struct AnimHeader {
 #define ID_DLTA MAKE_ID('D','L','T','A')
 
 /* Read IFF ILBM BODY Chunk */
-static BOOL ReadBODYChunk(struct IFFHandle *iff, struct BitMapHeader *bmhd,
+static BOOL ReadBODYChunk(struct IFFHandle *iff, struct IFF_BMHD *bmhd,
                           UBYTE *dest, ULONG bpr, ULONG planeoff)
 {
  UBYTE *src;
  ULONG size=CurrentChunk(iff)->cn_Size;
  BOOL rc=FALSE;
 
- DEBUG_PRINTF("IFF: Read BODY chunk\n");
+ DEBUG_PUTSTR("IFF: Read BODY chunk\n");
 
  /* Get memory for BODY chunk contents */
  if (src=AllocMem(size,MEMF_PUBLIC)) {
@@ -140,6 +140,7 @@ static BOOL ReadBODYChunk(struct IFFHandle *iff, struct BitMapHeader *bmhd,
    /* All OK */
    rc=TRUE;
 comperr: /* Got a compression error */
+  ;
   }
   FreeMem(src,size);
  }
@@ -151,7 +152,7 @@ static struct TMImageData *ReadILBMChunk(struct IFFHandle *iff)
 {
  struct TMImageData *tmid;
 
- DEBUG_PRINTF("IFF: Read ILBM chunk\n");
+ DEBUG_PUTSTR("IFF: Read ILBM chunk\n");
 
  /* Allocate memory for main data structure */
  if (tmid=AllocMem(sizeof(struct TMImageData),MEMF_PUBLIC|MEMF_CLEAR)) {
@@ -172,7 +173,7 @@ static struct TMImageData *ReadILBMChunk(struct IFFHandle *iff)
 
    /* BMHD chunk found? */
    if (sp=FindProp(iff,ID_ILBM,ID_BMHD)) {
-    struct BitMapHeader *bmhd=(struct BitMapHeader *) sp->sp_Data;
+    struct IFF_BMHD *bmhd=(struct IFF_BMHD *) sp->sp_Data;
 
     /* Check compression type */
     if ((bmhd->Compression==COMP_NO) || (bmhd->Compression==COMP_BYTERUN1)) {
@@ -226,7 +227,7 @@ static BOOL ReadFrame(struct IFFHandle *iff, struct TMImageData *tmid,
 {
  struct StoredProperty *sp;
 
- DEBUG_PRINTF("IFF: Read ANIM Frame\n");
+ DEBUG_PUTSTR("IFF: Read ANIM Frame\n");
 
  /* Get ANHD chunk */
  if (sp=FindProp(iff,ID_ILBM,ID_ANHD)) {
@@ -247,7 +248,7 @@ static BOOL ReadFrame(struct IFFHandle *iff, struct TMImageData *tmid,
     if (ReadChunkBytes(iff,chunkbuf,chunksize)==chunksize) {
      struct TMImageNode *tmin;
 
-     DEBUG_PRINTF("IFF: DLTA chunk read\n");
+     DEBUG_PUTSTR("IFF: DLTA chunk read\n");
 
      /* Alloc image node */
      if (tmin=AllocMem(sizeof(struct TMImageNode),MEMF_PUBLIC|MEMF_CLEAR)) {
@@ -297,8 +298,8 @@ static BOOL ReadFrame(struct IFFHandle *iff, struct TMImageData *tmid,
         *int2=TRUE;
        }
 
-       DEBUG_PRINTF("chunkbuf 0x%08lx",chunkbuf);
-       DEBUG_PRINTF(" imagedata 0x%08lx\n",tmin->tmin_Data);
+       DEBUG_PRINTF("chunkbuf 0x%08lx ",chunkbuf);
+       DEBUG_PRINTF("imagedata 0x%08lx\n",tmin->tmin_Data);
 
        /* XOR or STORE method? */
        if (ah->bits & 0x2)
@@ -411,13 +412,13 @@ static struct TMImageData *ReadANIMChunk(struct IFFHandle *iff)
 {
  struct TMImageData *tmid=NULL;
 
- DEBUG_PRINTF("IFF: Read ANIM chunk\n");
+ DEBUG_PUTSTR("IFF: Read ANIM chunk\n");
 
  /* Go to first ILBM chunk */
  if (!ParseIFF(iff,IFFPARSE_STEP)) {
   struct ContextNode *cn;
 
-  DEBUG_PRINTF("IFF: Skipped FORM ANIM chunk\n");
+  DEBUG_PUTSTR("IFF: Skipped FORM ANIM chunk\n");
 
   /* Get current IFF chunk context, check chunk ID & type, read ILBM chunk */
   if ((cn=CurrentChunk(iff)) && (cn->cn_ID==ID_FORM) &&
@@ -500,7 +501,7 @@ struct TMImageData *ReadIFFData(char *name)
  if (IFFParseBase=OpenLibrary("iffparse.library",0)) {
   struct IFFHandle *iff;
 
-  DEBUG_PRINTF("IFF Library opened.\n");
+  DEBUG_PUTSTR("IFF Library opened.\n");
 
   /* Alloc IFF handle */
   if (iff=AllocIFF()) {
@@ -517,7 +518,7 @@ struct TMImageData *ReadIFFData(char *name)
     /* Open IFF handle */
     if (!OpenIFF(iff,IFFF_READ)) {
 
-     DEBUG_PRINTF("IFF Opened\n");
+     DEBUG_PUTSTR("IFF Opened\n");
 
      /* Start IFF parsing */
      if (!ParseIFF(iff,IFFPARSE_STEP)) {

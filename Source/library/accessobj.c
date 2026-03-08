@@ -77,7 +77,7 @@ struct TMObject *CreateTMObjectAccess(struct TMHandle *handle, char *name,
    }
 
    /* All OK */
-   return(tmobj);
+   return((struct TMObject *)tmobj);
   }
  }
  /* call failed */
@@ -114,9 +114,9 @@ BOOL DeleteTMObjectAccess(struct TMObjectAccess *tmobj)
 }
 
 /* Change an Access object */
-struct TMObject *ChangeTMObjectAccess(struct TMHandle *handle,
-                                      struct TMObjectAccess *tmobj,
-                                      struct TagItem *tags)
+BOOL ChangeTMObjectAccess(struct TMHandle *handle,
+                          struct TMObjectAccess *tmobj,
+                          struct TagItem *tags)
 {
  struct TagItem *ti,*tstate;
  struct AccessEntry *ae=tmobj->ac_Entries;
@@ -201,10 +201,11 @@ void DeleteLinkTMObjectAccess(struct TMLink *tml)
 }
 
 /* Activate an Access object */
-void ActivateTMObjectAccess(struct TMLink *tml, char *execname)
+void ActivateTMObjectAccess(struct TMLink *tml, void *args)
 {
  struct TMObjectAccess *tmobj=(struct TMObjectAccess *) tml->tml_Linked;
  struct AccessEntry *ae;
+ char *execname=(char *)args;
 
  DEBUG_PRINTF("Activate/Access '%s'\n",execname);
 
@@ -229,7 +230,7 @@ void ActivateTMObjectAccess(struct TMLink *tml, char *execname)
   /* Yes, free access granted */
   struct TMLink *tmle;
 
-  DEBUG_PRINTF("Free access!\n");
+  DEBUG_PUTSTR("Free access!\n");
 
   /* Search Exec object (only global Exec objects can be activated!) */
   if (tmle=AddLinkTMObject(PrivateTMHandle,execname,TMOBJTYPE_EXEC,NULL)) {

@@ -418,7 +418,7 @@ void ReadConfig(void)
  if (IFFParseBase=OpenLibrary("iffparse.library",0)) {
   struct IFFHandle *iff;
 
-  DEBUG_PRINTF("IFF Library opened.\n");
+  DEBUG_PUTSTR("IFF Library opened.\n");
 
   /* Alloc IFF handle */
   if (iff=AllocIFF()) {
@@ -435,13 +435,13 @@ void ReadConfig(void)
     /* Open IFF handle */
     if (!OpenIFF(iff,IFFF_READ)) {
 
-     DEBUG_PRINTF("IFF Opened\n");
+     DEBUG_PUTSTR("IFF Opened\n");
 
      /* Start IFF parsing */
      if (!ParseIFF(iff,IFFPARSE_STEP)) {
       struct ContextNode *cn;
 
-      DEBUG_PRINTF("First IFF scan step\n");
+      DEBUG_PUTSTR("First IFF scan step\n");
 
       /* Init config list */
       NewList(&ConfigBufList);
@@ -451,7 +451,7 @@ void ReadConfig(void)
       if ((cn=CurrentChunk(iff)) && (cn->cn_ID==ID_FORM) &&
           (cn->cn_Type==ID_PREF) &&
           !PropChunk(iff,ID_PREF,ID_PRHD) &&
-          !StopChunks(iff,stopchunks,TMOBJTYPES) &&
+          !StopChunks(iff,(const LONG *)stopchunks,TMOBJTYPES) &&
           !StopOnExit(iff,ID_PREF,ID_FORM) &&
           !ParseIFF(iff,IFFPARSE_SCAN)) {
        /* First stop chunk encountered */

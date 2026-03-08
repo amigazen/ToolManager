@@ -15,8 +15,9 @@
 
 #ifdef PATCH_V37_MOUSEQUALIFIER_BUG
 
-/* Modified HotKey() code */
-CxObj *HotKey(UBYTE *desc, struct MsgPort *mp, long ID)
+/* Modified HotKey() code (replaces amiga.lib HotKey; signature matches alib_protos.h) */
+#undef HotKey
+CxObj *HotKey(CONST_STRPTR description, struct MsgPort *port, LONG id)
 {
  struct InputXpression ix;
 
@@ -24,7 +25,7 @@ CxObj *HotKey(UBYTE *desc, struct MsgPort *mp, long ID)
  ix.ix_Version=IX_VERSION;
 
  /* Parse Commodities input description string */
- if (!ParseIX(desc,&ix)) {
+ if (!ParseIX((STRPTR)description,&ix)) {
   CxObj *filter;
 
   DEBUG_PRINTF("IX Version :   0x%02lx\n",ix.ix_Version);
@@ -41,7 +42,7 @@ CxObj *HotKey(UBYTE *desc, struct MsgPort *mp, long ID)
   DEBUG_PRINTF("Corrected QualMask: 0x%04lx\n",ix.ix_QualMask);
 
   /* Create dummy filter object */
-  if (filter=CxFilter("a")) {
+  if (filter=CxFilter((STRPTR)"a")) {
    CxObj *sender;
 
    DEBUG_PRINTF("Filter: 0x%08lx\n",filter);
@@ -52,7 +53,7 @@ CxObj *HotKey(UBYTE *desc, struct MsgPort *mp, long ID)
    DEBUG_PRINTF("Filter set, Error: 0x%08lx\n",CxObjError(filter));
 
    /* Create sender object */
-   if (sender=CxSender(mp,ID)) {
+   if (sender=CxSender(port,id)) {
     CxObj *translate;
 
     DEBUG_PRINTF("Sender: 0x%08lx\n",sender);
@@ -88,19 +89,20 @@ CxObj *HotKey(UBYTE *desc, struct MsgPort *mp, long ID)
 
 #else
 
-/* Original HotKey() code */
-CxObj *HotKey(UBYTE *desc, struct MsgPort *mp, long ID)
+/* Original HotKey() code (replaces amiga.lib HotKey; signature matches alib_protos.h) */
+#undef HotKey
+CxObj *HotKey(CONST_STRPTR description, struct MsgPort *port, LONG id)
 {
  CxObj *filter;
 
  /* Create dummy filter object */
- if (filter=CxFilter(desc)) {
+ if (filter=CxFilter((STRPTR)description)) {
   CxObj *sender;
 
   DEBUG_PRINTF("Filter: 0x%08lx\n",filter);
 
   /* Create sender object */
-  if (sender=CxSender(mp,ID)) {
+  if (sender=CxSender(port,id)) {
    CxObj *translate;
 
    DEBUG_PRINTF("Sender: 0x%08lx\n",sender);

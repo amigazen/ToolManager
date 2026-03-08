@@ -8,7 +8,7 @@
 
 #include "ToolManagerLib.h"
 
-static void *dummyfunc(void) {return(NULL);};
+static void *dummyfunc(void) {return(NULL);}
 
 /* object functions arrays */
 struct TMObject *CreateTMObjectExec(struct TMHandle *, char *,
@@ -68,7 +68,7 @@ BOOL ChangeTMObjectAccess(struct TMHandle *, struct TMObject *,
 typedef BOOL (*ChangeFuncPtr)(struct TMHandle *, struct TMObject *,
                               struct TagItem *);
 static ChangeFuncPtr ChangeFuncTab[TMOBJTYPES]={ChangeTMObjectExec,
-                                                dummyfunc,
+                                                (ChangeFuncPtr)dummyfunc,
                                                 ChangeTMObjectSound,
                                                 ChangeTMObjectMenu,
                                                 ChangeTMObjectIcon,
@@ -84,8 +84,8 @@ typedef struct TMLink *(*AllocLinkFuncPtr)(struct TMObject *);
 static AllocLinkFuncPtr AllocLinkFuncTab[TMOBJTYPES]={AllocLinkTMObjectExec,
                                                       AllocLinkTMObjectImage,
                                                       AllocLinkTMObjectSound,
-                                                      dummyfunc,
-                                                      dummyfunc,
+                                                      (AllocLinkFuncPtr)dummyfunc,
+                                                      (AllocLinkFuncPtr)dummyfunc,
                                                       AllocLinkTMObjectDock,
                                                       AllocLinkTMObjectAccess};
 
@@ -96,8 +96,8 @@ void DeleteLinkTMObjectDock(struct TMLink *);
 void DeleteLinkTMObjectAccess(struct TMLink *);
 typedef void (*DeleteLinkFuncPtr)(struct TMLink *);
 static DeleteLinkFuncPtr DeleteLinkFuncTab[TMOBJTYPES]={DeleteLinkTMObjectExec,
-                                                        dummyfunc,
-                                                        dummyfunc,
+                                                        (DeleteLinkFuncPtr)dummyfunc,
+                                                        (DeleteLinkFuncPtr)dummyfunc,
                                                         DeleteLinkTMObjectMenu,
                                                         DeleteLinkTMObjectIcon,
                                                         DeleteLinkTMObjectDock,
@@ -141,12 +141,12 @@ struct TMObject *AllocateTMObject(ULONG size)
 static struct TMObject *FindObjectInList(struct TMHandle *handle, char *name,
                                          UBYTE type)
 {
- struct TMObject *tmobj=GetHead(&handle->tmh_ObjectLists[type]);
+ struct TMObject *tmobj=(struct TMObject *)GetHead(&handle->tmh_ObjectLists[type]);
 
  /* Scan list */
  while (tmobj)
   if (strcmp(name,tmobj->tmo_Name))
-   tmobj=GetSucc(tmobj);            /* Object not found --> Next object */
+   tmobj=(struct TMObject *)GetSucc((struct Node *)tmobj);            /* Object not found --> Next object */
   else
    break;                           /* Object found --> Leave loop */
 

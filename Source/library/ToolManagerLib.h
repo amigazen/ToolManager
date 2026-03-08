@@ -6,6 +6,13 @@
  * (c) 1990-1993 Stefan Becker
  */
 
+/* Compiler-independent register/saveds keywords (must be before any use) */
+#include <clib/compiler-specific.h>
+
+#ifndef __COMMODORE_DATE__
+#define __COMMODORE_DATE__ __DATE__
+#endif
+
 /* System include files */
 #include <exec/types.h>
 #include <exec/libraries.h>
@@ -88,8 +95,8 @@
 #define MENU_CLOSE 0
 #define MENU_QUIT  1
 
-/* Hook function prototype */
-typedef ULONG (*HookFuncPtr)(__A0 struct Hook *, __A1 void *, __A2 void *);
+/* Hook function prototype (plain types; caller passes args in a0/a1/a2) */
+typedef ULONG (*HookFuncPtr)(struct Hook *, void *, void *);
 
 /* Data structures */
 struct TMHandle {
@@ -149,7 +156,7 @@ BOOL CopyPathList(struct PathList **pla, struct PathList **plc,
 void FreePathList(struct PathList *pla);
 
 /* handler.c */
-__geta4 void HandlerEntry(void);
+__SAVE_DS__ void HandlerEntry(void);
 
 /* locale.c */
 void GetLocale(void);
@@ -231,9 +238,9 @@ extern char DefaultPortName[];
 #define TMCRYEAR      "1990-93"
 
 #ifdef DEBUG
-__stkargs void kputs(char *);
-__stkargs char kgetc(void);
-__stkargs void kprintf(char *,...);
+__STDARGS__ void kputs(char *);
+__STDARGS__ char kgetc(void);
+__STDARGS__ void kprintf(char *,...);
 
 #define DEBUG_PUTSTR(a) kputs(a);
 #define DEBUG_GETCHR    kgetc();

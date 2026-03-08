@@ -14,16 +14,16 @@ void SafeDeleteCxObjAll(struct CxObj *cxobj, struct TMLink *tml)
  CxMsg *msg;
 
  /* Delete object */
- DeleteCxObjAll(cxobj);
+ DeleteCxObjAll((CxObj *)cxobj);
 
  /* Scan message port list */
  Forbid();
- msg=GetHead(&BrokerPort->mp_MsgList);
+ msg=(CxMsg *)GetHead(&BrokerPort->mp_MsgList);
  while (msg)
   /* Does the message point to this object? */
   if ((struct TMLink *) CxMsgID(msg)==tml) {
    /* Yes */
-   CxMsg *nextmsg=GetSucc(msg);
+   CxMsg *nextmsg=(CxMsg *)GetSucc((struct Node *)msg);
 
    /* Remove it from list */
    Remove((struct Node *) msg);
@@ -35,7 +35,7 @@ void SafeDeleteCxObjAll(struct CxObj *cxobj, struct TMLink *tml)
    msg=nextmsg;
   }
    /* No. Get pointer to next message */
-  else msg=GetSucc(msg);
+  else msg=(CxMsg *)GetSucc((struct Node *)msg);
  Permit();
 }
 
@@ -46,12 +46,12 @@ static void RemoveAppMsgs(struct TMLink *tml)
 
  /* Scan message port */
  Forbid();
- msg=GetHead(&AppMsgPort->mp_MsgList);
+ msg=(struct AppMessage *)GetHead(&AppMsgPort->mp_MsgList);
  while (msg)
   /* Does the message point to this object? */
   if ((struct TMLink *) msg->am_ID==tml) {
    /* Yes */
-   struct AppMessage *nextmsg=GetSucc(msg);
+   struct AppMessage *nextmsg=(struct AppMessage *)GetSucc((struct Node *)msg);
 
    /* Remove it from list */
    Remove((struct Node *) msg);
@@ -63,7 +63,7 @@ static void RemoveAppMsgs(struct TMLink *tml)
    msg=nextmsg;
   }
    /* No. Get pointer to next message */
-  else msg=GetSucc(msg);
+  else msg=(struct AppMessage *)GetSucc((struct Node *)msg);
  Permit();
 }
 

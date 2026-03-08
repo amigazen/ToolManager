@@ -67,7 +67,7 @@ struct TMObject *CreateTMObjectSound(struct TMHandle *handle, char *name,
    strcat(cp,"\"'");
 
    /* All OK */
-   return(tmobj);
+   return((struct TMObject *)tmobj);
   }
   FreeMem(tmobj,sizeof(struct TMObjectSound));
  }
@@ -98,9 +98,9 @@ BOOL DeleteTMObjectSound(struct TMObjectSound *tmobj)
 }
 
 /* Change a Sound object */
-struct TMObject *ChangeTMObjectSound(struct TMHandle *handle,
-                                     struct TMObjectSound *tmobj,
-                                     struct TagItem *tags)
+BOOL ChangeTMObjectSound(struct TMHandle *handle,
+                         struct TMObjectSound *tmobj,
+                         struct TagItem *tags)
 {
  struct TagItem *ti,*tstate;
  char *oldcmd,*oldport,*oldline;
@@ -175,11 +175,11 @@ struct TMLink *AllocLinkTMObjectSound(struct TMObjectSound *tmobj)
 }
 
 /* Activate a Sound object */
-void ActivateTMObjectSound(struct TMLink *tml)
+void ActivateTMObjectSound(struct TMLink *tml, void *args)
 {
  struct TMObjectSound *tmobj=(struct TMObjectSound *) tml->tml_Linked;
 
- DEBUG_PRINTF("Activate/Sound\n");
+ DEBUG_PUTSTR("Activate/Sound\n");
 
  /* Send ARexx command */
  SendARexxCommand(tmobj->so_ARexxCmd,tmobj->so_CmdLen);

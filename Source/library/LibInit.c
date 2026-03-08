@@ -14,22 +14,22 @@ const char LibName[]=TMLIBNAME;
 const char LibId[]="$VER: " TMLIBNAME " " INTTOSTR(TMLIBVERSION) "."
                    INTTOSTR(TMLIBREVISION) " (" __COMMODORE_DATE__ ")\r\n";
 
-/* prototypes for library management functions */
-__geta4 static struct Library *LibOpen(__A6 struct Library *, __D0 ULONG);
-__geta4 static BPTR            LibClose(__A6 struct Library *);
-__geta4 static BPTR            LibExpunge(__A6 struct Library *);
-        static ULONG           LibReserved(void);
-__geta4 static void            QuitToolManager(void);
-__geta4 struct TMHandle       *AllocTMHandle(void);
-__geta4 static void            FreeTMHandle(__A0 struct TMHandle *);
-__geta4 static BOOL            CreateTMObjectTagList(__A0 struct TMHandle *,
-                                                     __A1 char *, __D0 ULONG,
-                                                     __A2 struct TagItem *);
-__geta4 static BOOL            DeleteTMObject(__A0 struct TMHandle *,
-                                              __A1 char *);
-__geta4 static BOOL            ChangeTMObjectTagList(__A0 struct TMHandle *,
-                                                     __A1 char *,
-                                                     __A2 struct TagItem *);
+/* prototypes for library management functions (param names required for SAS/C __REG__) */
+__SAVE_DS__ __ASM__ static struct Library *LibOpen(__REG__(a6, struct Library *lib), __REG__(d0, ULONG version));
+__SAVE_DS__ __ASM__ static BPTR            LibClose(__REG__(a6, struct Library *lib));
+__SAVE_DS__ __ASM__ static BPTR            LibExpunge(__REG__(a6, struct Library *lib));
+         static ULONG           LibReserved(void);
+__SAVE_DS__ static void            QuitToolManager(void);
+__SAVE_DS__ void *AllocTMHandle(void);
+__SAVE_DS__ __ASM__ static void            FreeTMHandle(__REG__(a0, struct TMHandle *handle));
+__SAVE_DS__ __ASM__ BOOL            CreateTMObjectTagList(__REG__(a0, struct TMHandle *handle),
+                                                     __REG__(a1, char *object), __REG__(d0, ULONG type),
+                                                     __REG__(a2, struct TagItem *tags));
+__SAVE_DS__ __ASM__ BOOL            DeleteTMObject(__REG__(a0, struct TMHandle *handle),
+                                              __REG__(a1, char *object));
+__SAVE_DS__ __ASM__ BOOL            ChangeTMObjectTagList(__REG__(a0, struct TMHandle *handle),
+                                                     __REG__(a1, char *object),
+                                                     __REG__(a2, struct TagItem *tags));
 
 /* library functions table */
 static const APTR LibVectors[]={
@@ -63,10 +63,12 @@ const char DosName[]="dos.library";
 
 /* Prototype & pragma for local calls to CreateNewProc() */
 struct Task *MyCreateNewProc(struct TagItem *tags);
+#if defined(__SASC) || defined(_DCC)
 #pragma libcall PrivateDOSBase MyCreateNewProc 1f2 101
+#endif
 
 /* library init routine */
-__geta4 struct Library *LibInit(__A0 BPTR LibSegList)
+__SAVE_DS__ __ASM__ struct Library *LibInit(__REG__(a0, BPTR LibSegList))
 {
  struct Library *MyLib;
 
@@ -85,7 +87,7 @@ __geta4 struct Library *LibInit(__A0 BPTR LibSegList)
  }
 
  MyLib->lib_Node.ln_Type=NT_LIBRARY;
- MyLib->lib_Node.ln_Name=LibName;
+ MyLib->lib_Node.ln_Name=(char *)LibName;
  MyLib->lib_Flags=LIBF_CHANGED|LIBF_SUMUSED;
  MyLib->lib_Version=TMLIBVERSION;
  MyLib->lib_Revision=TMLIBREVISION;
@@ -99,14 +101,14 @@ __geta4 struct Library *LibInit(__A0 BPTR LibSegList)
 }
 
 /* shared library open function */
-__geta4 static struct Library *LibOpen(__A6 struct Library *lib,
-                                       __D0 ULONG version)
+__SAVE_DS__ __ASM__ static struct Library *LibOpen(__REG__(a6, struct Library *lib),
+                                       __REG__(d0, ULONG version))
 {
  /* Handle special case: OpenCnt=0 & Handler is just closing down */
  if ((lib->lib_OpenCnt == 0) && Closing) return(NULL);
 
  /* Handler active? Try to start it... */
- if (!LibraryPort && !(HandlerTask=MyCreateNewProc(HandlerProcessTags)))
+ if (!LibraryPort && !(HandlerTask=MyCreateNewProc((struct TagItem *)HandlerProcessTags)))
   return(NULL);
 
  /* Oh another user :-) */
@@ -121,7 +123,7 @@ __geta4 static struct Library *LibOpen(__A6 struct Library *lib,
 }
 
 /* shared library close function */
-__geta4 static BPTR LibClose(__A6 struct Library *lib)
+__SAVE_DS__ __ASM__ static BPTR LibClose(__REG__(a6, struct Library *lib))
 {
  /* Open count already zero or more than one user? */
  if ((lib->lib_OpenCnt == 0) || (--lib->lib_OpenCnt > 0)) return(NULL);
@@ -137,7 +139,7 @@ __geta4 static BPTR LibClose(__A6 struct Library *lib)
 }
 
 /* shared library expunge function */
-__geta4 static BPTR LibExpunge(__A6 struct Library *lib)
+__SAVE_DS__ __ASM__ static BPTR LibExpunge(__REG__(a6, struct Library *lib))
 {
  DEBUG_PRINTF("Expunge Lib: %08lx ",lib);
  DEBUG_PRINTF("Seg: %08lx\n",LibSegment);
@@ -170,7 +172,7 @@ static ULONG LibReserved(void)
 }
 
 /* Set quit flag for handler process */
-__geta4 static void QuitToolManager(void)
+__SAVE_DS__ static void QuitToolManager(void)
 {
  /* Set flag */
  if (LibraryPort && !Closing) Closing=TRUE;
@@ -199,11 +201,11 @@ static BOOL SendIPC(struct TMHandle *handle)
 }
 
 /* Allocate a TMHandle */
-__geta4 void *AllocTMHandle(void)
+__SAVE_DS__ void *AllocTMHandle(void)
 {
  struct TMHandle *handle;
 
- DEBUG_PRINTF("AllocTMHandle() called.\n");
+ DEBUG_PUTSTR("AllocTMHandle() called.\n");
 
  /* Allocate memory for handle structure */
  if (handle=AllocMem(sizeof(struct TMHandle),MEMF_PUBLIC)) {
@@ -226,11 +228,11 @@ __geta4 void *AllocTMHandle(void)
  }
 
  /* call failed */
- DEBUG_PRINTF("AllocTMHandle() failed.\n");
+ DEBUG_PUTSTR("AllocTMHandle() failed.\n");
  return(NULL);
 }
 
-__geta4 static void FreeTMHandle(__A0 struct TMHandle *handle)
+__SAVE_DS__ __ASM__ static void FreeTMHandle(__REG__(a0, struct TMHandle *handle))
 {
  /* Send command to handler */
  handle->tmh_Command=TMIPC_FreeTMHandle;
@@ -241,10 +243,10 @@ __geta4 static void FreeTMHandle(__A0 struct TMHandle *handle)
  FreeMem(handle,sizeof(struct TMHandle));
 }
 
-__geta4 BOOL CreateTMObjectTagList(__A0 struct TMHandle *handle,
-                                   __A1 char *object,
-                                   __D0 ULONG type,
-                                   __A2 struct TagItem *tags)
+__SAVE_DS__ __ASM__ BOOL CreateTMObjectTagList(__REG__(a0, struct TMHandle *handle),
+                                   __REG__(a1, char *object),
+                                   __REG__(d0, ULONG type),
+                                   __REG__(a2, struct TagItem *tags))
 {
  /* Sanity checks */
  if ((handle==NULL) || (object==NULL) || (type>=TMOBJTYPES))
@@ -261,7 +263,7 @@ __geta4 BOOL CreateTMObjectTagList(__A0 struct TMHandle *handle,
 }
 
 /* Delete a TMObject (shared library version) */
-__geta4 BOOL DeleteTMObject(__A0 struct TMHandle *handle, __A1 char *object)
+__SAVE_DS__ __ASM__ BOOL DeleteTMObject(__REG__(a0, struct TMHandle *handle), __REG__(a1, char *object))
 {
  /* Sanity checks */
  if ((handle==NULL) || (object==NULL)) return(FALSE); /* Bad arguments! */
@@ -275,9 +277,9 @@ __geta4 BOOL DeleteTMObject(__A0 struct TMHandle *handle, __A1 char *object)
 }
 
 /* Change a TMObject (shared library version) */
-__geta4 BOOL ChangeTMObjectTagList(__A0 struct TMHandle *handle,
-                                   __A1 char *object,
-                                   __A2 struct TagItem *tags)
+__SAVE_DS__ __ASM__ BOOL ChangeTMObjectTagList(__REG__(a0, struct TMHandle *handle),
+                                   __REG__(a1, char *object),
+                                   __REG__(a2, struct TagItem *tags))
 {
  /* Sanity checks */
  if ((handle==NULL) || (object==NULL)) return(FALSE); /* Bad arguments! */

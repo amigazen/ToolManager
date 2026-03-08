@@ -204,7 +204,7 @@ static void FreeResources(void)
 }
 
 /* handler main entry point */
-__geta4 void HandlerEntry(void)
+__SAVE_DS__ void HandlerEntry(void)
 {
  ULONG sigmask,lpsig,ipsig,tpsig,apsig,bpsig,nwsig,npsig;
 
@@ -250,7 +250,7 @@ __geta4 void HandlerEntry(void)
    struct TMTimerReq *tr;
 
    /* Scan message list (special treatment for I/O Requests!) */
-   while (tr=GetHead(l)) CallActivateTMObject(tr->tmtr_Link,NULL);
+   while (tr=(struct TMTimerReq *)GetHead(l)) CallActivateTMObject(tr->tmtr_Link,NULL);
   }
 
   /* Got a Workbench App* message? */
@@ -404,7 +404,7 @@ __geta4 void HandlerEntry(void)
   /* Got a configuration file notification event? */
   if (gotsigs & npsig) {
 
-   DEBUG_PRINTF("Preferences changed!\n");
+   DEBUG_PUTSTR("Preferences changed!\n");
 
    /* Free old config */
    InternalFreeTMHandle(PrivateTMHandle);
