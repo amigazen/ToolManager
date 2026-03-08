@@ -1,0 +1,25 @@
+#
+# SAS/C smakefile for ToolManager starter (WB/CLI launcher).
+# Run from Source/WBStartup: smake
+# Builds ToolManager executable; run from WB or CLI to start/quit ToolManager.
+#
+inc = //Programmers/include
+opts = NOLINK INCLUDEDIR=$(inc) INCLUDEDIR=/ INCLUDEDIR=/locale
+
+ldlibs = lib:sc.lib lib:amiga.lib
+
+dest = ToolManager
+
+all: $(dest)
+
+$(dest): ToolManager.o
+	slink FROM sc:lib/c.o + ToolManager.o TO $(dest) LIB $(ldlibs)
+
+ToolManager.o: ToolManager.c
+	sc $(opts) ToolManager.c
+
+clean:
+	-delete \#?.o $(dest) quiet
+
+install:
+	-copy $(dest) WBStartup:$(dest) clone

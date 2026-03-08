@@ -6,23 +6,24 @@
  * (c) 1990-1993 Stefan Becker
  */
 
-#include <clib/exec_protos.h>
-#include <clib/intuition_protos.h>
-#include <clib/locale_protos.h>
-#include <clib/toolmanager_protos.h>
-#include <pragmas/exec_pragmas.h>
-#include <pragmas/intuition_pragmas.h>
-#include <pragmas/locale_pragmas.h>
-#include <pragmas/toolmanager_pragmas.h>
+#ifndef __COMMODORE_DATE__
+#define __COMMODORE_DATE__ __DATE__
+#endif
+
+#include <proto/exec.h>
+#include <proto/intuition.h>
+#include <proto/locale.h>
+#include "proto/toolmanager.h"
+
 #include <stdlib.h>
 #define CATCOMP_NUMBERS
 #define CATCOMP_STRINGS
 #include "/locale/toolmanager.h"
 
-extern struct Library *SysBase;
-extern struct Library *IntuitionBase;
+extern struct ExecBase *SysBase;
+extern struct IntuitionBase *IntuitionBase;
 struct Library *ToolManagerBase; /* Supress DICE auto-open */
-struct Library *LocaleBase;
+extern struct LocaleBase *LocaleBase;
 struct EasyStruct es={sizeof(struct EasyStruct),0,"ToolManager",
                       MSG_UTILITIES_QUITREQ_TEXT_STR,
                       MSG_UTILITIES_QUITREQ_GAD_STR};
