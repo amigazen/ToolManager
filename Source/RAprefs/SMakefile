@@ -1,0 +1,70 @@
+#
+# SAS/C smakefile for RAprefs (ReAction ToolManager preferences).
+# Run from Source/RAprefs: smake
+# Builds RAprefs: same as ToolManager prefs but main window uses Reaction GUI.
+# Requires reaction.library and NDK reaction headers.
+#
+inc = //SDK/include
+# Parent (..) = Source/ so ToolManagerPrefs.h and locale/ are found
+opts = NOLINK INCLUDEDIR=$(inc) INCLUDEDIR=/ INCLUDEDIR=/locale
+
+ldlibs = lib:sc.lib lib:amiga.lib lib:debug.lib lib:reaction.lib
+
+raprefs_objs = main.o locale.o gadget.o mainwindow_ra.o execwindow.o imagewindow.o\
+ soundwindow.o menuwindow.o iconwindow.o dockwindow.o docklistwindow.o\
+ accesswindow.o selectwindow.o movewindow.o aslreqs.o listreq.o window.o\
+ button.o config.o data.o
+
+dest = RAprefs
+
+all: $(dest)
+
+$(dest): $(raprefs_objs)
+	slink FROM sc:lib/c.o + $(raprefs_objs) TO $(dest) LIB $(ldlibs)
+
+main.o: main.c RAprefsConf.h ToolManagerConf.h
+	sc $(opts) main.c
+locale.o: locale.c ToolManagerConf.h
+	sc $(opts) locale.c
+gadget.o: gadget.c ToolManagerConf.h
+	sc $(opts) gadget.c
+mainwindow_ra.o: mainwindow_ra.c RAprefsConf.h ToolManagerConf.h
+	sc $(opts) mainwindow_ra.c
+execwindow.o: execwindow.c ToolManagerConf.h
+	sc $(opts) execwindow.c
+imagewindow.o: imagewindow.c ToolManagerConf.h
+	sc $(opts) imagewindow.c
+soundwindow.o: soundwindow.c ToolManagerConf.h
+	sc $(opts) soundwindow.c
+menuwindow.o: menuwindow.c ToolManagerConf.h
+	sc $(opts) menuwindow.c
+iconwindow.o: iconwindow.c ToolManagerConf.h
+	sc $(opts) iconwindow.c
+dockwindow.o: dockwindow.c ToolManagerConf.h
+	sc $(opts) dockwindow.c
+docklistwindow.o: docklistwindow.c ToolManagerConf.h
+	sc $(opts) docklistwindow.c
+accesswindow.o: accesswindow.c ToolManagerConf.h
+	sc $(opts) accesswindow.c
+selectwindow.o: selectwindow.c ToolManagerConf.h
+	sc $(opts) selectwindow.c
+movewindow.o: movewindow.c ToolManagerConf.h
+	sc $(opts) movewindow.c
+aslreqs.o: aslreqs.c ToolManagerConf.h
+	sc $(opts) aslreqs.c
+listreq.o: listreq.c ToolManagerConf.h
+	sc $(opts) listreq.c
+window.o: window.c ToolManagerConf.h
+	sc $(opts) window.c
+button.o: button.c ToolManagerConf.h
+	sc $(opts) button.c
+config.o: config.c ToolManagerConf.h
+	sc $(opts) config.c
+data.o: data.c ToolManagerConf.h
+	sc $(opts) data.c
+
+clean:
+	-delete \#?.o $(dest) quiet
+
+install:
+	-copy $(dest) Prefs:$(dest) clone
