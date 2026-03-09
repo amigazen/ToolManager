@@ -20,8 +20,8 @@ static ULONG Dummy(void)
 const char LibraryName[] = SCREENNOTIFY_NAME;
 const char LibraryID[]   = "$VER: " SCREENNOTIFY_NAME " "
                           INTTOSTR(SCREENNOTIFY_VERSION) "."
-                          INTTOSTR(SCREENNOTIFY_REVISION) " ("
-                          __COMMODORE_DATE__ ")\r\n";
+                          INTTOSTR(SCREENNOTIFY_REVISION) " "
+                          __AMIGADATE__ "\r\n";
 
 /* Standard library function prototypes */
 __SAVE_DS__ __ASM__ struct Library *LibraryInit(__REG__(a0, BPTR Segment),

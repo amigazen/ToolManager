@@ -21,33 +21,19 @@
 #include <prefs/prefhdr.h>
 
 /* System function prototypes */
-#include <clib/alib_protos.h>
-#include <clib/asl_protos.h>
-#include <clib/diskfont_protos.h>
-#include <clib/dos_protos.h>
-#include <clib/envoy_protos.h>
-#include <clib/exec_protos.h>
-#include <clib/gadtools_protos.h>
-#include <clib/graphics_protos.h>
-#include <clib/icon_protos.h>
-#include <clib/iffparse_protos.h>
-#include <clib/intuition_protos.h>
-#include <clib/locale_protos.h>
-#include <clib/wb_protos.h>
-
-/* System function pragmas */
-#include <pragmas/asl_pragmas.h>
-#include <pragmas/diskfont_pragmas.h>
-#include <pragmas/dos_pragmas.h>
-#include <pragmas/envoy_pragmas.h>
-#include <pragmas/exec_pragmas.h>
-#include <pragmas/gadtools_pragmas.h>
-#include <pragmas/graphics_pragmas.h>
-#include <pragmas/icon_pragmas.h>
-#include <pragmas/iffparse_pragmas.h>
-#include <pragmas/intuition_pragmas.h>
-#include <pragmas/locale_pragmas.h>
-#include <pragmas/wb_pragmas.h>
+#include <proto/alib.h>
+#include <proto/asl.h>
+#include <proto/diskfont.h>
+#include <proto/dos.h>
+#include <proto/envoy.h>
+#include <proto/exec.h>
+#include <proto/gadtools.h>
+#include <proto/graphics.h>
+#include <proto/icon.h>
+#include <proto/iffparse.h>
+#include <proto/intuition.h>
+#include <proto/locale.h>
+#include <proto/wb.h>
 
 /* ANSI C include files */
 #include <stdlib.h>
@@ -59,7 +45,7 @@
 #include <lists.h>     /* GetHead() et al. */
 
 #ifndef __COMMODORE_DATE__
-#define __COMMODORE_DATE__ __DATE__
+#define __COMMODORE_DATE__ __AMIGADATE__
 #endif
 
 /* Project specific include files */
@@ -254,13 +240,13 @@ void EnableWindow(struct Window *, struct Requester *, ULONG);
 /* System library base pointers */
 extern struct Library *AslBase;
 extern struct Library *DiskfontBase;
-extern struct Library *DOSBase;
+extern struct DosLibrary *DOSBase;
 extern struct Library *GadToolsBase;
 extern struct GfxBase *GfxBase;
 extern struct Library *IconBase;
 extern struct Library *IFFParseBase;
-extern struct Library *IntuitionBase;
-extern struct Library *SysBase;
+extern struct IntuitionBase *IntuitionBase;
+extern struct ExecBase *SysBase;
 extern struct Library *WorkbenchBase;
 
 /* Global data */
@@ -315,7 +301,7 @@ extern const char            SavePrefsFileName[];
 /* Global defines */
 #define TMVERSION  "2.1b"
 #define TMREVISION "0"
-#define TMCRYEAR   "1990-93"
+#define TMCRYEAR   "1996"
 
 #define REQBUTTONWIDTH 20
 #define SGBUFLEN 256

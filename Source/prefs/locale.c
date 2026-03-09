@@ -146,7 +146,7 @@ char *AppStrings[]={
 };
 
 /* misc. data */
-struct Library *LocaleBase=NULL;
+struct LocaleBase *LocaleBase=NULL;
 static struct Catalog *Catalog;
 
 /* Get locale strings */

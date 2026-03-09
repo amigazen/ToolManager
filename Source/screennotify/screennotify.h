@@ -10,7 +10,7 @@
 #include <clib/compiler-specific.h>
 
 #ifndef __COMMODORE_DATE__
-#define __COMMODORE_DATE__ __DATE__
+#define __COMMODORE_DATE__ __AMIGADATE__
 #endif
 
 /* OS include files */

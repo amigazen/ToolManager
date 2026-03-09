@@ -9,7 +9,7 @@
 #include "ToolManagerConf.h"
 
 static const char Version[]="\0$VER: ToolManager " TMVERSION "." TMREVISION
-                            " (" __COMMODORE_DATE__ ")\r\n";
+                            " " __AMIGADATE__ "\r\n";
 static const char PrefsPortName[]="ToolManager_Prefs";
 
 /* Misc. data */
