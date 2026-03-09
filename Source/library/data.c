@@ -29,6 +29,7 @@ struct MsgPort *IDCMPPort=NULL;    /* IDCMP events */
 struct MsgPort *TimerPort=NULL;    /* Timer events */
 struct MsgPort *AppMsgPort=NULL;   /* Workbench App* events */
 struct MsgPort *BrokerPort=NULL;   /* Commodities events */
+struct MsgPort *ScreenNotifyPort=NULL; /* Workbench Close/Open events */
 struct Entity  *LocalEntity=NULL;  /* Network events */
 
 /* Misc. */

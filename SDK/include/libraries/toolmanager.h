@@ -19,6 +19,7 @@
 
 #define TMLIBNAME     "toolmanager.library"
 #define TMLIBVERSION  3
+#define TMLIBREVISION 3
 
 /* ToolManager Object Types */
 #define TMOBJTYPE_EXEC   0

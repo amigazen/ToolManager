@@ -6,7 +6,15 @@
   Copyright (c) 1990–1993 **Stefan Becker**
 
 - **Modifications and packaging (2026)**  
-  Copyright (c) 2026 **AmigaZen project**
+  Copyright (c) 2026 **amigazen project**
+
+---
+
+## Clarification: 1999 public-domain release
+
+In December 1999, Stefan Becker released the sources of his Amiga projects to the **public domain** in the archive [stefanb_src.lha](https://www.aminet.net/package/dev/src/stefanb_src) on Aminet. In the readme he stated: *“I release them to the public domain in the hope that someone might find something useful for his/her project. If you use them please remember to mention my name in your documentation.”*
+
+Strictly speaking, **public domain** means the work is free of copyright restrictions and anyone may use it as they wish. Nevertheless, this project **restates Stefan Becker’s original ToolManager terms** (from the 1990–1993 documentation and Source/README) below. We do so for historical accuracy, for distributors who received ToolManager under those terms, and for anyone who wishes to follow them; we do not impose them as a legal requirement where the 1999 release applies.
 
 ---
 

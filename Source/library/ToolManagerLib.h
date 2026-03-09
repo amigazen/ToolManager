@@ -1,9 +1,9 @@
 /*
- * ToolManagerLib.h  V2.1
+ * ToolManagerLib.h  V2.1b
  *
  * shared library main include file
  *
- * (c) 1990-1993 Stefan Becker
+ * (c) 1990-1996 Stefan Becker
  */
 
 /* Compiler-independent register/saveds keywords (must be before any use) */
@@ -26,6 +26,7 @@
 #include <intuition/intuitionbase.h>
 #include <libraries/iffparse.h>
 #include <libraries/locale.h>
+#include <libraries/screennotify.h>
 #include <libraries/toolmanager.h>
 #include <prefs/prefhdr.h>
 #include <rexx/errors.h>
@@ -45,6 +46,7 @@
 #include <proto/locale.h>
 #include <proto/nipc.h>
 #include <proto/rexxsyslib.h>
+#include <proto/screennotify.h>
 #include <proto/utility.h>
 #include <proto/wb.h>
 
@@ -132,6 +134,8 @@ void ReadConfig(void);
 void FreeConfig(void);
 
 /* dockobj.c */
+void ScreenCloseRequest(struct TMObject *, struct Screen *);
+void ScreenOpenRequest(struct TMObject *, char *);
 void HandleIDCMPEvents(void);
 
 /* execobj.c */
@@ -189,6 +193,7 @@ extern struct GfxBase *GfxBase;
 extern struct Library *IFFParseBase;
 extern struct IntuitionBase *IntuitionBase;
 extern struct Library *NIPCBase;
+extern struct Library *ScreenNotifyBase;
 extern struct ExecBase *SysBase;
 extern struct Library *UtilityBase;
 extern struct Library *WorkbenchBase;
@@ -202,6 +207,7 @@ extern struct MsgPort *IDCMPPort;
 extern struct MsgPort *TimerPort;
 extern struct MsgPort *AppMsgPort;
 extern struct MsgPort *BrokerPort;
+extern struct MsgPort *ScreenNotifyPort;
 extern struct Entity  *LocalEntity;
 extern struct timerequest *deftimereq;
 extern struct TMHandle *PrivateTMHandle;
@@ -218,9 +224,9 @@ extern char DefaultOutput[];
 extern char DefaultPortName[];
 
 /* Global defines */
-#define TMVERSION     2
-#define TMLIBREVISION 3
-#define TMCRYEAR      "2026"
+#define TMVERSION     "2.1b"
+#define TMLIBREVISION 2
+#define TMCRYEAR      "1996"
 
 #ifdef DEBUG
 __STDARGS__ void kputs(char *);

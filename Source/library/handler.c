@@ -1,12 +1,15 @@
 /*
- * handler.c  V2.1
+ * handler.c  V2.1.07
  *
  * handler main loop
  *
- * (c) 1990-1993 Stefan Becker
+ * (c) 1990-1996 Stefan Becker
  */
 
 #include "ToolManagerLib.h"
+
+/* Constant strings */
+static const char WBName[] = "Workbench";
 
 /* misc. data */
 static BOOL TimerOpen=FALSE;
@@ -17,12 +20,16 @@ extern struct IntuitionBase *IntuitionBase=NULL;
 extern struct GfxBase *GfxBase=NULL;
 struct Library *GadToolsBase=NULL;
 struct Library *NIPCBase=NULL;
+struct Library *ScreenNotifyBase=NULL;
 extern const char DosName[];
 extern struct Library *LibBase;
 static struct NotifyRequest PrefsNotify={
                                          PrefsFileName,NULL,0,
                                          NRF_SEND_SIGNAL
                                         };
+static APTR ScreenNotifyHandle1=NULL;
+static APTR ScreenNotifyHandle2=NULL;
+static APTR ScreenNotifyHandle3=NULL;
 static ULONG EntitySignal=-1;
 static ULONG NotifySignal=-1;
 static UBYTE *HostNameBuffer=NULL;
@@ -33,12 +40,12 @@ static BOOL NotifyActive=FALSE;
 static BOOL OpenResources(void)
 {
  if (!(LibraryPort=CreateMsgPort()))                       return(FALSE);
- if (!(DOSBase=OpenLibrary(DosName,37)))                   return(FALSE);
+ if (!(DOSBase=(struct DosLibrary *)OpenLibrary(DosName,37))) return(FALSE);
  if (!(CxBase=OpenLibrary("commodities.library",37)))      return(FALSE);
  if (!(UtilityBase=OpenLibrary("utility.library",37)))     return(FALSE);
  if (!(IntuitionBase=(struct IntuitionBase *)
                       OpenLibrary("intuition.library",37))) return(FALSE);
- if (!(GfxBase=OpenLibrary("graphics.library",37)))        return(FALSE);
+ if (!(GfxBase=(struct GfxBase *)OpenLibrary("graphics.library",37))) return(FALSE);
  if (!(GadToolsBase=OpenLibrary("gadtools.library",37)))   return(FALSE);
  if (!(DummyPort=CreateMsgPort()))                         return(FALSE);
  if (!(IDCMPPort=CreateMsgPort()))                         return(FALSE);
@@ -67,7 +74,7 @@ static BOOL OpenResources(void)
 
  /* Copy path from Workbench process */
  {
-  struct Process *wbproc=(struct Process *) FindTask("Workbench");
+  struct Process *wbproc=(struct Process *) FindTask(WBName);
 
   /* Task found? Make sure it IS a process */
   if (wbproc && (wbproc->pr_Task.tc_Node.ln_Type==NT_PROCESS)) {
@@ -85,6 +92,18 @@ static BOOL OpenResources(void)
      return(FALSE);
    }
   }
+ }
+
+ /* Get ScreenNotify stuff */
+ if (ScreenNotifyBase=OpenLibrary("screennotify.library", 0)) {
+
+  /* Allocate message port */
+  if (!(ScreenNotifyPort=CreateMsgPort())) return(FALSE);
+
+  /* Add handler as client */
+  ScreenNotifyHandle1=AddCloseScreenClient(NULL, ScreenNotifyPort, 0);
+  ScreenNotifyHandle2=AddPubScreenClient(ScreenNotifyPort, 0);
+  ScreenNotifyHandle3=AddWorkbenchClient(ScreenNotifyPort, 0);
  }
 
  /* Get network stuff */
@@ -118,6 +137,27 @@ static void FreeResources(void)
  if (NIPCBase) {
   CloseLibrary(NIPCBase);
   NIPCBase=NULL;
+ }
+
+ if (ScreenNotifyHandle3) {
+  while (!RemWorkbenchClient(ScreenNotifyHandle3)) Delay(10);
+  ScreenNotifyHandle3=NULL;
+ }
+ if (ScreenNotifyHandle2) {
+  while (!RemPubScreenClient(ScreenNotifyHandle2)) Delay(10);
+  ScreenNotifyHandle2=NULL;
+ }
+ if (ScreenNotifyHandle1) {
+  while (!RemCloseScreenClient(ScreenNotifyHandle1)) Delay(10);
+  ScreenNotifyHandle1=NULL;
+ }
+ if (ScreenNotifyPort) {
+  DeleteMsgPort(ScreenNotifyPort);
+  ScreenNotifyPort=NULL;
+ }
+ if (ScreenNotifyBase) {
+  CloseLibrary(ScreenNotifyBase);
+  ScreenNotifyBase=NULL;
  }
 
  FreePathList(GlobalPath); /* FreePath checks for NULL */
@@ -178,7 +218,7 @@ static void FreeResources(void)
   GadToolsBase=NULL;
  }
  if (GfxBase) {
-  CloseLibrary(GfxBase);
+  CloseLibrary((struct Library *)GfxBase);
   GfxBase=NULL;
  }
  if (IntuitionBase) {
@@ -194,7 +234,7 @@ static void FreeResources(void)
   CxBase=NULL;
  }
  if (DOSBase) {
-  CloseLibrary(DOSBase);
+  CloseLibrary((struct Library *)DOSBase);
   DOSBase=NULL;
  }
  if (LibraryPort) {
@@ -203,10 +243,44 @@ static void FreeResources(void)
  }
 }
 
+/* Screen open event */
+static void ScreenOpenEvent(char *name)
+{
+ struct TMObject *tmobj;
+
+ tmobj=(struct TMObject *)GetHead(&PrivateTMHandle->tmh_ObjectLists[TMOBJTYPE_DOCK]);
+
+ /* Traverse list */
+ while (tmobj) {
+  /* Open dock */
+  ScreenOpenRequest(tmobj, name);
+
+  /* Get next object */
+  tmobj=(struct TMObject *)GetSucc((struct Node *)tmobj);
+ }
+}
+
+/* Screen close event */
+static void ScreenCloseEvent(struct Screen *s)
+{
+ struct TMObject *tmobj;
+
+ tmobj=(struct TMObject *)GetHead(&PrivateTMHandle->tmh_ObjectLists[TMOBJTYPE_DOCK]);
+
+ /* Traverse list */
+ while (tmobj) {
+  /* Close dock */
+  ScreenCloseRequest(tmobj, s);
+
+  /* Get next object */
+  tmobj=(struct TMObject *)GetSucc((struct Node *)tmobj);
+ }
+}
+
 /* handler main entry point */
 __SAVE_DS__ void HandlerEntry(void)
 {
- ULONG sigmask,lpsig,ipsig,tpsig,apsig,bpsig,nwsig,npsig;
+ ULONG sigmask,lpsig,ipsig,tpsig,apsig,bpsig,nwsig,npsig,scsig;
 
  /* Get resources */
  if (!OpenResources()) {
@@ -228,7 +302,9 @@ __SAVE_DS__ void HandlerEntry(void)
  else
   nwsig=0;
  npsig=1L<<NotifySignal;
- sigmask=ipsig|lpsig|tpsig|apsig|bpsig|nwsig|npsig|SIGBREAKF_CTRL_F;
+ scsig=(ScreenNotifyPort != NULL) ? (1L << ScreenNotifyPort->mp_SigBit) : 0;
+
+ sigmask=ipsig|lpsig|tpsig|apsig|bpsig|nwsig|npsig|scsig|SIGBREAKF_CTRL_F;
 
  /* Activate broker */
  ActivateCxObj(Broker,TRUE);
@@ -412,6 +488,58 @@ __SAVE_DS__ void HandlerEntry(void)
 
    /* Read new config */
    ReadConfig();
+  }
+
+  /* Got a Workbench Close/Open event? */
+  if (gotsigs & scsig) {
+   struct ScreenNotifyMessage *snm;
+
+   DEBUG_PUTSTR("ScreenNotify event!\n");
+
+   /* Retrieve message from port */
+   while (snm=(struct ScreenNotifyMessage *)GetMsg(ScreenNotifyPort)) {
+
+    /* Which event? */
+    switch (snm->snm_Type) {
+     case SCREENNOTIFY_TYPE_CLOSESCREEN:
+      ScreenCloseEvent((struct Screen *)snm->snm_Value);
+      break;
+
+     case SCREENNOTIFY_TYPE_PUBLICSCREEN:
+      ScreenOpenEvent(((struct PubScreenNode *)snm->snm_Value)->psn_Node.ln_Name);
+      break;
+
+     case SCREENNOTIFY_TYPE_PRIVATESCREEN:
+      ScreenCloseEvent(((struct PubScreenNode *)snm->snm_Value)->psn_Screen);
+      break;
+
+     case SCREENNOTIFY_TYPE_WORKBENCH:
+      /* Close or open event? */
+      switch ((ULONG)snm->snm_Value) {
+       case 0: {
+         struct Screen *s;
+
+         /* Lock Workbench screen */
+         if (s=LockPubScreen(WBName)) {
+          /* Close docks */
+          ScreenCloseEvent(s);
+
+          /* Unlock Workbench screen */
+          UnlockPubScreen(NULL, s);
+         }
+        }
+        break;
+
+       case 1:
+        ScreenOpenEvent((char *)WBName);
+        break;
+      }
+      break;
+    }
+
+    /* Reply message */
+    ReplyMsg((struct Message *)snm);
+   }
   }
  }
 

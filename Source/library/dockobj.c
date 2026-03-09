@@ -54,6 +54,7 @@ struct TMObjectDock {
                      ULONG            do_Seconds;
                      ULONG            do_Micros;
                      BOOL             do_DeferClose;
+                     BOOL             do_ReOpen;
                     };
 
 /* do_Flags */
@@ -84,6 +85,10 @@ static struct TagItem flagmap[]={
 
 /* Library bases */
 struct Library *DiskfontBase;
+
+/* Forward declarations for dock window helpers (used by ScreenCloseRequest/ScreenOpenRequest) */
+static void CloseDockWindow(struct TMObjectDock *dock);
+static void OpenDockWindow(struct TMObjectDock *tmobj, BOOL beep);
 
 /* Close a window safely */
 static void SafeCloseWindow(struct Window *w)
@@ -135,7 +140,7 @@ static void SafeCloseWindow(struct Window *w)
 static UWORD BackgroundPattern[]={0xaaaa,0x5555};
 
 /* Open Dock Window */
-static void OpenDockWindow(struct TMObjectDock *tmobj)
+static void OpenDockWindow(struct TMObjectDock *tmobj, BOOL beep)
 {
  struct Screen *pubsc;
 
@@ -636,16 +641,51 @@ static void OpenDockWindow(struct TMObjectDock *tmobj)
   UnlockPubScreen(NULL,pubsc);
  }
  /* Dock couldn't be opened! */
- DisplayBeep(NULL);
+ if (beep)
+  DisplayBeep(NULL);
+ else
+  tmobj->do_ReOpen=TRUE;
+}
+
+/* If dock window is on the screen then close it and set the re-open flag */
+void ScreenCloseRequest(struct TMObject *tmobj, struct Screen *s)
+{
+ struct TMObjectDock *tmdo=(struct TMObjectDock *)tmobj;
+
+ /* Window open and on the screen? */
+ if (tmdo->do_Window && (tmdo->do_Window->WScreen == s)) {
+
+  /* Yes, close dock */
+  CloseDockWindow(tmdo);
+
+  /* Set re-open flag */
+  tmdo->do_ReOpen=TRUE;
+ }
+}
+
+/* If the re-open flag is set then open the dock again */
+void ScreenOpenRequest(struct TMObject *tmobj, char *name)
+{
+ struct TMObjectDock *tmdo=(struct TMObjectDock *)tmobj;
+
+ /* Re-open flag set and public screen name matches? */
+ if (tmdo->do_ReOpen && tmdo->do_PubScreen && !stricmp(tmdo->do_PubScreen, name)) {
+
+  /* Yes, open dock */
+  OpenDockWindow(tmdo, TRUE);
+
+  /* Reset re-open flag */
+  tmdo->do_ReOpen=FALSE;
+ }
 }
 
 /* Close Dock window */
-static void CloseDockWindow(struct TMObjectDock *tmobj)
+static void CloseDockWindow(struct TMObjectDock *dock)
 {
- struct DockTool *dt=tmobj->do_Tools;
- struct Window *w=tmobj->do_Window;
+ struct DockTool *dt=dock->do_Tools;
+ struct Window *w=dock->do_Window;
 
- DEBUG_PRINTF("CloseDockWindow: 0x%08lx\n",tmobj);
+ DEBUG_PRINTF("CloseDockWindow: 0x%08lx\n",dock);
 
  /* Deactivate all Image objects */
  while (dt) {
@@ -660,43 +700,43 @@ static void CloseDockWindow(struct TMObjectDock *tmobj)
  }
 
  /* Remove menu */
- if (tmobj->do_Menu) {
+ if (dock->do_Menu) {
   ClearMenuStrip(w);
-  FreeMenus(tmobj->do_Menu);
-  tmobj->do_Menu=NULL;
+  FreeMenus(dock->do_Menu);
+  dock->do_Menu=NULL;
  }
 
  /* Remove drag gadget */
- if (!tmobj->do_Title) RemoveGadget(w,&tmobj->do_DragGadget);
+ if (!dock->do_Title) RemoveGadget(w,&dock->do_DragGadget);
 
  /* Remove gadtools gadgets */
- if (tmobj->do_GadToolsGadgets) {
-  RemoveGList(w,tmobj->do_GadToolsGadgets,(UWORD) -1);
-  FreeGadgets(tmobj->do_GadToolsGadgets);
-  tmobj->do_GadToolsGadgets=NULL;
+ if (dock->do_GadToolsGadgets) {
+  RemoveGList(w,dock->do_GadToolsGadgets,(UWORD) -1);
+  FreeGadgets(dock->do_GadToolsGadgets);
+  dock->do_GadToolsGadgets=NULL;
  }
 
  /* Remove AppWindow, free Workbench */
- if (tmobj->do_AppWindow) {
-  SafeRemoveAppWindow(tmobj->do_AppWindow,&tmobj->do_Link);
+ if (dock->do_AppWindow) {
+  SafeRemoveAppWindow(dock->do_AppWindow,&dock->do_Link);
   FreeWorkbench();
  }
 
  /* Sticky window? */
- if (!(tmobj->do_Flags & DO_Sticky)) {
+ if (!(dock->do_Flags & DO_Sticky)) {
   /* No, remember last window position */
-  tmobj->do_LeftEdge=w->LeftEdge;
-  tmobj->do_TopEdge=w->TopEdge;
+  dock->do_LeftEdge=w->LeftEdge;
+  dock->do_TopEdge=w->TopEdge;
  }
 
  /* Close Window */
  SafeCloseWindow(w);
- tmobj->do_Window=NULL;
+ dock->do_Window=NULL;
 
  /* Free resources */
- if (tmobj->do_GadgetFont) CloseFont(tmobj->do_GadgetFont);
- CloseFont(tmobj->do_TextFont);
- FreeVisualInfo(tmobj->do_VisualInfo);
+ if (dock->do_GadgetFont) CloseFont(dock->do_GadgetFont);
+ CloseFont(dock->do_TextFont);
+ FreeVisualInfo(dock->do_VisualInfo);
 }
 
 /* Free tools list */
@@ -833,7 +873,7 @@ struct TMObject *CreateTMObjectDock(struct TMHandle *handle, char *name,
     /* Active flag set? */
     if (tmobj->do_Flags & DO_Activated)
      /* Yes. Open dock window */
-     OpenDockWindow(tmobj);
+     OpenDockWindow(tmobj, FALSE);
 
     /* All OK */
     return((struct TMObject *)tmobj);
@@ -995,7 +1035,7 @@ BOOL ChangeTMObjectDock(struct TMHandle *handle,
  /* Active flag set? */
  if (tmobj->do_Flags & DO_Activated)
   /* Yes. Open dock window */
-  OpenDockWindow(tmobj);
+  OpenDockWindow(tmobj, FALSE);
 
  /* All OK. */
  return(TRUE);
@@ -1159,7 +1199,7 @@ void ActivateTMObjectDock(struct TMLink *tml, struct AppMessage *msg)
    CloseDockWindow(tmobj);
  else {
   /* Window not open. Open it. */
-  OpenDockWindow(tmobj);
+  OpenDockWindow(tmobj, TRUE);
 
   /* If DO_FrontMost is not set, move screen to front */
   if (!(tmobj->do_Flags & DO_FrontMost) && tmobj->do_Window)

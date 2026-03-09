@@ -32,10 +32,10 @@ BOOL InternalFreeTMHandle(struct TMHandle *handle)
  for (i=TMOBJTYPES-1; i>=0; i--) {
   /* Remove objects from one list */
   struct List    *tmol=&handle->tmh_ObjectLists[i];
-  struct TMObect *tmobj;
+  struct TMObject *tmobj;
 
   /* Scan list and delete objects */
-  while (tmobj=GetHead(tmol)) CallDeleteTMObject(tmobj);
+  while (tmobj=(struct TMObject *)GetHead(tmol)) CallDeleteTMObject(tmobj);
  }
 
  return(TRUE);

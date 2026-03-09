@@ -1,0 +1,36 @@
+#
+# SAS/C smakefile for screennotify.library.
+# Run from Source/screennotify: smake
+# Builds shared library from C sources and screennotifyasm.a (ROMTag, dummy entry).
+# Include path: SDK/include, local dir (for libraries/screennotify.h), repo root (clib).
+# For debug build add DEFINE DEBUG=1 to opts.
+#
+inc = //SDK/include
+opts = NOLINK INCLUDEDIR=$(inc)
+
+ldlibs = lib:sc.lib lib:amiga.lib lib:debug.lib
+
+sn_c_objs = screennotify.o functions.o patch.o
+sn_objs = screennotifyasm.o $(sn_c_objs)
+dest = screennotify.library
+
+all: $(dest)
+
+$(dest): $(sn_objs)
+	slink FROM $(sn_objs) TO $(dest) LIB $(ldlibs)
+
+screennotifyasm.o: screennotifyasm.a
+	asm screennotifyasm.a
+
+screennotify.o: screennotify.c screennotify.h
+	sc $(opts) screennotify.c
+functions.o: functions.c screennotify.h
+	sc $(opts) functions.c
+patch.o: patch.c screennotify.h
+	sc $(opts) patch.c
+
+clean:
+	-delete \#?.o $(dest) quiet
+
+install:
+	-copy $(dest) /SYS/libs/$(dest) clone

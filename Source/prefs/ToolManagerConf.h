@@ -313,8 +313,8 @@ extern const char            SavePrefsFileName[];
 #define IX_FONTREQ_TITLE 109
 
 /* Global defines */
-#define TMVERSION  "2"
-#define TMREVISION "1"
+#define TMVERSION  "2.1b"
+#define TMREVISION "0"
 #define TMCRYEAR   "1990-93"
 
 #define REQBUTTONWIDTH 20

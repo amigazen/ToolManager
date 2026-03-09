@@ -9,10 +9,11 @@
 #include "ToolManagerLib.h"
 
 /* library name & id string */
-#define INTTOSTR(a) #a
+#define INTTOSTR_INNER(a) #a
+#define INTTOSTR(a) INTTOSTR_INNER(a)
 const char LibName[]=TMLIBNAME;
 /* const char LibId[]="$VER: " TMLIBNAME " " TMLIBVERSION "." TMLIBREVISION " (" __COMMODORE_DATE__ ")\r\n"; */
-const char LibId[]="$VER: toolmanager.library 2.3 (8/3/2026)\n";
+const char LibId[]="$VER: toolmanager.library " INTTOSTR(TMLIBVERSION) "." INTTOSTR(TMLIBREVISION) " "__AMIGADATE__"\n";
 
 /* prototypes for library management functions (param names required for SAS/C __REG__) */
 __SAVE_DS__ __ASM__ static struct Library *LibOpen(__REG__(a6, struct Library *lib), __REG__(d0, ULONG version));
@@ -73,7 +74,7 @@ __SAVE_DS__ __ASM__ struct Library *LibInit(__REG__(a0, BPTR LibSegList))
  struct Library *MyLib;
 
  /* Get ExecBase */
- SysBase=*(struct Library **) 4; /* AbsExecBase */
+ SysBase=*(struct ExecBase **) 4; /* AbsExecBase */
 
  /* Open dos.library */
  if (!(PrivateDOSBase=OpenLibrary(DosName,37))) return(0);

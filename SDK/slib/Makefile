@@ -7,7 +7,7 @@ ASM	= asm
 	$(ASM) $*.asm
 
 .c.o:
-	sc $*.c STRMERGE UNSCHAR NOSTKCHK OPTIMIZE
+	sc $*.c STRMERGE UNSCHAR NOSTKCHK OPTIMIZE INCLUDEDIR=/include
 
 tm.lib: $(OBJS)
 	oml tm.lib r $(OBJS)

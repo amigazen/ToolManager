@@ -1,0 +1,37 @@
+;
+; screennotifyasm.a  V1.0
+;
+; screennotify.library assembler routines (ROM tag, dummy entry)
+;
+; (c) 1995 Stefan Becker
+;
+;
+; 1.) Library dummy entry point
+;
+         SECTION  screennotifyasm,CODE
+
+DummyEntry:
+         moveq    #0,d0
+         rts
+;
+; 2.) ROMTag structure
+;
+         xref     _LibraryName
+         xref     _LibraryID
+         xref     _LibraryInit
+
+ROMTag:
+         dc.w     $4AFC          ; UWORD            rt_MatchWord
+         dc.l     ROMTag         ; struct Resident *rt_MatchTag
+         dc.l     EndCode        ; APTR             rt_EndSkip
+         dc.b     0              ; UBYTE            rt_Flags
+         dc.b     1              ; UBYTE            rt_Version (SCREENNOTIFY_VERSION)
+         dc.b     9              ; UBYTE            rt_Type   ; NT_LIBRARY
+         dc.b     0              ; BYTE             rt_Pri
+         dc.l     _LibraryName   ; char            *rt_Name
+         dc.l     _LibraryID+6   ; char            *rt_IdString
+         dc.l     _LibraryInit   ; APTR             rt_Init
+
+EndCode:
+
+         END
