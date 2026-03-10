@@ -11,6 +11,8 @@
 #include <reaction/reaction_macros.h>
 #include <gadgets/chooser.h>
 #include <gadgets/string.h>
+#include <gadgets/integer.h>
+#include <gadgets/checkbox.h>
 #include <images/label.h>
 #include <gadgets/layout.h>
 #include <gadgets/listbrowser.h>

@@ -1139,15 +1139,30 @@ void UpdateDockEditWindow(void *data)
                         break;
  }
 
- /* Enable window */
- EnableWindow(w,&DummyReq,WINDOW_IDCMP);
+ /* Restore sub-window: RA Dock or GadTools Dock */
+ if (SavedSubWindowRAObject) {
+  struct Window *ra_win;
 
- SubWindowPort=w->UserPort;
- SubWindowHandler=HandleDockEditWindowIDCMP;
+  ra_win=NULL;
+  GetAttr(WINDOW_Window,SavedSubWindowRAObject,(ULONG *)&ra_win);
+  if (ra_win) {
+   SubWindowRAObject=SavedSubWindowRAObject;
+   SubWindowRAHandler=SavedSubWindowRAHandler;
+   SubWindowRACloseFunc=SavedSubWindowRACloseFunc;
+   SubWindowPort=ra_win->UserPort;
+   CurrentWindow=ra_win;
+   SavedSubWindowRAObject=NULL;
+   SavedSubWindowRAHandler=NULL;
+   SavedSubWindowRACloseFunc=NULL;
+  }
+ } else {
+  EnableWindow(w,&DummyReq,WINDOW_IDCMP);
+  SubWindowPort=w->UserPort;
+  SubWindowHandler=HandleDockEditWindowIDCMP;
+  CurrentWindow=w;
+ }
 
- /* Restore update function pointer */
  UpdateWindow=UpdateMainWindow;
- CurrentWindow=w;
  ReqOpen=FALSE;
 }
 

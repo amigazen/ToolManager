@@ -42,6 +42,10 @@ Object *SubWindowRAObject=NULL;
 BOOL (*SubWindowRAHandler)(Object *, ULONG result, UWORD code)=NULL;
 void (*SubWindowRACloseFunc)(void)=NULL;
 void *SubWindowRAReturnData=NULL;
+/* Saved when opening move window (RA icon/dock etc.) so we restore on CloseMoveWindow */
+Object *SavedSubWindowRAObject=NULL;
+BOOL (*SavedSubWindowRAHandler)(Object *, ULONG result, UWORD code)=NULL;
+void (*SavedSubWindowRACloseFunc)(void)=NULL;
 BOOL OSV39=FALSE;
 BOOL WBScreen;
 BOOL CreateIcons=TRUE;

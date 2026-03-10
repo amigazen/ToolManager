@@ -371,6 +371,13 @@ BOOL OpenDockListEditWindow(struct List *oldlist, struct Window *parent)
     w->UserData=(BYTE *) HandleDockListEditWindowIDCMP;
     ModifyIDCMP(w,WINDOW_IDCMP);
     CurrentWindow=w;
+    /* Save RA state so UpdateDockEditWindow can restore parent (e.g. RA Dock) */
+    SavedSubWindowRAObject=SubWindowRAObject;
+    SavedSubWindowRAHandler=SubWindowRAHandler;
+    SavedSubWindowRACloseFunc=SubWindowRACloseFunc;
+    SubWindowRAObject=NULL;
+    SubWindowRAHandler=NULL;
+    SubWindowRACloseFunc=NULL;
     SubWindowPort=w->UserPort;
     SubWindowHandler=HandleDockListEditWindowIDCMP;
     ReqOpen=FALSE;

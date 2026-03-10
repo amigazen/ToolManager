@@ -240,6 +240,7 @@ BOOL         WriteMenuNode(struct IFFHandle *, UBYTE *, struct Node *);
 /* movewindow.c */
 void  InitMoveWindow(UWORD, UWORD);
 void  OpenMoveWindow(struct Window *, struct Gadget *, struct Gadget *);
+void  OpenMoveWindowRA(struct Window *w, Object *xIntObj, Object *yIntObj);
 void  CloseMoveWindow(void);
 void *HandleMoveWindowIDCMP(struct IntuiMessage *);
 
@@ -301,6 +302,10 @@ extern Object               *SubWindowRAObject;
 extern BOOL                 (*SubWindowRAHandler)(Object *, ULONG result, UWORD code);
 extern void                 (*SubWindowRACloseFunc)(void);
 extern void                 *SubWindowRAReturnData;
+/* Saved when opening move window so we can restore the RA sub-window on close */
+extern Object               *SavedSubWindowRAObject;
+extern BOOL                 (*SavedSubWindowRAHandler)(Object *, ULONG result, UWORD code);
+extern void                 (*SavedSubWindowRACloseFunc)(void);
 extern struct Window        *MoveWindowPtr;
 extern ULONG                 MoveWindowOffX,MoveWindowOffY;
 extern BOOL                  OSV39;

@@ -1,240 +1,236 @@
 /*
- * listreq.c  V2.1
+ * listreq.c  RAprefs
  *
- * list requester handling
+ * List requester: ReAction GUI (WindowObject + ListBrowserObject + OK/Cancel).
+ * Integrates via SubWindowRAObject and main loop RA_HandleInput path.
  *
  * (c) 1990-1993 Stefan Becker
  */
 
-#include "ToolManagerConf.h"
+#include "RAprefsConf.h"
 
-/* Window data */
-static struct Gadget *gl;             /* Gadget list */
-static struct Window *w;              /* Window */
-static struct MsgPort *wp;            /* Window user port */
-static UWORD ww,wh;                   /* Window size */
+#ifndef LBRE_DOUBLECLICK
+#define LBRE_DOUBLECLICK 4
+#endif
+
+#define GAD_LIST   1
+#define GAD_OK     2
+#define GAD_CANCEL 3
+
 static struct List *CurrentList;
-static struct Node *CurrentNode;
-static ULONG OldSeconds,OldMicros;
+static struct List listReqBrowserList;
+static Object *RAListReqWindowObj;
+static Object *RAListReqBrowserObj;
+static char *ListReqTitle;
 
-/* Gadget data */
-#define GAD_LIST   0
-#define GAD_OK     1
-#define GAD_CANCEL 2
-#define GADGETS    3
-static struct GadgetData gdata[GADGETS];
+/* Free list browser nodes built from CurrentList */
+static void FreeListReqBrowserList(void)
+{
+ struct Node *n;
 
-/* Gadget tags */
-static struct TagItem lvtags[]={GTLV_Labels,       NULL,
-                                GTLV_ShowSelected, NULL,
-                                TAG_DONE};
+ while (n=RemHead(&listReqBrowserList))
+  FreeListBrowserNode((struct ListBrowserNode *)n);
+}
 
-/* Gadget vanilla key data */
-#define KEY_OK     0
-#define KEY_CANCEL 1
-static char KeyArray[KEY_CANCEL+1];
+/* Build ListBrowser node list from CurrentList (same pattern as main window) */
+static void BuildListReqBrowserList(void)
+{
+ struct Node *node;
 
-/* Init list requester */
+ FreeListReqBrowserList();
+ node=GetHead(CurrentList);
+ while (node) {
+  struct ListBrowserNode *lbnode;
+
+  lbnode=AllocListBrowserNode(1,LBNCA_CopyText,TRUE,LBNCA_Text,
+    node->ln_Name ? node->ln_Name : "",TAG_END);
+  if (lbnode)
+   AddTail(&listReqBrowserList,(struct Node *)lbnode);
+  node=GetSucc(node);
+ }
+}
+
+/* Called from main loop when ReAction list requester is closed */
+void CloseRAListRequester(void)
+{
+ if (RAListReqWindowObj) {
+  DisposeObject(RAListReqWindowObj);
+  RAListReqWindowObj=NULL;
+ }
+ RAListReqBrowserObj=NULL;
+ FreeListReqBrowserList();
+}
+
+/* Return the struct Node* at index in CurrentList, or NULL */
+static struct Node *GetNodeAtIndex(LONG index)
+{
+ struct Node *node;
+
+ if (index<0) return NULL;
+ node=GetHead(CurrentList);
+ while (index>0 && node) {
+  node=GetSucc(node);
+  index--;
+ }
+ return node;
+}
+
+/* ReAction list requester event handler; returns TRUE when requester should close */
+BOOL HandleRAListReqEvent(Object *windowObj, ULONG result, UWORD code)
+{
+ LONG sel;
+ struct Node *node;
+
+ (void)windowObj;
+
+ switch (result) {
+  case WMHI_CLOSEWINDOW:
+   SubWindowRAReturnData=LREQRET_CANCEL;
+   return TRUE;
+
+  case WMHI_GADGETUP:
+   switch (code) {
+    case GAD_OK:
+     sel=-1;
+     if (RAListReqBrowserObj)
+      GetAttr(LISTBROWSER_Selected,RAListReqBrowserObj,(ULONG *)&sel);
+     node=GetNodeAtIndex(sel);
+     SubWindowRAReturnData=node ? node : LREQRET_NOSELECT;
+     return TRUE;
+
+    case GAD_CANCEL:
+     SubWindowRAReturnData=LREQRET_CANCEL;
+     return TRUE;
+
+    case GAD_LIST: {
+     ULONG relEvent;
+
+     /* Double-click on list item: close with selection (match original prefs) */
+     relEvent=0;
+     if (RAListReqBrowserObj)
+      GetAttr(LISTBROWSER_RelEvent,RAListReqBrowserObj,(ULONG *)&relEvent);
+     if (relEvent==LBRE_DOUBLECLICK) {
+      sel=-1;
+      if (RAListReqBrowserObj)
+       GetAttr(LISTBROWSER_Selected,RAListReqBrowserObj,(ULONG *)&sel);
+      node=GetNodeAtIndex(sel);
+      SubWindowRAReturnData=node ? node : LREQRET_NOSELECT;
+      return TRUE;
+     }
+     break;
+    }
+   }
+   break;
+ }
+
+ return FALSE;
+}
+
+/* Init list requester (no layout calc needed for ReAction) */
 void InitListRequester(UWORD left, UWORD fheight)
 {
- ULONG tmp,maxw1,maxw2;
- struct GadgetData *gd;
-
- /* Init strings */
- gdata[GAD_OK].name    =AppStrings[MSG_WINDOW_OK_GAD];
- gdata[GAD_CANCEL].name=AppStrings[MSG_WINDOW_CANCEL_GAD];
-
- /* Calculate maximum width for list gadget */
- maxw1=ListViewColumns*ScreenFont->tf_XSize;
- ww=maxw1+INTERWIDTH;
-
- /* Calculate maximum width for button gadgets */
- gd=&gdata[GAD_OK];
- maxw2=TextLength(&TmpRastPort,gd->name,strlen(gd->name));
- gd++;
- if ((tmp=TextLength(&TmpRastPort,gd->name,strlen(gd->name))) > maxw2)
-  maxw2=tmp;
- maxw2+=2*INTERWIDTH;
- if ((tmp=2*(maxw2+INTERWIDTH)) > ww) ww=tmp;
-
- /* window height */
- wh=(ListViewRows+3)*fheight+3*INTERHEIGHT;
-
- /* ListView gadget */
- gd=gdata;
- tmp=ww-INTERWIDTH;
- gd->type=LISTVIEW_KIND;
- gd->tags=lvtags;
- gd->left=left;
- gd->top=WindowTop+INTERHEIGHT;
- gd->width=tmp;
- gd->height=(ListViewRows+2)*fheight;
-
- /* OK gadget */
- tmp=WindowTop+(ListViewRows+2)*fheight+2*INTERHEIGHT;
- gd++;
- gd->type=BUTTON_KIND;
- gd->flags=PLACETEXT_IN;
- gd->tags=NULL;
- gd->left=left;
- gd->top=tmp;
- gd->width=maxw2;
- gd->height=fheight;
-
- /* Cancel Gadget */
- gd++;
- gd->type=BUTTON_KIND;
- gd->flags=PLACETEXT_IN;
- gd->tags=NULL;
- gd->left=ww-maxw2-INTERWIDTH+left;
- gd->top=tmp;
- gd->width=maxw2;
- gd->height=fheight;
-
- /* Init vanilla key array */
- KeyArray[KEY_OK]    =FindVanillaKey(gdata[GAD_OK].name);
- KeyArray[KEY_CANCEL]=FindVanillaKey(gdata[GAD_CANCEL].name);
+ (void)left;
+ (void)fheight;
+ NewList(&listReqBrowserList);
 }
 
-/* Open list requester */
+/* Open list requester (ReAction) */
 BOOL OpenListRequester(ULONG type, struct Window *oldwindow)
 {
- char *title;
+ Object *layout;
+ struct Window *w;
 
- /* Set title & list */
  switch (type) {
-  case LISTREQ_EXEC:  title=AppStrings[MSG_LISTREQ_TITLE_EXEC];
-                      CurrentList=&ObjectLists[TMOBJTYPE_EXEC];
+  case LISTREQ_EXEC:  CurrentList=&ObjectLists[TMOBJTYPE_EXEC];
+                      ListReqTitle=AppStrings[MSG_LISTREQ_TITLE_EXEC];
                       break;
-  case LISTREQ_IMAGE: title=AppStrings[MSG_LISTREQ_TITLE_IMAGE];
-                      CurrentList=&ObjectLists[TMOBJTYPE_IMAGE];
+  case LISTREQ_IMAGE: CurrentList=&ObjectLists[TMOBJTYPE_IMAGE];
+                      ListReqTitle=AppStrings[MSG_LISTREQ_TITLE_IMAGE];
                       break;
-  case LISTREQ_SOUND: title=AppStrings[MSG_LISTREQ_TITLE_SOUND];
-                      CurrentList=&ObjectLists[TMOBJTYPE_SOUND];
+  case LISTREQ_SOUND: CurrentList=&ObjectLists[TMOBJTYPE_SOUND];
+                      ListReqTitle=AppStrings[MSG_LISTREQ_TITLE_SOUND];
                       break;
-  case LISTREQ_DOCK:  title=AppStrings[MSG_LISTREQ_TITLE_DOCK];
-                      CurrentList=&ObjectLists[TMOBJTYPE_DOCK];
+  case LISTREQ_DOCK:  CurrentList=&ObjectLists[TMOBJTYPE_DOCK];
+                      ListReqTitle=AppStrings[MSG_LISTREQ_TITLE_DOCK];
                       break;
-  case LISTREQ_PUBSC: title=AppStrings[MSG_LISTREQ_TITLE_PUBSCREEN];
-                      CurrentList=&PubScreenList;
+  case LISTREQ_PUBSC: CurrentList=&PubScreenList;
+                      ListReqTitle=AppStrings[MSG_LISTREQ_TITLE_PUBSCREEN];
                       break;
+  default:
+   return FALSE;
  }
 
- /* Set tags */
- lvtags[0].ti_Data=(ULONG) CurrentList;
+ BuildListReqBrowserList();
 
- /* Create gadgets */
- if (gl=CreateGadgetList(gdata,GADGETS)) {
-  /* Open window */
-  if (w=OpenWindowTags(NULL,WA_Left,        oldwindow->LeftEdge,
-                            WA_Top,         oldwindow->TopEdge+WindowTop,
-                            WA_InnerWidth,  ww,
-                            WA_InnerHeight, wh,
-                            WA_AutoAdjust,  TRUE,
-                            WA_Title,       title,
-                            WA_PubScreen,   PublicScreen,
-                            WA_Flags,       WFLG_CLOSEGADGET|WFLG_DRAGBAR|
-                                            WFLG_DEPTHGADGET|WFLG_RMBTRAP|
-                                            WFLG_ACTIVATE,
-                            TAG_DONE)) {
-   /* Add gadgets to window */
-   AddGList(w,gl,(UWORD) -1,(UWORD) -1,NULL);
-   RefreshGList(gl,w,NULL,(UWORD) -1);
-   GT_RefreshWindow(w,NULL);
+ layout=VGroupObject,
+  LAYOUT_SpaceOuter,TRUE,
+  LAYOUT_SpaceInner,TRUE,
+  LAYOUT_BevelStyle,BVS_THIN,
+  StartMember,
+   RAListReqBrowserObj=ListBrowserObject,
+    GA_ID,GAD_LIST,
+    GA_RelVerify,TRUE,
+    LISTBROWSER_Labels,&listReqBrowserList,
+    LISTBROWSER_ShowSelected,TRUE,
+   EndMember,
+  StartHGroup,EvenSized,
+   StartMember,ButtonObject,GA_ID,GAD_OK,GA_RelVerify,TRUE,GA_Text,AppStrings[MSG_WINDOW_OK_GAD],ButtonEnd,
+   StartMember,ButtonObject,GA_ID,GAD_CANCEL,GA_RelVerify,TRUE,GA_Text,AppStrings[MSG_WINDOW_CANCEL_GAD],ButtonEnd,
+  EndGroup,
+ EndGroup;
 
-   /* Set local variables; list req uses its own port (replaces current sub-window in main loop) */
-   w->UserData=(BYTE *) HandleListRequesterIDCMP;
-   ModifyIDCMP(w,IDCMP_CLOSEWINDOW|IDCMP_REFRESHWINDOW|BUTTONIDCMP|
-                 LISTVIEWIDCMP|IDCMP_VANILLAKEY);
-   CurrentWindow=w;
-   SubWindowPort=w->UserPort;
-   SubWindowHandler=HandleListRequesterIDCMP;
-   CurrentNode=NULL;
-   OldSeconds=0;
-   OldMicros=0;
-
-   /* All OK. (Return window UserPort signal mask) */
-   return(TRUE);
-  }
-
-  FreeGadgets(gl);
+ if (!layout) {
+  FreeListReqBrowserList();
+  return FALSE;
  }
- /* Call failed */
- return(FALSE);
+
+ RAListReqWindowObj=WindowObject,
+  WA_PubScreen,PublicScreen,
+  WA_Flags,WFLG_CLOSEGADGET|WFLG_DRAGBAR|WFLG_DEPTHGADGET|WFLG_RMBTRAP|WFLG_ACTIVATE,
+  WA_Title,ListReqTitle,
+  WINDOW_RefWindow,oldwindow,
+  WINDOW_Position,WPOS_CENTERWINDOW,
+  WINDOW_ParentGroup,layout,
+ EndWindow;
+
+ if (!RAListReqWindowObj) {
+  DisposeObject(layout);
+  FreeListReqBrowserList();
+  return FALSE;
+ }
+
+ if (!(w=(struct Window *)RA_OpenWindow(RAListReqWindowObj))) {
+  DisposeObject(RAListReqWindowObj);
+  RAListReqWindowObj=NULL;
+  RAListReqBrowserObj=NULL;
+  FreeListReqBrowserList();
+  return FALSE;
+ }
+
+ CurrentWindow=w;
+ SubWindowPort=w->UserPort;
+ SubWindowRAObject=RAListReqWindowObj;
+ SubWindowRAHandler=HandleRAListReqEvent;
+ SubWindowRACloseFunc=CloseRAListRequester;
+
+ return TRUE;
 }
 
-/* Close list requester */
+/* Close list requester (called when already closed via RA path; no-op if RA, else for compatibility) */
 void CloseListRequester(void)
 {
- /* Free resources */
- RemoveGList(w,gl,(UWORD) -1);
- CloseWindowSafely(w);
- FreeGadgets(gl);
+ if (RAListReqWindowObj) {
+  CloseRAListRequester();
+  SubWindowRAObject=NULL;
+  SubWindowPort=NULL;
+  SubWindowRAHandler=NULL;
+  SubWindowRACloseFunc=NULL;
+ }
 }
 
-/* Handle list requester IDCMP events */
+/* Stub for compatibility with code expecting GadTools list requester IDCMP handler */
 void *HandleListRequesterIDCMP(struct IntuiMessage *msg)
 {
- struct Node *NewNode;
-
- /* Which IDCMP Class? */
- switch (msg->Class) {
-  case IDCMP_CLOSEWINDOW:   NewNode=LREQRET_CANCEL;
-                            break;
-  case IDCMP_REFRESHWINDOW: GT_BeginRefresh(w);
-                            GT_EndRefresh(w,TRUE);
-                            break;
-  case IDCMP_GADGETUP:
-   switch (((struct Gadget *) msg->IAddress)->GadgetID) {
-    case GAD_LIST:   {
-                      ULONG code=msg->Code;
-
-                      /* Search node */
-                      CurrentNode=GetHead(CurrentList);
-                      while (code--) CurrentNode=GetSucc(CurrentNode);
-
-                      /* Double-click? */
-                      if (DoubleClick(OldSeconds,OldMicros,
-                                      msg->Seconds,msg->Micros))
-                       /* Yes. Quit requester */
-                       if (CurrentNode)
-                        NewNode=CurrentNode;
-                       else
-                        NewNode=LREQRET_NOSELECT;
-
-                      /* Save current time */
-                      OldSeconds=msg->Seconds;
-                      OldMicros=msg->Micros;
-                     }
-                     break;
-    case GAD_OK:     if (CurrentNode)
-                      NewNode=CurrentNode;
-                     else
-                      NewNode=LREQRET_NOSELECT;
-                     break;
-    case GAD_CANCEL: NewNode=LREQRET_CANCEL;
-                     break;
-   }
-   break;
-  case IDCMP_VANILLAKEY:
-   switch (MatchVanillaKey(msg->Code,KeyArray)) {
-    case KEY_OK:     if (CurrentNode)
-                      NewNode=CurrentNode;
-                     else
-                      NewNode=LREQRET_NOSELECT;
-                     break;
-    case KEY_CANCEL: NewNode=LREQRET_CANCEL;
-                     break;
-   }
-   break;
- }
-
- /* Close window? */
- if (NewNode) {
-  /* Yes. But first reply message!!! */
-  GT_ReplyIMsg(msg);
-  CloseListRequester();
- }
-
- return(NewNode);
+ (void)msg;
+ return NULL;
 }

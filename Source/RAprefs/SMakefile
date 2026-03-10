@@ -30,15 +30,15 @@ gadget.o: gadget.c ToolManagerConf.h
 	sc $(opts) gadget.c
 mainwindow_ra.o: mainwindow_ra.c RAprefsConf.h ToolManagerConf.h
 	sc $(opts) mainwindow_ra.c
-execwindow.o: execwindow.c ToolManagerConf.h
+execwindow.o: execwindow.c RAprefsConf.h ToolManagerConf.h
 	sc $(opts) execwindow.c
-imagewindow.o: imagewindow.c ToolManagerConf.h
+imagewindow.o: imagewindow.c RAprefsConf.h ToolManagerConf.h
 	sc $(opts) imagewindow.c
-soundwindow.o: soundwindow.c ToolManagerConf.h
+soundwindow.o: soundwindow.c RAprefsConf.h ToolManagerConf.h
 	sc $(opts) soundwindow.c
-menuwindow.o: menuwindow.c ToolManagerConf.h
+menuwindow.o: menuwindow.c RAprefsConf.h ToolManagerConf.h
 	sc $(opts) menuwindow.c
-iconwindow.o: iconwindow.c ToolManagerConf.h
+iconwindow.o: iconwindow.c RAprefsConf.h ToolManagerConf.h
 	sc $(opts) iconwindow.c
 dockwindow.o: dockwindow.c ToolManagerConf.h
 	sc $(opts) dockwindow.c
@@ -46,13 +46,13 @@ docklistwindow.o: docklistwindow.c ToolManagerConf.h
 	sc $(opts) docklistwindow.c
 accesswindow.o: accesswindow.c ToolManagerConf.h
 	sc $(opts) accesswindow.c
-selectwindow.o: selectwindow.c ToolManagerConf.h
+selectwindow.o: selectwindow.c RAprefsConf.h ToolManagerConf.h
 	sc $(opts) selectwindow.c
-movewindow.o: movewindow.c ToolManagerConf.h
+movewindow.o: movewindow.c RAprefsConf.h ToolManagerConf.h
 	sc $(opts) movewindow.c
 aslreqs.o: aslreqs.c ToolManagerConf.h
 	sc $(opts) aslreqs.c
-listreq.o: listreq.c ToolManagerConf.h
+listreq.o: listreq.c RAprefsConf.h ToolManagerConf.h
 	sc $(opts) listreq.c
 window.o: window.c ToolManagerConf.h
 	sc $(opts) window.c
