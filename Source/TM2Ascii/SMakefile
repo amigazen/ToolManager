@@ -1,0 +1,19 @@
+OBJ = TM2ASCII.o
+ARC = TM2ASCII.c struct.c SMakeFile TM2ASCII toolmanager.h memwatch.h
+
+OPT = 	VERBOSE UNSCHAR STRMERGE STREQ OPTIMIZE CPU=ANY\
+	CONSTLIBBASE DEF=__USE_SYSBASE STACKCHECK $*
+
+.c.o:
+	sc $(OPT) GST=TM2ASCII.gst $*.c
+
+TM2ASCII: $(OBJ) 
+  slink  LIB:c.o+$(OBJ) to TM2ASCII \
+  LIB LIB:sc.lib LIB:amiga.lib \
+  MAP TM2ASCII.MAP FHLSX \
+  SD SC ND
+
+TM2ASCII.o: TM2ASCII.c TM2ASCII.gst
+
+TM2ASCII.gst: struct.c
+	sc $(OPT) NODEBUG NOOBJNAME MAKEGST=TM2ASCII.gst struct.c

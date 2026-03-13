@@ -1,0 +1,42 @@
+Have you ever tried to move your ToolManager-icons directory to another place ?
+Did you rename your Harddisk or got a bigger one ?
+Did your index finger get tired of endless clicking only to change 
+he path of 42 icons ?
+
+
+Here's the solution -- TM2Ascii.
+
+TM2Ascii will read a ToolManager configfile, translate it to an ASCII (readable!) file,
+now you can edit the filenames, e.g. find&replace all occurences of "Progs:Utilities/"
+to "Work:Utilities" etc. After editing, use TM2Ascii again to convert the ASCII file
+back to Toolmanager format. It is recommended only to change pathnames, although you
+can edit >any< parameter in the converted configfile, but you have to read and
+understand both ToolManager and TM2Ascii sources to do this.
+. 
+Most of the TM2Ascii sourcecode was `written` by cut&paste from the original Tool-
+Manager sources, so its quite readable. Thanks to Stefan Becker !!
+
+
+USAGE
+
+TM2Ascii ENV:ToolManager.prefs ToolManager.config
+This command will read the ToolManager configfile and write an Ascii representation
+to your HardDisk as ToolManager.config
+
+TM2Ascii ENV:ToolManager.prefs ToolManager.config WRITE
+This command writes ToolManager.config back to ENV:ToolManager.prefs.
+You should use another filename for the new prefsfile, or backup you configfile to
+avoid accidents.
+
+
+AUTHOR
+	Michael Illgner
+	Theodorstr. 27
+	4790 Paderborn
+
+	Internet: fillg1@convex.uni-paderborn.de
+
+This program is FreeWare, do what ever you want.
+Especially Stefan Becker is allowed to include it in his ToolManager archive, and
+Fred Fish may publish it on his famous FishDisks.
+It is allowed to distribute TM2Ascii on any CD-Software collection.

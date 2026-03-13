@@ -1,0 +1,578 @@
+TM2ASCII                13-Mar-26 23:13:36  Hunk Section                Page 1-1
+
+ num hunk         size filename         punit    type         base  alv     size
+   0 text         61e8 LIB:c.o          c        code            0    0      2a0
+                       TM2ASCII.o       TM2ASCII code          2a0    0     33f0
+                       LIB:sc.lib       newlist  code         3690    0       14
+                       LIB:sc.lib       _constru code         36a4    0       38
+                       LIB:sc.lib       _fpinit. code         36dc    0       3c
+                       LIB:sc.lib       writes.c code         3718    0       30
+                       LIB:sc.lib       _memclea code         3748    0       2c
+                       LIB:sc.lib       strdup.c code         3774    0       2c
+                       LIB:sc.lib       _stpcpy. code         37a0    0       14
+                       LIB:sc.lib       _stcul_d code         37b4    0       30
+                       LIB:sc.lib       _stcl_o. code         37e4    0       30
+                       LIB:sc.lib       _stcl_h. code         3814    0       3c
+                       LIB:sc.lib       _stcd_i. code         3850    0       54
+                       LIB:sc.lib       _getbuff code         38a4    0       48
+                       LIB:sc.lib       _strupr. code         38ec    0       38
+                       LIB:sc.lib       _ufb.c   code         3924    0       7c
+                       LIB:sc.lib       _write.c code         39a0    0      118
+                       LIB:sc.lib       _read.c  code         3ab8    0       f4
+                       LIB:sc.lib       _lseek.c code         3bac    0       98
+                       LIB:sc.lib       _close.c code         3c44    0       70
+                       LIB:sc.lib       _open.c  code         3cb4    0      21c
+                       LIB:sc.lib       _cxovf.c code         3ed0    0       a0
+                       LIB:sc.lib       _CXD33.o code         3f70    0       c4
+                       LIB:sc.lib       _CXM22.o code         4034    0       30
+                       LIB:sc.lib       xcovf.o  code         4064    0       10
+                       LIB:sc.lib       _exit.c  code         4074    0       10
+                       LIB:sc.lib       _main.c  code         4084    0      188
+                       LIB:sc.lib       _cxbrk.c code         420c    0      14c
+                       LIB:sc.lib       _chkufb. code         4358    0       48
+                       LIB:sc.lib       _chkabor code         43a0    0       4c
+                       LIB:sc.lib       memchr.o code         43ec    0       24
+                       LIB:sc.lib       memmove. code         4410    0       2c
+                       LIB:sc.lib       free.o   code         443c    0      16c
+                       LIB:sc.lib       malloc.o code         45a8    0      174
+                       LIB:sc.lib       exit.c   code         471c    0       28
+                       LIB:sc.lib       sscanf.c code         4744    0       5c
+                       LIB:sc.lib       fprintf. code         47a0    0       a0
+                       LIB:sc.lib       fgets.c  code         4840    0       7c
+                       LIB:sc.lib       fgetc.c  code         48bc    0      16c
+                       LIB:sc.lib       fflush.c code         4a28    0       d8
+                       LIB:sc.lib       fclose.c code         4b00    0       60
+                       LIB:sc.lib       freopen. code         4b60    0      13c
+                       LIB:sc.lib       fopen.c  code         4c9c    0       6c
+                       LIB:sc.lib       _pfmt.c  code         4d08    0      4b8
+                       LIB:sc.lib       _pf.c    code         51c0    0       70
+                       LIB:sc.lib       remove.c code         5230    0       30
+                       LIB:sc.lib       autoopen code         5260    0      104
+                       LIB:sc.lib       iffparse code         5364    0       60
+                       LIB:sc.lib       utillib. code         53c4    0       60
+                       LIB:sc.lib       io2errno code         5424    0       68
+                       LIB:sc.lib       UNKNOWN  code         548c    0       10
+                       LIB:sc.lib       fwrite.c code         549c    0      144
+                       LIB:sc.lib       fputc.c  code         55e0    0      188
+TM2ASCII                13-Mar-26 23:13:36  Hunk Section                Page 1-2
+
+ num hunk         size filename         punit    type         base  alv     size
+                       LIB:sc.lib       _sfmt.c  code         5768    0      648
+                       LIB:sc.lib       _sf.c    code         5db0    0      1f0
+                       LIB:sc.lib       _iob.c   code         5fa0    0      248
+   1 __MERGED      390 TM2ASCII.o       TM2ASCII data            0    0       bc
+                       T:HT0KAI.0001    _ctdt.o  data           bc    0       2c
+                       LIB:sc.lib       mstep.c  data           e8    0        4
+                       LIB:sc.lib       sigfunc. data           ec    0       24
+                       LIB:sc.lib       ctype.c  data          110    0      104
+                       LIB:sc.lib       _constru data          214    0        4
+                       LIB:sc.lib       stack.c  data          218    0        4
+                       LIB:sc.lib       _buffsiz data          21c    0        4
+                       LIB:sc.lib       _ufb.c   data          220    0        8
+                       LIB:sc.lib       _fmode.c data          228    0        8
+                       LIB:sc.lib       _cxovf.c data          230    0       3c
+                       LIB:sc.lib       _cxbrk.c data          26c    0       50
+                       LIB:sc.lib       exitfunc data          2bc    0        4
+                       LIB:sc.lib       _stdv36. data          2c0    0       14
+                       LIB:sc.lib       _stdwin. data          2d4    0       14
+                       LIB:sc.lib       io2errno data          2e8    0       40
+                       LIB:sc.lib       _iob.c   data          328    0       68
+                       LIB:c.o          c        bss           390    0       34
+                       TM2ASCII.o       TM2ASCII bss           3c4    0       64
+                       LIB:sc.lib       base.c   bss           428    0        4
+                       LIB:sc.lib       stkptr.c bss           42c    0        4
+                       LIB:sc.lib       prgname. bss           430    0        4
+                       LIB:sc.lib       _onexit. bss           434    0        4
+                       LIB:sc.lib       oserr.c  bss           438    0        4
+                       LIB:sc.lib       curdir.c bss           43c    0        4
+                       LIB:sc.lib       wbmsg.c  bss           440    0        4
+                       LIB:sc.lib       errno.c  bss           444    0        4
+                       LIB:sc.lib       memtype. bss           448    0        4
+                       LIB:sc.lib       _constru bss           44c    0        4
+                       LIB:sc.lib       _memclea bss           450    0        4
+                       LIB:sc.lib       _ufb.c   bss           454    0        8
+                       LIB:sc.lib       _main.c  bss           45c    0        c
+                       LIB:sc.lib       sscanf.c bss           468    0        8
+                       LIB:sc.lib       stdioptr bss           470    0        8
+                       LIB:sc.lib       oslibver bss           478    0        4
+                       LIB:sc.lib       iffparse bss           47c    0        8
+                       LIB:sc.lib       utillib. bss           484    0        8
+                       LIB:sc.lib       _iob.c   bss           48c    0       34
+TM2ASCII               13-Mar-26 23:13:36  Symbol Section               Page 2-1
+
+symbol     offset:hunk symbol     offset:hunk symbol     offset:hunk
+@exit        4720:0    @fclose      4b04:0    @fflush      4a2c:0   
+@fgetc       48c0:0    @fgets       484c:0    @fopen       4ca4:0   
+@fputc       55e8:0    @free        4440:0    @freopen     4b6e:0   
+@fwrite      54ac:0    @main        548c:0    @malloc      45ac:0   
+@memchr      43f8:0    @memmove     441c:0    @NewList     3694:0   
+@remove      5234:0    @strdup      3778:0    @_CXBRK      4210:0   
+@_XCEXIT      1e2:0    @__autoo     5260:0    @__chkab     43a0:0   
+@__chkuf     435c:0    @__close     3c48:0    @__exit      4078:0   
+@__getbu     38a8:0    @__hallo     45ac:0    @__io2er     5428:0   
+@__lseek     3bba:0    @__pf        51d4:0    @__pfmt      4d1c:0   
+@__read      3ac4:0    @__sf        5dca:0    @__sfmt      5788:0   
+@__stcd_     3858:0    @__stcl_     382c:0    @__stcl_     37ec:0   
+@__stcul     37bc:0    @__stpcp     37a8:0    @__strup     38f0:0   
+@__write     39ac:0    _AllocSt     25bc:0    _DOSBase      394:1   
+_errno        444:1    _exit        471c:0    _fclose      4b00:0   
+_fflush      4a28:0    _fgetc       48bc:0    _fgets       4840:0   
+_fopen       4c9c:0    _fprintf     47de:0    _fputc       55e0:0   
+_free        443c:0    _FreeAcc      816:0    _FreeAll     21f2:0   
+_FreeDoc      782:0    _FreeExe      4f2:0    _FreeIco      69a:0   
+_FreeIma      588:0    _FreeMen      624:0    _FreeNod       a0:1   
+_FreeSou      5ce:0    _FreeToo      700:0    _freopen     4b60:0   
+_fwrite      549c:0    _GetConf      470:0    _GetHead      2a0:0   
+_GetSucc      456:0    _IFFPars      47c:1    _LinkerD       (0:*)  
+_main        3502:0    _malloc      45a8:0    _memchr      43ec:0   
+_memmove     4410:0    _NewList     3690:0    _NULL         390:1   
+_ObjectL      3c4:1    _PrefHdr       62:1    _PutConf      4b2:0   
+_ReadAcc     1c3c:0    _ReadAsc     260c:0    _ReadCon     1e72:0   
+_ReadDoc     16f4:0    _ReadExe      890:0    _ReadIco     140e:0   
+_ReadIma      c88:0    _ReadMen     1098:0    _ReadNod       68:1   
+_ReadSou      e52:0    _remove      5230:0    _sscanf      4744:0   
+_STDIO_D     61ce:0    _stopchu       2a:1    _strdup      3774:0   
+_SysBase      398:1    _Utility      484:1    _WriteAc     1d5c:0   
+_WriteAs     2248:0    _WriteCo     2094:0    _WriteDo     19c6:0   
+_WriteEx      a96:0    _WriteIc     159e:0    _WriteIm      d6e:0   
+_WriteMe     1258:0    _WriteNo       84:1    _WriteSo      f82:0   
+__BSSBAS       (0:*)   __BSSLEN       (0:*)   __CoverL       (0:*)  
+__CoverS       (0:*)   __CXBRK      420c:0    __CXD22      3fa2:0   
+__CXD33      3f70:0    __CXM22      4034:0    __CXOVF      3ed0:0   
+__LibRev       (0:*)   __LibVer       (0:*)   __MemHea      450:1   
+__MemTyp      448:1    __MSTEP        e8:1    __ONEXIT      434:1   
+__OSERR       438:1    __Progra      430:1    __StackP      42c:1   
+__STD_11     53a4:0    __STD_11     5402:0    __STD_25     41e8:0   
+__STD_25     3748:0    __STD_50     3924:0    __STI_11     5364:0   
+__STI_11     53c4:0    __STI_50     5fa0:0    __WBench      440:1   
+__writes     3718:0    __XCEXIT      1de:0    __XCOVF      4064:0   
+___base       428:1    ___buffs      21c:1    ___chkuf     4358:0   
+___close     3c44:0    ___close      458:1    ___const     36a4:0   
+___ctors       c0:1    ___ctype      110:1    ___curdi      43c:1   
+___dtors       d0:1    ___exit      4074:0    ___exitf      2bc:1   
+___first      454:1    ___fmask      22c:1    ___fmode      228:1   
+___fpini     36dc:0    ___fpter     36fe:0    ___getbu     38a4:0   
+___hallo     45a8:0    ___io2er     5424:0    ___iob        328:1   
+___lseek     3bac:0    ___main      4084:0    ___nufbs      220:1   
+TM2ASCII               13-Mar-26 23:13:36  Symbol Section               Page 2-2
+
+symbol     offset:hunk symbol     offset:hunk symbol     offset:hunk
+___open      3cb4:0    ___oslib      478:1    ___pf        51c0:0   
+___pfmt      4d08:0    ___read      3ab8:0    ___sf        5db0:0   
+___sfmt      5768:0    ___sigfu       ec:1    ___stack      218:1   
+___start        0:0    ___stcd_     3850:0    ___stcl_     3824:0   
+___stcl_     37e4:0    ___stcul     37b4:0    ___stdin      470:1   
+___stdio      2c0:1    ___stdio      2d4:1    ___stdou      474:1   
+___stpcp     37a0:0    ___strup     38ec:0    ___ufbs       224:1   
+___write     39a0:0   
+TM2ASCII                13-Mar-26 23:13:36  Xref Section                Page 3-1
+
+symbol   (Def) Module  Off (Ref) Module  Off (Ref) Module  Off (Ref) Module  Off
+@exit    exit.c          4 _main.c        98 _main.c       162
+@fclose  fclose.c        4 freopen.       2c
+@fflush  fflush.c        4 fputc.c        7c fputc.c        be fputc.c       140
+                           fputc.c       16c fwrite.c       a6 fwrite.c      108
+                           fwrite.c      120 fclose.c       24 fgetc.c        18
+@fgetc   fgetc.c         4 fgets.c        46 fgets.c        4e
+@fputc   fputc.c         8 writes.c       1c
+@free    free.o          4 _iob.c        144 fclose.c       3c _open.c       132
+                           _open.c       204 _close.c       62
+@freopen freopen.        e fopen.c        60
+@fwrite  fwrite.c       10 fprintf.       34 fprintf.       7e
+@main    UNKNOWN         0 _main.c       15a
+@malloc  malloc.o        4 _iob.c         ee fopen.c        30 _open.c        40
+                           _open.c        82 _getbuff       16 strdup.c       16
+@memchr  memchr.o        c _read.c        ac _read.c        dc _write.c       7a
+                           _write.c       d6
+@memmove memmove.        c _pfmt.c       2d0
+@remove  remove.c        4 _close.c       56
+@_CXBRK  _cxbrk.c        4 _chkabor       30
+@__autoo autoopen        0 utillib.       22 iffparse       22
+@__chkab _chkabor        0 _open.c        1c _close.c        c _lseek.c       22
+                           _read.c        20 _write.c       1e
+@__chkuf _chkufb.        4 _close.c       12 _lseek.c       28 _read.c        26
+                           _write.c       24
+@__close _close.c        4 fclose.c       48 _open.c        14
+@__exit  _exit.c         4 exit.c         24 _cxbrk.c       92 _cxbrk.c       b2
+                           _cxbrk.c       e8 _cxovf.c       20 _cxovf.c       66
+@__getbu _getbuff        4 fputc.c       116 fwrite.c       ca fgetc.c       108
+@__io2er io2errno        4 remove.c       1e _open.c       20c _read.c        7c
+                           _write.c      104
+@__lseek _lseek.c        e freopen.      100 _write.c       66
+@__pf    _pf.c          14 fprintf.       66
+@__pfmt  _pfmt.c        14 _pf.c          44
+@__read  _read.c         c fgetc.c        2e fgetc.c        dc fgetc.c       12e
+@__sf    _sf.c          1a sscanf.c       22
+@__sfmt  _sfmt.c        20 _sf.c          b6 _sf.c         13e
+@__stcd_ _stcd_i.        8 _pfmt.c       108 _pfmt.c       146
+@__stcl_ _stcl_h.       18 _pfmt.c       382
+@__stcl_ _stcl_o.        8 _pfmt.c       35c
+@__stcul _stcul_d        8 _pfmt.c       28e
+@__stpcp _stpcpy.        8 _iob.c        104 _iob.c        112 _iob.c        12a
+@__strup _strupr.        4 _pfmt.c       396
+@__write _write.c        c fputc.c        ee fwrite.c      12e fflush.c       6a
+                           _ufb.c         30
+_DOSBase c               4 _iob.c         5a _iob.c        136 _iob.c        18e
+                           remove.c        a _cxbrk.c       68 _cxbrk.c       82
+                           _open.c       10e _open.c       152 _open.c       168
+                           _open.c       194 _open.c       1d8 _open.c       1f0
+                           _close.c       42 _lseek.c       4a _lseek.c       8a
+                           _read.c        66 _write.c       8c _write.c       aa
+                           _write.c       e8 _write.c       f8 _ufb.c         66
+                           TM2ASCII     1c14 TM2ASCII     1dd4 TM2ASCII     1e3a
+                           TM2ASCII     1f22 TM2ASCII     32c0 TM2ASCII     32fa
+TM2ASCII                13-Mar-26 23:13:36  Xref Section                Page 3-2
+
+symbol   (Def) Module  Off (Ref) Module  Off (Ref) Module  Off (Ref) Module  Off
+                           TM2ASCII     3332 TM2ASCII     33ba TM2ASCII     33d6
+_errno   errno.c         0 remove.c       22 malloc.o        e malloc.o      10a
+                           free.o         1c _chkufb.       1a _chkufb.       3a
+                           _open.c        4c _open.c        8e _open.c        ca
+                           _open.c       12a _open.c       210 _lseek.c       34
+                           _lseek.c       62 _read.c        32 _read.c        4e
+                           _read.c        80 _write.c       30 _write.c       4c
+                           _write.c      108 _getbuff       26
+_exit    exit.c          0 TM2ASCII     33e0
+_fclose  fclose.c        0 TM2ASCII     22fe TM2ASCII     3240
+_fgets   fgets.c         0 TM2ASCII     23c2 TM2ASCII     242c TM2ASCII     246c
+                           TM2ASCII     24bc TM2ASCII     250c TM2ASCII     255c
+                           TM2ASCII     25ac TM2ASCII     25fc TM2ASCII     264c
+                           TM2ASCII     269c TM2ASCII     2706 TM2ASCII     2756
+                           TM2ASCII     27a6 TM2ASCII     2810 TM2ASCII     2860
+                           TM2ASCII     28b0 TM2ASCII     2900 TM2ASCII     2972
+                           TM2ASCII     29c2 TM2ASCII     2a12 TM2ASCII     2a62
+                           TM2ASCII     2acc TM2ASCII     2aec TM2ASCII     2b3c
+                           TM2ASCII     2b8c TM2ASCII     2bdc TM2ASCII     2c00
+                           TM2ASCII     2c50 TM2ASCII     2cc0 TM2ASCII     2ce0
+                           TM2ASCII     2d30 TM2ASCII     2d80 TM2ASCII     2dd0
+                           TM2ASCII     2e24 TM2ASCII     2e5e TM2ASCII     2e82
+                           TM2ASCII     2ea6 TM2ASCII     2ee8 TM2ASCII     2f50
+                           TM2ASCII     2fa2 TM2ASCII     2ff6 TM2ASCII     302c
+                           TM2ASCII     308e TM2ASCII     30fa TM2ASCII     3130
+                           TM2ASCII     3198 TM2ASCII     31cc TM2ASCII     3230
+_fopen   fopen.c         0 TM2ASCII     1fc8 TM2ASCII     2390
+_fprintf fprintf.       3e TM2ASCII     1fdc TM2ASCII     1ff2 TM2ASCII     2016
+                           TM2ASCII     2038 TM2ASCII     204c TM2ASCII     2056
+                           TM2ASCII     206e TM2ASCII     207c TM2ASCII     2090
+                           TM2ASCII     209a TM2ASCII     20b2 TM2ASCII     20c0
+                           TM2ASCII     20ce TM2ASCII     20e2 TM2ASCII     20ec
+                           TM2ASCII     2104 TM2ASCII     2112 TM2ASCII     2120
+                           TM2ASCII     2134 TM2ASCII     213e TM2ASCII     2156
+                           TM2ASCII     2164 TM2ASCII     217a TM2ASCII     218c
+                           TM2ASCII     21a0 TM2ASCII     21aa TM2ASCII     21c4
+                           TM2ASCII     21d2 TM2ASCII     21e8 TM2ASCII     220c
+                           TM2ASCII     221e TM2ASCII     2230 TM2ASCII     223a
+                           TM2ASCII     2254 TM2ASCII     2266 TM2ASCII     227a
+                           TM2ASCII     228e TM2ASCII     2298 TM2ASCII     22b0
+                           TM2ASCII     22ba TM2ASCII     22d2 TM2ASCII     22e6
+                           TM2ASCII     22f8 TM2ASCII     2310 TM2ASCII     303e
+                           TM2ASCII     31de TM2ASCII     321a TM2ASCII     3252
+_free    free.o          0 TM2ASCII      272 TM2ASCII      282 TM2ASCII      292
+                           TM2ASCII      2a2 TM2ASCII      2b2 TM2ASCII      2c2
+                           TM2ASCII      2d2 TM2ASCII      308 TM2ASCII      318
+                           TM2ASCII      34e TM2ASCII      35e TM2ASCII      36e
+                           TM2ASCII      3a4 TM2ASCII      3b4 TM2ASCII      3c4
+                           TM2ASCII      3d4 TM2ASCII      3e4 TM2ASCII      41a
+                           TM2ASCII      42a TM2ASCII      43a TM2ASCII      44a
+                           TM2ASCII      4a4 TM2ASCII      4b4 TM2ASCII      4c4
+                           TM2ASCII      4e0 TM2ASCII      502 TM2ASCII      512
+                           TM2ASCII      522 TM2ASCII      532 TM2ASCII      542
+TM2ASCII                13-Mar-26 23:13:36  Xref Section                Page 3-3
+
+symbol   (Def) Module  Off (Ref) Module  Off (Ref) Module  Off (Ref) Module  Off
+                           TM2ASCII      552 TM2ASCII      596 TM2ASCII      5cc
+                           TM2ASCII      aa4 TM2ASCII      ab4 TM2ASCII      ca8
+                           TM2ASCII      cb8 TM2ASCII      cc8 TM2ASCII     12b4
+                           TM2ASCII     12c4 TM2ASCII     12d4 TM2ASCII     12e4
+                           TM2ASCII     16e2 TM2ASCII     1de8 TM2ASCII     1f42
+_IFFPars iffparse        0 TM2ASCII      9a0 TM2ASCII      9be TM2ASCII      9d0
+                           TM2ASCII      b6a TM2ASCII      b88 TM2ASCII      b9a
+                           TM2ASCII      db0 TM2ASCII      dce TM2ASCII      de0
+                           TM2ASCII     1126 TM2ASCII     1144 TM2ASCII     1156
+                           TM2ASCII     140c TM2ASCII     142a TM2ASCII     143c
+                           TM2ASCII     1954 TM2ASCII     1972 TM2ASCII     1984
+                           TM2ASCII     1b8a TM2ASCII     1ba8 TM2ASCII     1bba
+                           TM2ASCII     1bfe TM2ASCII     1c2a TM2ASCII     1cea
+                           TM2ASCII     1d64 TM2ASCII     1db8 TM2ASCII     1dca
+                           TM2ASCII     1dde TM2ASCII     1e24 TM2ASCII     1e50
+                           TM2ASCII     1f18 TM2ASCII     1f36
+_LinkerD       (0:*)       c               a
+_main    TM2ASCII     3262 UNKNOWN         6
+_malloc  malloc.o        0 TM2ASCII      1f8 TM2ASCII      644 TM2ASCII      680
+                           TM2ASCII      6bc TM2ASCII      6f8 TM2ASCII      734
+                           TM2ASCII      770 TM2ASCII      7aa TM2ASCII      a3e
+                           TM2ASCII      a78 TM2ASCII      c08 TM2ASCII      c42
+                           TM2ASCII      c7c TM2ASCII      e5e TM2ASCII      e9a
+                           TM2ASCII      ed6 TM2ASCII      f12 TM2ASCII      f4c
+                           TM2ASCII     11c2 TM2ASCII     11fe TM2ASCII     123a
+                           TM2ASCII     1274 TM2ASCII     14ae TM2ASCII     14ea
+                           TM2ASCII     1526 TM2ASCII     1562 TM2ASCII     159e
+                           TM2ASCII     15c2 TM2ASCII     1620 TM2ASCII     165a
+                           TM2ASCII     1694 TM2ASCII     19f6 TM2ASCII     1a64
+                           TM2ASCII     1bf0 TM2ASCII     1e16 TM2ASCII     2358
+                           TM2ASCII     240c TM2ASCII     249c TM2ASCII     24ec
+                           TM2ASCII     253c TM2ASCII     258c TM2ASCII     25dc
+                           TM2ASCII     262c TM2ASCII     26e6 TM2ASCII     2736
+                           TM2ASCII     27f0 TM2ASCII     2840 TM2ASCII     2890
+                           TM2ASCII     2952 TM2ASCII     29a2 TM2ASCII     29f2
+                           TM2ASCII     2aac TM2ASCII     2b1c TM2ASCII     2b6c
+                           TM2ASCII     2bbc TM2ASCII     2c9c TM2ASCII     2d10
+                           TM2ASCII     2d60 TM2ASCII     2db0 TM2ASCII     2e00
+                           TM2ASCII     2f2e TM2ASCII     2f80 TM2ASCII     2fd2
+                           TM2ASCII     30d8 TM2ASCII     3174
+_NewList newlist         0 TM2ASCII     15d6 TM2ASCII     1a22 TM2ASCII     2ec0
+                           TM2ASCII     3104 TM2ASCII     32da
+_sscanf  sscanf.c        0 TM2ASCII     245e TM2ASCII     2ade TM2ASCII     2bf2
+                           TM2ASCII     2cd2 TM2ASCII     2e3c TM2ASCII     2e74
+                           TM2ASCII     2e94
+_strdup  strdup.c        0 TM2ASCII     1d94
+_SysBase c               8 _iob.c         d0 _iob.c        118 TM2ASCII      2da
+                           TM2ASCII      320 TM2ASCII      376 TM2ASCII      3ec
+                           TM2ASCII      452 TM2ASCII      492 TM2ASCII      568
+                           TM2ASCII      5ba TM2ASCII      5e2 TM2ASCII      608
+                           TM2ASCII      a00 TM2ASCII      abc TM2ASCII      bca
+                           TM2ASCII      cd0 TM2ASCII      e14 TM2ASCII     1186
+                           TM2ASCII     12ec TM2ASCII     146e TM2ASCII     15e4
+TM2ASCII                13-Mar-26 23:13:36  Xref Section                Page 3-4
+
+symbol   (Def) Module  Off (Ref) Module  Off (Ref) Module  Off (Ref) Module  Off
+                           TM2ASCII     19b6 TM2ASCII     1a2a TM2ASCII     1dae
+                           TM2ASCII     1f84 TM2ASCII     23d2 TM2ASCII     265a
+                           TM2ASCII     26ac TM2ASCII     2764 TM2ASCII     27b6
+                           TM2ASCII     28be TM2ASCII     2910 TM2ASCII     2a20
+                           TM2ASCII     2a72 TM2ASCII     2c0e TM2ASCII     2c62
+                           TM2ASCII     2eaa TM2ASCII     2ef4 TM2ASCII     3004
+                           TM2ASCII     304c TM2ASCII     309a TM2ASCII     313a
+                           TM2ASCII     31a4 TM2ASCII     31ee TM2ASCII     3394
+_Utility utillib.        0 TM2ASCII     23aa TM2ASCII     266a TM2ASCII     2684
+                           TM2ASCII     2774 TM2ASCII     278e TM2ASCII     28ce
+                           TM2ASCII     28e8 TM2ASCII     2a30 TM2ASCII     2a4a
+                           TM2ASCII     2c1e TM2ASCII     2c38 TM2ASCII     2ed0
+                           TM2ASCII     3014 TM2ASCII     305c TM2ASCII     3076
+                           TM2ASCII     3114 TM2ASCII     31b4 TM2ASCII     31fe
+__BSSBAS       (0:*)       c              14
+__BSSLEN       (0:*)       c              1c
+__CXD22  _CXD33.o       32 fwrite.c      138 _stcul_d       12
+__CXM22  _CXM22.o        0 fwrite.c       24
+__CXOVF  _cxovf.c        0 xcovf.o         c
+__MemHea _memclea        0 malloc.o       34 malloc.o      116 malloc.o      11c
+                           free.o         12 free.o        134 free.o        140
+__MemTyp memtype.        0 malloc.o       44 malloc.o       f6 malloc.o      124
+__MSTEP  mstep.c         0 malloc.o       2c malloc.o       e4 malloc.o       ea
+                           free.o        122
+__ONEXIT _onexit.        0 c             20e
+__OSERR  oserr.c         0 remove.c       1a _chkufb.        a _open.c        94
+                           _open.c       1f8 _open.c       208 _lseek.c       3c
+                           _lseek.c       5c _read.c        48 _read.c        58
+                           _read.c        78 _write.c       46 _write.c      100
+__Progra prgname.        0 _cxbrk.c        e _cxovf.c       24 c             120
+                           c             1cc
+__StackP stkptr.c        0 xcovf.o         2 c              2a c             1e4
+__STD_11 iffparse       40 _ctdt.o        20
+__STD_11 utillib.       3e _ctdt.o        24
+__STD_25 _main.c       164 _ctdt.o        1c
+__STD_25 _memclea        0 _ctdt.o        18
+__STD_50 _ufb.c          0 _ctdt.o        14
+__STI_11 iffparse        0 _ctdt.o         8
+__STI_11 utillib.        0 _ctdt.o         4
+__STI_50 _iob.c          0 _ctdt.o         c
+__WBench wbmsg.c         0 _iob.c         68 _iob.c         6e _iob.c         b2
+                           _iob.c         b8 autoopen       1c autoopen       9e
+                           _main.c       14c c              d2 c             196
+                           c             1bc c             24e c             26a
+__writes writes.c        0 TM2ASCII     3298 TM2ASCII     32a2
+__XCEXIT c             1de _exit.c         8
+__XCOVF  xcovf.o         0 TM2ASCII        6 TM2ASCII      1bc TM2ASCII      1da
+                           TM2ASCII      21c TM2ASCII      25c TM2ASCII      2f2
+                           TM2ASCII      338 TM2ASCII      38e TM2ASCII      404
+                           TM2ASCII      46a TM2ASCII      4ec TM2ASCII      580
+                           TM2ASCII      5fe TM2ASCII      804 TM2ASCII      9f6
+                           TM2ASCII      adc TM2ASCII      bc0 TM2ASCII      cf0
+                           TM2ASCII      e06 TM2ASCII      fc6 TM2ASCII     117c
+TM2ASCII                13-Mar-26 23:13:36  Xref Section                Page 3-5
+
+symbol   (Def) Module  Off (Ref) Module  Off (Ref) Module  Off (Ref) Module  Off
+                           TM2ASCII     130c TM2ASCII     1462 TM2ASCII     1734
+                           TM2ASCII     19aa TM2ASCII     1aca TM2ASCII     1be0
+                           TM2ASCII     1e02 TM2ASCII     1f5c TM2ASCII     1fb6
+                           TM2ASCII     2326 TM2ASCII     237a TM2ASCII     3270
+___base  base.c          0 TM2ASCII        2 TM2ASCII      1b8 TM2ASCII      1d6
+                           TM2ASCII      218 TM2ASCII      258 TM2ASCII      2ee
+                           TM2ASCII      334 TM2ASCII      38a TM2ASCII      400
+                           TM2ASCII      466 TM2ASCII      4e8 TM2ASCII      57c
+                           TM2ASCII      5fa TM2ASCII      800 TM2ASCII      9f2
+                           TM2ASCII      ad8 TM2ASCII      bbc TM2ASCII      cec
+                           TM2ASCII      e02 TM2ASCII      fc2 TM2ASCII     1178
+                           TM2ASCII     1308 TM2ASCII     145e TM2ASCII     1730
+                           TM2ASCII     19a6 TM2ASCII     1ac6 TM2ASCII     1bdc
+                           TM2ASCII     1dfe TM2ASCII     1f58 TM2ASCII     1fb2
+                           TM2ASCII     2322 TM2ASCII     2376 TM2ASCII     326c
+                           c              58 c              8a c              c2
+                           c             1ec
+___buffs _buffsiz        0 _getbuff       12 _getbuff       2e
+___close _ufb.c          4 _open.c        18
+___const _constru        0 _ctdt.o         0
+___ctors _ctdt.o         4 _fpinit.        4 _fpinit.        e _fpinit.       30
+                           _constru        0
+___ctype ctype.c         0 _sf.c          48 _sf.c          6c _sf.c          e0
+                           _sf.c         18a _sf.c         1ba _sfmt.c        4e
+                           _sfmt.c        7c _sfmt.c        d8 _sfmt.c       1d4
+                           _sfmt.c       250 _sfmt.c       284 _sfmt.c       340
+                           _sfmt.c       378 _sfmt.c       394 _sfmt.c       3f2
+                           _sfmt.c       474 _strupr.        e
+___curdi curdir.c        0 c              fe c             1b2 c             258
+___dtors _ctdt.o        14 _fpinit.       26
+___exitf exitfunc        0 exit.c          c
+___first _ufb.c          0 _iob.c          a fopen.c        14 fopen.c        3e
+                           fopen.c        44 fflush.c       b0
+___fmask _fmode.c        4 freopen.       ba _open.c       1a0
+___fmode _fmode.c        0 _iob.c        1e6 freopen.       1e
+___fpini _fpinit.        0 c             1d0
+___fpter _fpinit.       22 c             218
+___iob   _iob.c          0 writes.c       18 TM2ASCII     230c TM2ASCII     303a
+                           TM2ASCII     31da TM2ASCII     3216 TM2ASCII     324e
+___main  _main.c         0 c             1d8
+___nufbs _ufb.c          0 _iob.c        1e0 _chkufb.       12 _open.c        68
+                           _open.c        6c
+___open  _open.c         0 freopen.       c2
+___oslib oslibver        0 utillib.        8 iffparse        8 autoopen       4a
+___sigfu sigfunc.        0 _chkabor       1e _chkabor       26 _chkabor       34
+                           _chkabor       38 _cxbrk.c       8c _cxbrk.c       ac
+                           _cxbrk.c       e2 _cxbrk.c       f2 _ufb.c          8
+___stack stack.c         0 c              5c c              62 c              8e
+___stdin stdioptr        0 _iob.c          e fgetc.c         e
+___stdio _stdv36.        0 _iob.c         dc _iob.c        126
+___stdio _stdwin.        0 _iob.c         90 _iob.c         a2 _iob.c        100
+                           autoopen       2c
+___stdou stdioptr        4 _iob.c         16 fgetc.c        14
+TM2ASCII                13-Mar-26 23:13:36  Xref Section                Page 3-6
+
+symbol   (Def) Module  Off (Ref) Module  Off (Ref) Module  Off (Ref) Module  Off
+___ufbs  _ufb.c          4 _iob.c         32 _chkufb.       22 _open.c        20
+                           _open.c        60
+TM2ASCII                13-Mar-26 23:13:36  File Section                Page 4-1
+
+filename         punit    hunk     type       offset:hunk     size
+LIB:c.o          c        text     code            0:0         2a0
+                          __MERGED bss           390:1          34
+TM2ASCII.o       TM2ASCII text     code          2a0:0        33f0
+                          __MERGED data            0:1          bc
+                          __MERGED bss           3c4:1          64
+T:HT0KAI.0001    _ctdt.o  __MERGED data           bc:1          2c
+TM2ASCII              13-Mar-26 23:13:36  Library Section               Page 5-1
+
+filename         punit    hunk     type       offset:hunk     size
+LIB:sc.lib       newlist  text     code         3690:0          14
+                 base.c   text     code            -:-           0
+                          __MERGED bss           428:1           4
+                 stkptr.c text     code            -:-           0
+                          __MERGED bss           42c:1           4
+                 prgname. text     code            -:-           0
+                          __MERGED bss           430:1           4
+                 _onexit. text     code            -:-           0
+                          __MERGED bss           434:1           4
+                 oserr.c  text     code            -:-           0
+                          __MERGED bss           438:1           4
+                 curdir.c text     code            -:-           0
+                          __MERGED bss           43c:1           4
+                 wbmsg.c  text     code            -:-           0
+                          __MERGED bss           440:1           4
+                 errno.c  text     code            -:-           0
+                          __MERGED bss           444:1           4
+                 mstep.c  text     code            -:-           0
+                          __MERGED data           e8:1           4
+                 memtype. text     code            -:-           0
+                          __MERGED bss           448:1           4
+                 sigfunc. text     code            -:-           0
+                          __MERGED data           ec:1          24
+                 ctype.c  text     code            -:-           0
+                          __MERGED data          110:1         104
+                 _constru text     code         36a4:0          38
+                          __MERGED data          214:1           4
+                          __MERGED bss           44c:1           4
+                 _fpinit. text     code         36dc:0          3c
+                 stack.c  text     code            -:-           0
+                          __MERGED data          218:1           4
+                 writes.c text     code         3718:0          30
+                 _memclea text     code         3748:0          2c
+                          __MERGED bss           450:1           4
+                 strdup.c text     code         3774:0          2c
+                 _stpcpy. text     code         37a0:0          14
+                 _stcul_d text     code         37b4:0          30
+                 _stcl_o. text     code         37e4:0          30
+                 _stcl_h. text     code         3814:0          3c
+                 _stcd_i. text     code         3850:0          54
+                 _getbuff text     code         38a4:0          48
+                 _buffsiz text     code            -:-           0
+                          __MERGED data          21c:1           4
+                 _strupr. text     code         38ec:0          38
+                 _ufb.c   text     code         3924:0          7c
+                          __MERGED data          220:1           8
+                          __MERGED bss           454:1           8
+                 _fmode.c text     code            -:-           0
+                          __MERGED data          228:1           8
+                 _write.c text     code         39a0:0         118
+                 _read.c  text     code         3ab8:0          f4
+                 _lseek.c text     code         3bac:0          98
+                 _close.c text     code         3c44:0          70
+TM2ASCII              13-Mar-26 23:13:36  Library Section               Page 5-2
+
+filename         punit    hunk     type       offset:hunk     size
+                 _open.c  text     code         3cb4:0         21c
+                 _cxovf.c text     code         3ed0:0          a0
+                          __MERGED data          230:1          3c
+                 _CXD33.o text     code         3f70:0          c4
+                 _CXM22.o text     code         4034:0          30
+                 xcovf.o  text     code         4064:0          10
+                 _exit.c  text     code         4074:0          10
+                 _main.c  text     code         4084:0         188
+                          __MERGED bss           45c:1           c
+                 _cxbrk.c text     code         420c:0         14c
+                          __MERGED data          26c:1          50
+                 _chkufb. text     code         4358:0          48
+                 _chkabor text     code         43a0:0          4c
+                 memchr.o text     code         43ec:0          24
+                 memmove. text     code         4410:0          2c
+                 free.o   text     code         443c:0         16c
+                 malloc.o text     code         45a8:0         174
+                 exitfunc text     code            -:-           0
+                          __MERGED data          2bc:1           4
+                 exit.c   text     code         471c:0          28
+                 sscanf.c text     code         4744:0          5c
+                          __MERGED bss           468:1           8
+                 fprintf. text     code         47a0:0          a0
+                 fgets.c  text     code         4840:0          7c
+                 fgetc.c  text     code         48bc:0         16c
+                 fflush.c text     code         4a28:0          d8
+                 fclose.c text     code         4b00:0          60
+                 freopen. text     code         4b60:0         13c
+                 fopen.c  text     code         4c9c:0          6c
+                 _pfmt.c  text     code         4d08:0         4b8
+                 _pf.c    text     code         51c0:0          70
+                 stdioptr text     code            -:-           0
+                          __MERGED bss           470:1           8
+                 remove.c text     code         5230:0          30
+                 autoopen text     code         5260:0         104
+                 oslibver text     code            -:-           0
+                          __MERGED bss           478:1           4
+                 iffparse text     code         5364:0          60
+                          __MERGED bss           47c:1           8
+                 utillib. text     code         53c4:0          60
+                          __MERGED bss           484:1           8
+                 _stdv36. text     code            -:-           0
+                          __MERGED data          2c0:1          14
+                 _stdwin. text     code            -:-           0
+                          __MERGED data          2d4:1          14
+                 io2errno text     code         5424:0          68
+                          __MERGED data          2e8:1          40
+                 UNKNOWN  text     code         548c:0          10
+                 fwrite.c text     code         549c:0         144
+                 fputc.c  text     code         55e0:0         188
+                 _sfmt.c  text     code         5768:0         648
+                 _sf.c    text     code         5db0:0         1f0
+                 _iob.c   text     code         5fa0:0         248
+TM2ASCII              13-Mar-26 23:13:36  Library Section               Page 5-3
+
+filename         punit    hunk     type       offset:hunk     size
+                          __MERGED data          328:1          68
+                          __MERGED bss           48c:1          34
