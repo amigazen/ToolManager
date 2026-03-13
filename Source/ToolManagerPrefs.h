@@ -56,9 +56,15 @@ struct SoundPrefsObject {
 struct MenuPrefsObject {
                         ULONG mpo_StringBits;
                        };
-#define MOPO_NAME  (1L << 0)
-#define MOPO_EXEC  (1L << 1)
-#define MOPO_SOUND (1L << 2)
+#define MOPO_NAME   (1L << 0)
+#define MOPO_EXEC   (1L << 1)
+#define MOPO_SOUND  (1L << 2)
+#define MOPO_TITLE  (1L << 3)   /* V44/V45: menu strip title (default Tools) */
+#define MOPO_CMDKEY (1L << 4)   /* V44+: command key string for item */
+/* After variable-length strings, optional extension: 1 byte ext_len (0 or 8),
+ * then if 8: mpo_Flags (ULONG), mpo_ParentIndex (LONG). */
+#define MOPOF_SEPARATOR     (1L << 0)  /* item is a separator bar */
+#define MOPOF_SUBMENU_PARENT (1L << 1) /* item has sub-items; use GetKey */
 
 /* Icon object entry */
 #define ID_TMIC MAKE_ID('T','M','I','C')

@@ -11,7 +11,8 @@ ToolManager history is taken from the original documentation (Stefan Becker, 199
 
 ### Added
 
-- **workbench.library** Now uses the Workbench API to launch Tools if running v45 or later (from AmigaOS 3.2), instead of the WBStart-Handler
+- **workbench.library** Now uses the Workbench API to launch Tools if running v45 or later (from AmigaOS 3.2), instead of the WBStart-Handler (which is then no longer needed)
+- **Multiple AppMenus** When using workbench.library v44+, ToolManager can now create multiple Tools AppMenus on the Workbench menu strip
 
 ---
 

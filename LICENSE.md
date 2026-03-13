@@ -5,6 +5,9 @@
 - **Original ToolManager** (source, documentation, SDK, locale):  
   Copyright (c) 1990–1993 **Stefan Becker**
 
+- **TM2Ascii** (converter utility in `Source/TM2Ascii`):  
+  **Michael Illgner**. The program uses headers (`toolmanager.h`, `ToolManagerPrefs.h`) copyright (c) 1990–1993 Stefan Becker; the TM2Ascii-specific code and documentation are by Michael Illgner. The author declared TM2Ascii **FreeWare** (“do what ever you want”) and explicitly allowed Stefan Becker to include it in the ToolManager archive and Fred Fish to publish it on Fish Disks; distribution on any CD software collection is allowed. If you distribute TM2Ascii, retain the author credit (Michael Illgner) and this notice.
+
 - **Modifications and packaging (2026)**  
   Copyright (c) 2026 **amigazen project**
 
@@ -44,4 +47,4 @@ The following terms are based on the permissions granted by Stefan Becker for th
 
 Modifications, packaging, and repository maintenance carried out in 2026 are contributed by **amigazen project**. Those changes are offered under the same spirit as the original permissions above: freely distributable, with copyright and permission notices preserved, and subject to the same restrictions (no commercial use of the original or modified ToolManager material without permission from Stefan Becker; no military/weapons use).
 
-If you distribute this package or derivatives, you must retain all applicable copyright and permission notices, including those of Stefan Becker and amigazen project.
+If you distribute this package or derivatives, you must retain all applicable copyright and permission notices, including those of Stefan Becker, Michael Illgner (TM2Ascii), and amigazen project.
