@@ -154,33 +154,81 @@ static BOOL ReadSoundConfig(struct ConfigBufNode *cbn)
                                SoundPrefsTags));
 }
 
-static struct TagItem MenuPrefsTags[]={
-                                       TMOP_Exec,  NULL,
-                                       TMOP_Sound, NULL,
+#define MENU_MAX_KEYS 64
+static ULONG MenuParentKeys[MENU_MAX_KEYS];
+static LONG MenuConfigCount=0;
 
+static struct TagItem MenuPrefsTags[]={
+                                       TMOP_Exec,           NULL,
+                                       TMOP_Sound,          NULL,
+                                       TMOP_MenuTitle,      NULL,
+                                       TMOP_ParentKey,      0,
+                                       TMOP_IsSubmenuParent,FALSE,
+                                       TMOP_IsSeparator,     FALSE,
+                                       TMOP_CommandKey,      NULL,
+                                       TMOP_SubmenuKeyPtr,   NULL,
                                        TAG_DONE
                                       };
 
-/* Interpret TMMO chunk */
+/* Interpret TMMO chunk; supports V44/V45 extended fields (title, separator, parent, cmdkey).
+ * Forwards compatible: old chunks have only MOPO_NAME|EXEC|SOUND in sbits and no
+ * extension; we pass NULL/0 for the new tags so menu items appear under default Tools. */
 static BOOL ReadMenuConfig(struct ConfigBufNode *cbn)
 {
  struct MenuPrefsObject *mpo=(struct MenuPrefsObject *) &cbn[1];
  ULONG sbits=mpo->mpo_StringBits;
  UBYTE *ptr=(UBYTE *) &mpo[1];
+ UBYTE *chunk_start=(UBYTE *) &cbn[1];
+ ULONG chunk_size=cbn->cbn_Size - sizeof(struct ConfigBufNode);
  char *name;
+ char *title_str;
+ char *cmdkey_str;
+ ULONG ext_len;
+ ULONG flags;
+ LONG parentindex;
 
  /* Get name string */
  name=(sbits & MOPO_NAME) ? GetConfigStr(&ptr) : DefaultNoName;
 
- /* Set string tags */
- MenuPrefsTags[ 0].ti_Data=(ULONG) ((sbits & MOPO_EXEC) ?
-                                     GetConfigStr(&ptr) : NULL);
- MenuPrefsTags[ 1].ti_Data=(ULONG) ((sbits & MOPO_SOUND) ?
-                                     GetConfigStr(&ptr) : NULL);
+ /* Set string tags (exec, sound) */
+ MenuPrefsTags[0].ti_Data=(ULONG) ((sbits & MOPO_EXEC) ?
+                                    GetConfigStr(&ptr) : NULL);
+ MenuPrefsTags[1].ti_Data=(ULONG) ((sbits & MOPO_SOUND) ?
+                                    GetConfigStr(&ptr) : NULL);
 
- /* Create object */
- return(InternalCreateTMObject(PrivateTMHandle,name,TMOBJTYPE_MENU,
-                               MenuPrefsTags));
+ title_str=NULL;
+ cmdkey_str=NULL;
+ flags=0;
+ parentindex=-1;
+
+ if (sbits & MOPO_TITLE) title_str=GetConfigStr(&ptr);
+ if (sbits & MOPO_CMDKEY) cmdkey_str=GetConfigStr(&ptr);
+
+ if ((ULONG)(ptr - chunk_start) < chunk_size) {
+  ext_len=*ptr++;
+  if (ext_len>=8 && (ULONG)(ptr - chunk_start) + 8 <= chunk_size) {
+   flags=*(ULONG *)ptr;
+   ptr+=4;
+   parentindex=*(LONG *)ptr;
+  }
+ }
+
+ MenuPrefsTags[2].ti_Data=(ULONG)title_str;
+ MenuPrefsTags[3].ti_Data=(parentindex>=0 && parentindex<MenuConfigCount) ?
+                           MenuParentKeys[parentindex] : 0;
+ MenuPrefsTags[4].ti_Data=(flags & MOPOF_SUBMENU_PARENT) ? 1 : 0;
+ MenuPrefsTags[5].ti_Data=(flags & MOPOF_SEPARATOR) ? 1 : 0;
+ MenuPrefsTags[6].ti_Data=(ULONG)cmdkey_str;
+ if (MenuConfigCount < MENU_MAX_KEYS)
+  MenuPrefsTags[7].ti_Data=(ULONG)&MenuParentKeys[MenuConfigCount];
+ else
+  MenuPrefsTags[7].ti_Data=0;
+
+ if (!InternalCreateTMObject(PrivateTMHandle,name,TMOBJTYPE_MENU,MenuPrefsTags))
+  return(FALSE);
+
+ if (MenuConfigCount < MENU_MAX_KEYS) MenuConfigCount++;
+ return(TRUE);
 }
 
 static struct TagItem IconPrefsTags[]={
@@ -463,6 +511,8 @@ void ReadConfig(void)
 
         /* Check file version number */
         if (ph->ph_Version==TMPREFSVERSION) {
+
+         MenuConfigCount=0;  /* for menu parent-key indexing (V44/V45) */
 
          /* Parse IFF chunks */
          do {

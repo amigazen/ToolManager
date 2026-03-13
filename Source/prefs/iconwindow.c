@@ -674,16 +674,20 @@ void UpdateIconEditWindow(void *data)
 }
 
 /* Read TMIC IFF chunk into Icon node */
-struct Node *ReadIconNode(UBYTE *buf)
+struct Node *ReadIconNode(UBYTE *buf, ULONG size)
 {
  struct IconNode *in;
+ struct IconPrefsObject *ipo;
+ ULONG sbits;
+ UBYTE *ptr;
+
+ (void)size;
+ ipo=(struct IconPrefsObject *)buf;
+ sbits=ipo->ipo_StringBits;
+ ptr=(UBYTE *)&ipo[1];
 
  /* Allocate memory for node */
  if (in=AllocMem(sizeof(struct IconNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  struct IconPrefsObject *ipo=(struct IconPrefsObject *) buf;
-  ULONG sbits=ipo->ipo_StringBits;
-  UBYTE *ptr=(UBYTE *) &ipo[1];
-
   if ((!(sbits & ICPO_NAME) || (in->in_Node.ln_Name=GetConfigStr(&ptr))) &&
       (!(sbits & ICPO_EXEC) || (in->in_Exec=GetConfigStr(&ptr))) &&
       (!(sbits & ICPO_IMAGE) || (in->in_Image=GetConfigStr(&ptr))) &&

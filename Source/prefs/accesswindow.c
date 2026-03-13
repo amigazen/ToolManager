@@ -589,47 +589,47 @@ void UpdateAccessEditWindow(void *data)
 }
 
 /* Read TMAC IFF chunk into Access node */
-struct Node *ReadAccessNode(UBYTE *buf)
+struct Node *ReadAccessNode(UBYTE *buf, ULONG size)
 {
  struct AccessNode *an;
+ struct AccessPrefsObject *apo;
+ ULONG sbits;
+ UBYTE *ptr;
+ LONG entries;
+ UBYTE enflags;
+ struct Node *aen;
+
+ (void)size;
+ apo=(struct AccessPrefsObject *)buf;
+ sbits=apo->apo_StringBits;
+ ptr=(UBYTE *)&apo[1];
 
  /* Allocate memory for node */
  if (an=AllocMem(sizeof(struct AccessNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  struct AccessPrefsObject *apo=(struct AccessPrefsObject *) buf;
-  ULONG sbits=apo->apo_StringBits;
-  UBYTE *ptr=(UBYTE *) &apo[1];
-
   if (!(sbits & DOPO_NAME) || (an->an_Node.ln_Name=GetConfigStr(&ptr))) {
-   LONG entries=0;
-   UBYTE enflags;
+   entries=0;
 
    /* Init list */
    NewList(&an->an_Entries);
 
    /* Get tools */
    while ((enflags=*ptr++) & AOPOE_CONTINUE) {
-    struct Node *aen;
-
     if (aen=AllocMem(sizeof(struct Node),MEMF_PUBLIC|MEMF_CLEAR)) {
      /* Add tool to list */
      AddTail(&an->an_Entries,aen);
 
      if (!(enflags & AOPOE_EXEC) || (aen->ln_Name=GetConfigStr(&ptr)))
-      /* All OK. */
       entries++;
      else {
-      /* Error */
       entries=-1;
       break;
      }
     } else {
-     /* No memory. */
      entries=-1;
      break;
     }
    }
 
-   /* Error? All OK. */
    if (entries!=-1) return((struct Node *)an);
   }
 

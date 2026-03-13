@@ -138,7 +138,7 @@ BOOL ReadConfigFile(char *filename)
              DEBUG_PRINTF("chunk read\n",0);
 
              /* Interpret chunk contents */
-             if (node=(*ReadNodeFunctions[type])(configbuf)) {
+             if (node=(*ReadNodeFunctions[type])(configbuf,size)) {
 
               DEBUG_PRINTF("new node: 0x%08lx\n",node);
 

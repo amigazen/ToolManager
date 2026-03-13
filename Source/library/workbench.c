@@ -12,6 +12,8 @@
 static ULONG WBCount=0;
 struct Library *WorkbenchBase=NULL;
 BOOL WBUseOpenWorkbenchObject=FALSE;
+BOOL WBHaveAppMenuTags=FALSE;   /* V44+: GetKey/UseKey/CommandKeyString */
+BOOL WBHaveTitleKey=FALSE;     /* V45+: GetTitleKey for extra menu titles */
 
 /* Try to open workbench.library. Prefer 45+ for OpenWorkbenchObjectA (reliable
  * launch); fall back to 37 for AddAppIcon/AddAppWindow etc. when on older OS. */
@@ -21,6 +23,10 @@ BOOL GetWorkbench(void)
   WorkbenchBase=OpenLibrary("workbench.library",45);
   if (WorkbenchBase) {
    WBUseOpenWorkbenchObject=TRUE;  /* 45.39+ safe for OpenWorkbenchObjectA */
+   if (WorkbenchBase->lib_Version>=45)
+    WBHaveTitleKey=TRUE;           /* V45: new menu titles on strip */
+   if (WorkbenchBase->lib_Version>=44)
+    WBHaveAppMenuTags=TRUE;        /* V44: submenus, command key, separator */
   } else {
    WorkbenchBase=OpenLibrary("workbench.library",37);
    WBUseOpenWorkbenchObject=FALSE;
@@ -43,5 +49,7 @@ void FreeWorkbench(void)
   CloseLibrary(WorkbenchBase);
   WorkbenchBase=NULL;
   WBUseOpenWorkbenchObject=FALSE;
+  WBHaveAppMenuTags=FALSE;
+  WBHaveTitleKey=FALSE;
  }
 }

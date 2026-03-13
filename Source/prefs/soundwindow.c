@@ -349,16 +349,20 @@ void *HandleSoundEditWindowIDCMP(struct IntuiMessage *msg)
 }
 
 /* Read TMSO IFF chunk into Sound node */
-struct Node *ReadSoundNode(UBYTE *buf)
+struct Node *ReadSoundNode(UBYTE *buf, ULONG size)
 {
  struct SoundNode *sn;
+ struct SoundPrefsObject *spo;
+ ULONG sbits;
+ UBYTE *ptr;
+
+ (void)size;
+ spo=(struct SoundPrefsObject *)buf;
+ sbits=spo->spo_StringBits;
+ ptr=(UBYTE *)&spo[1];
 
  /* Allocate memory for node */
  if (sn=AllocMem(sizeof(struct SoundNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  struct SoundPrefsObject *spo=(struct SoundPrefsObject *) buf;
-  ULONG sbits=spo->spo_StringBits;
-  UBYTE *ptr=(UBYTE *) &spo[1];
-
   if ((!(sbits & SOPO_NAME) || (sn->sn_Node.ln_Name=GetConfigStr(&ptr))) &&
       (!(sbits & SOPO_COMMAND) || (sn->sn_Command=GetConfigStr(&ptr))) &&
       (!(sbits & SOPO_PORT) || (sn->sn_Port=GetConfigStr(&ptr))))

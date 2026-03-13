@@ -1069,15 +1069,20 @@ void UpdateExecEditWindow(void *data)
 }
 
 /* Read TMEX IFF chunk into Exec node */
-struct Node *ReadExecNode(UBYTE *buf)
+struct Node *ReadExecNode(UBYTE *buf, ULONG size)
 {
  struct ExecNode *en;
+ struct ExecPrefsObject *epo;
+ ULONG sbits;
+ UBYTE *ptr;
+
+ (void)size;
+ epo=(struct ExecPrefsObject *)buf;
+ sbits=epo->epo_StringBits;
+ ptr=(UBYTE *)&epo[1];
 
  /* Allocate memory for node */
  if (en=AllocMem(sizeof(struct ExecNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  struct ExecPrefsObject *epo=(struct ExecPrefsObject *) buf;
-  ULONG sbits=epo->epo_StringBits;
-  UBYTE *ptr=(UBYTE *) &epo[1];
 
   if ((!(sbits & EXPO_NAME) || (en->en_Node.ln_Name=GetConfigStr(&ptr))) &&
       (!(sbits & EXPO_COMMAND) || (en->en_Command=GetConfigStr(&ptr))) &&
@@ -1086,7 +1091,6 @@ struct Node *ReadExecNode(UBYTE *buf)
       (!(sbits & EXPO_OUTPUT) || (en->en_Output=GetConfigStr(&ptr))) &&
       (!(sbits & EXPO_PATH) || (en->en_Path=GetConfigStr(&ptr))) &&
       (!(sbits & EXPO_PSCREEN) || (en->en_PubScreen=GetConfigStr(&ptr)))) {
-   /* Copy flags & values */
    en->en_Flags=epo->epo_Flags;
    en->en_ExecType=epo->epo_ExecType;
    en->en_Priority=epo->epo_Priority;

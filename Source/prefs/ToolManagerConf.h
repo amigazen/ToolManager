@@ -90,7 +90,7 @@ typedef void         (*HandleAppMsgFuncPtr)(struct AppMessage *);
 typedef void        *(*HandleIDCMPFuncPtr)(struct IntuiMessage *);
 typedef struct Node *(*CopyNodeFuncPtr)(struct Node *);
 typedef void         (*FreeNodeFuncPtr)(struct Node *);
-typedef struct Node *(*ReadNodeFuncPtr)(UBYTE *);
+typedef struct Node *(*ReadNodeFuncPtr)(UBYTE *, ULONG);
 typedef BOOL         (*WriteNodeFuncPtr)(struct IFFHandle *, UBYTE *,
                                          struct Node *);
 
@@ -101,7 +101,7 @@ void         UpdateAccessEditWindow(void *);
 void        *HandleAccessEditWindowIDCMP(struct IntuiMessage *);
 struct Node *CopyAccessNode(struct Node *);
 void         FreeAccessNode(struct Node *);
-struct Node *ReadAccessNode(UBYTE *);
+struct Node *ReadAccessNode(UBYTE *, ULONG);
 BOOL         WriteAccessNode(struct IFFHandle *, UBYTE *, struct Node *);
 
 /* aslreqs.c */
@@ -127,7 +127,7 @@ void         UpdateDockEditWindow(void *);
 void        *HandleDockEditWindowIDCMP(struct IntuiMessage *);
 struct Node *CopyDockNode(struct Node *);
 void         FreeDockNode(struct Node *);
-struct Node *ReadDockNode(UBYTE *);
+struct Node *ReadDockNode(UBYTE *, ULONG);
 BOOL         WriteDockNode(struct IFFHandle *, UBYTE *, struct Node *);
 
 /* docklistwindow.c */
@@ -147,7 +147,7 @@ void        *HandleExecEditWindowIDCMP(struct IntuiMessage *);
 struct Node *CreateExecNode(char *, struct WBArg *);
 struct Node *CopyExecNode(struct Node *);
 void         FreeExecNode(struct Node *);
-struct Node *ReadExecNode(UBYTE *);
+struct Node *ReadExecNode(UBYTE *, ULONG);
 BOOL         WriteExecNode(struct IFFHandle *, UBYTE *, struct Node *);
 
 /* gadget.c */
@@ -165,7 +165,7 @@ void        *HandleIconEditWindowIDCMP(struct IntuiMessage *);
 struct Node *CreateIconNode(char *);
 struct Node *CopyIconNode(struct Node *);
 void         FreeIconNode(struct Node *);
-struct Node *ReadIconNode(UBYTE *);
+struct Node *ReadIconNode(UBYTE *, ULONG);
 BOOL         WriteIconNode(struct IFFHandle *, UBYTE *, struct Node *);
 
 /* imagewindow.c */
@@ -176,7 +176,7 @@ void        *HandleImageEditWindowIDCMP(struct IntuiMessage *);
 struct Node *CreateImageNode(char *, struct WBArg *);
 struct Node *CopyImageNode(struct Node *);
 void         FreeImageNode(struct Node *);
-struct Node *ReadImageNode(UBYTE *);
+struct Node *ReadImageNode(UBYTE *, ULONG);
 BOOL         WriteImageNode(struct IFFHandle *, UBYTE *, struct Node *);
 
 /* listreq.c */
@@ -209,7 +209,7 @@ void        *HandleMenuEditWindowIDCMP(struct IntuiMessage *);
 struct Node *CreateMenuNode(char *);
 struct Node *CopyMenuNode(struct Node *);
 void         FreeMenuNode(struct Node *);
-struct Node *ReadMenuNode(UBYTE *);
+struct Node *ReadMenuNode(UBYTE *, ULONG);
 BOOL         WriteMenuNode(struct IFFHandle *, UBYTE *, struct Node *);
 
 /* movewindow.c */
@@ -229,7 +229,7 @@ BOOL         OpenSoundEditWindow(void *, struct Window *);
 void        *HandleSoundEditWindowIDCMP(struct IntuiMessage *);
 struct Node *CopySoundNode(struct Node *);
 void         FreeSoundNode(struct Node *);
-struct Node *ReadSoundNode(UBYTE *);
+struct Node *ReadSoundNode(UBYTE *, ULONG);
 BOOL         WriteSoundNode(struct IFFHandle *iff, UBYTE *, struct Node *);
 
 /* window.c */

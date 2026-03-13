@@ -453,16 +453,20 @@ void *HandleImageEditWindowIDCMP(struct IntuiMessage *msg)
 }
 
 /* Read TMIM IFF chunk into Image node */
-struct Node *ReadImageNode(UBYTE *buf)
+struct Node *ReadImageNode(UBYTE *buf, ULONG size)
 {
  struct ImageNode *in;
+ struct ImagePrefsObject *ipo;
+ ULONG sbits;
+ UBYTE *ptr;
+
+ (void)size;
+ ipo=(struct ImagePrefsObject *)buf;
+ sbits=ipo->ipo_StringBits;
+ ptr=(UBYTE *)&ipo[1];
 
  /* Allocate memory for node */
  if (in=AllocMem(sizeof(struct ImageNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  struct ImagePrefsObject *ipo=(struct ImagePrefsObject *) buf;
-  ULONG sbits=ipo->ipo_StringBits;
-  UBYTE *ptr=(UBYTE *) &ipo[1];
-
   if ((!(sbits & IMPO_NAME) || (in->in_Node.ln_Name=GetConfigStr(&ptr))) &&
       (!(sbits & IMPO_FILE) || (in->in_File=GetConfigStr(&ptr))))
    /* All OK. */

@@ -198,6 +198,8 @@ extern struct ExecBase *SysBase;
 extern struct Library *UtilityBase;
 extern struct Library *WorkbenchBase;
 extern BOOL WBUseOpenWorkbenchObject;
+extern BOOL WBHaveAppMenuTags;   /* V44+ AddAppMenuItemA tags */
+extern BOOL WBHaveTitleKey;     /* V45+ WBAPPMENUA_GetTitleKey */
 
 /* Global data */
 extern const struct TagItem HandlerProcessTags[];
