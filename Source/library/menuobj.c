@@ -137,14 +137,14 @@ struct TMObject *CreateTMObjectMenu(struct TMHandle *handle, char *name,
       if (ti->ti_Data && !isSeparator) {
        if (tmobj->mo_ExecLink) RemLinkTMObject(tmobj->mo_ExecLink);
        tmobj->mo_ExecLink=AddLinkTMObject(handle,(char *)ti->ti_Data,
-                                          TMOBJTYPE_EXEC,(struct TMObject *)tmobj);
+                                          TMOBJTYPE_EXEC,(struct TMObject *)tmobj,NULL);
       }
       break;
      case TMOP_Sound:
       if (ti->ti_Data && !isSeparator) {
        if (tmobj->mo_SoundLink) RemLinkTMObject(tmobj->mo_SoundLink);
        tmobj->mo_SoundLink=AddLinkTMObject(handle,(char *)ti->ti_Data,
-                                           TMOBJTYPE_SOUND,(struct TMObject *)tmobj);
+                                           TMOBJTYPE_SOUND,(struct TMObject *)tmobj,NULL);
       }
       break;
      default: break;
@@ -254,7 +254,7 @@ BOOL ChangeTMObjectMenu(struct TMHandle *handle,
                                                         (char *) ti->ti_Data,
                                                         TMOBJTYPE_EXEC,
                                                         (struct TMObject *)
-                                                         tmobj);
+                                                         tmobj,NULL);
                     }
                     break;
    case TMOP_Sound: if (tmobj->mo_SoundLink) { /* Already got a link? */
@@ -269,7 +269,7 @@ BOOL ChangeTMObjectMenu(struct TMHandle *handle,
                                                          (char *) ti->ti_Data,
                                                          TMOBJTYPE_SOUND,
                                                          (struct TMObject *)
-                                                          tmobj);
+                                                          tmobj,NULL);
                     }
                     break;
   }

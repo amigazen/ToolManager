@@ -433,6 +433,9 @@ static void OpenDockWindow(struct TMObjectDock *tmobj, BOOL beep)
        w->UserPort=IDCMPPort;
        w->UserData=(APTR) tmobj;
 
+       /* V44: set icon.library global remap screen for palette-mapped icons (Option B) */
+       IconSetGlobalScreen(w->WScreen);
+
        DEBUG_PRINTF("Window: 0x%08lx\n",w);
 
        /* Set IDCMP flags */
@@ -551,6 +554,8 @@ static void OpenDockWindow(struct TMObjectDock *tmobj, BOOL beep)
 
            /* Link valid? */
            if (tmli) {
+            /* V44: remap palette-mapped icon for this screen and update link size */
+            LayoutIconForImageLink(tmli,w->WScreen);
             /* Yes. Set Parameters */
             tmli->tmli_LeftEdge=x+(dw - tmli->tmli_Width)/2;
             tmli->tmli_TopEdge=y+(dh + 1 - tmli->tmli_Height)/2;
@@ -729,6 +734,8 @@ static void CloseDockWindow(struct TMObjectDock *dock)
   dock->do_TopEdge=w->TopEdge;
  }
 
+ /* V44: release icon.library global screen */
+ IconSetGlobalScreen(NULL);
  /* Close Window */
  SafeCloseWindow(w);
  dock->do_Window=NULL;
@@ -811,25 +818,36 @@ struct TMObject *CreateTMObjectDock(struct TMHandle *handle, char *name,
                                                                   names[0],
                                                                 TMOBJTYPE_EXEC,
                                                             (struct TMObject *)
-                                                                  tmobj)))
+                                                                  tmobj,NULL)))
                             /* Get name of exec object. We use names[0]
                                instead of object name, because the link could
                                be deleted while window is still active. */
                             newdt->dt_ExecName=names[0];
 
-                           /* Add link to Image object */
-                           if (names[1])
+                           /* Add link to Image object (Option B: TMOP_Screen when window open) */
+                           if (names[1]) {
+                            struct TagItem *imgtags=NULL;
+                            struct TagItem imgtags_buf[2];
+                            if (tmobj->do_Window) {
+                             imgtags_buf[0].ti_Tag=TMOP_Screen;
+                             imgtags_buf[0].ti_Data=(ULONG)tmobj->do_Window->WScreen;
+                             imgtags_buf[1].ti_Tag=TAG_DONE;
+                             imgtags_buf[1].ti_Data=0;
+                             imgtags=imgtags_buf;
+                            }
                             newdt->dt_ImageLink=(struct TMLinkImage *)
                                     AddLinkTMObject(handle,names[1],
                                                     TMOBJTYPE_IMAGE,
-                                                    (struct TMObject *) tmobj);
+                                                    (struct TMObject *) tmobj,
+                                                    imgtags);
+                           }
 
                            /* Add link to Sound object */
                            if (names[2])
                             newdt->dt_SoundLink=AddLinkTMObject(handle,names[2],
                                                                 TMOBJTYPE_SOUND,
                                                             (struct TMObject *)
-                                                                tmobj);
+                                                                tmobj,NULL);
 
                            /* Add node to list. Head of list? */
                            if (dt) {
@@ -974,25 +992,36 @@ BOOL ChangeTMObjectDock(struct TMHandle *handle,
                                                                   names[0],
                                                                 TMOBJTYPE_EXEC,
                                                             (struct TMObject *)
-                                                                  tmobj)))
+                                                                  tmobj,NULL)))
                            /* Get name of exec object. We use names[0]
                               instead of object name, because the link could
                               be deleted while window is still active. */
                            newdt->dt_ExecName=names[0];
 
-                          /* Add link to Image object */
-                          if (names[1])
+                          /* Add link to Image object (Option B: TMOP_Screen when window open) */
+                          if (names[1]) {
+                           struct TagItem *imgtags=NULL;
+                           struct TagItem imgtags_buf[2];
+                           if (tmobj->do_Window) {
+                            imgtags_buf[0].ti_Tag=TMOP_Screen;
+                            imgtags_buf[0].ti_Data=(ULONG)tmobj->do_Window->WScreen;
+                            imgtags_buf[1].ti_Tag=TAG_DONE;
+                            imgtags_buf[1].ti_Data=0;
+                            imgtags=imgtags_buf;
+                           }
                            newdt->dt_ImageLink=(struct TMLinkImage *)
-                                    AddLinkTMObject(handle,names[1],
-                                                    TMOBJTYPE_IMAGE,
-                                                    (struct TMObject *) tmobj);
+                                   AddLinkTMObject(handle,names[1],
+                                                   TMOBJTYPE_IMAGE,
+                                                   (struct TMObject *) tmobj,
+                                                   imgtags);
+                          }
 
                           /* Add link to Sound object */
                           if (names[2])
                            newdt->dt_SoundLink=AddLinkTMObject(handle,names[2],
                                                                TMOBJTYPE_SOUND,
                                                            (struct TMObject *)
-                                                               tmobj);
+                                                               tmobj,NULL);
 
                           /* Add node to list. Head of list? */
                           if (dt) {

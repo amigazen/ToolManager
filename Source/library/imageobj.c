@@ -4,6 +4,9 @@
  * TMObject, Type: Image
  *
  * (c) 1990-1993 Stefan Becker
+ *
+ * V44: When icon.library 44+ is available, uses GetIconTagList/DrawIconStateA
+ * for palette-mapped icons; TMOP_Screen (Option B) sets remap target.
  */
 
 #include "ToolManagerLib.h"
@@ -28,37 +31,78 @@ struct TMObjectImage {
                      };
 
 /* io_Flags */
-#define IO_FreeData (1L<<0)
-#define IO_DiskObj  (1L<<1)
+#define IO_FreeData         (1L<<0)
+#define IO_DiskObj          (1L<<1)
+#define IO_UseDrawIconState (1L<<2)  /* V44: use DrawIconStateA; icon in io_Data */
 
 /* Data */
 static ULONG IconCount=0;
+static ULONG IconVersion=0;  /* 44 when V44+ available, else 37 */
 struct Library *IconBase=NULL;
 
-/* Try to open icon.library */
+/* Try to open icon.library; prefer 44 for palette-mapped support, fall back to 37 */
 static BOOL GetIconLibrary(void)
 {
- /* Library already open or can we open it? */
- if (IconBase || (IconBase=OpenLibrary("icon.library",37)))
-  {
-   /* Increment Icon counter */
-   IconCount++;
-
-   /* All OK */
-   return(TRUE);
-  }
-
- /* Call failed */
+ if (IconBase) {
+  IconCount++;
+  return(TRUE);
+ }
+ /* Try V44 first for GetIconTagList/DrawIconStateA/LayoutIconA */
+ if ((IconBase=OpenLibrary("icon.library",44))) {
+  IconVersion=44;
+  IconCount++;
+  return(TRUE);
+ }
+ if ((IconBase=OpenLibrary("icon.library",37))) {
+  IconVersion=37;
+  IconCount++;
+  return(TRUE);
+ }
  return(FALSE);
 }
 
 /* Try to close icon.library */
 static void FreeIconLibrary(void)
 {
- /* Decrement Icon counter and close icon.library if zero */
  if (--IconCount==0) {
   CloseLibrary(IconBase);
   IconBase=NULL;
+  IconVersion=0;
+ }
+}
+
+/* Set icon.library global remap screen (V44); call when dock opens/closes (Option B). */
+void IconSetGlobalScreen(struct Screen *screen)
+{
+ if (IconBase && IconVersion>=44) {
+  struct TagItem tag[2];
+  tag[0].ti_Tag=ICONCTRLA_SetGlobalScreen;
+  tag[0].ti_Data=(ULONG)screen;
+  tag[1].ti_Tag=TAG_DONE;
+  tag[1].ti_Data=0;
+  IconControlA(NULL,tag);
+ }
+}
+
+/* Remap a palette-mapped icon for the given screen and update link size (V44). */
+void LayoutIconForImageLink(struct TMLinkImage *tmli, struct Screen *screen)
+{
+ struct TMObjectImage *tmobj;
+
+ if (!IconBase || IconVersion<44 || !tmli || !tmli->tmli_Link.tml_Linked)
+  return;
+ if (tmli->tmli_Link.tml_Linked->tmo_Type!=TMOBJTYPE_IMAGE)
+  return;
+ tmobj=(struct TMObjectImage *)tmli->tmli_Link.tml_Linked;
+ if (!(tmobj->io_Flags&IO_UseDrawIconState) || !tmobj->io_Data)
+  return;
+ if (LayoutIconA((struct DiskObject *)tmobj->io_Data,screen,NULL)) {
+  struct Rectangle rect;
+  if (GetIconRectangleA(NULL,(struct DiskObject *)tmobj->io_Data,
+                        NULL,&rect,NULL)) {
+   tmli->tmli_Width=(UWORD)(rect.MaxX-rect.MinX+1);
+   tmli->tmli_Height=(UWORD)(rect.MaxY-rect.MinY+1);
+  }
  }
 }
 
@@ -67,11 +111,14 @@ struct TMObject *CreateTMObjectImage(struct TMHandle *handle, char *name,
                                      struct TagItem *tags)
 {
  struct TMObjectImage *tmobj;
+ struct Screen *icon_screen;
+ struct TagItem *ti;
+ struct TagItem *tstate;
 
  /* allocate memory for object */
  if (tmobj=(struct TMObjectImage *)
             AllocateTMObject(sizeof(struct TMObjectImage))) {
-  struct TagItem *ti,*tstate;
+  icon_screen=NULL;
 
   /* Scan tag list */
   tstate=tags;
@@ -80,10 +127,12 @@ struct TMObject *CreateTMObjectImage(struct TMHandle *handle, char *name,
    DEBUG_PRINTF("Got Tag (0x%08lx)\n",ti->ti_Tag);
 
    switch (ti->ti_Tag) {
-    case TMOP_File: tmobj->io_File=(char *) ti->ti_Data;
-                    break;
-    case TMOP_Data: tmobj->io_Data=(struct TMImageData *) ti->ti_Data;
-                    break;
+    case TMOP_File:   tmobj->io_File=(char *) ti->ti_Data;
+                      break;
+    case TMOP_Data:   tmobj->io_Data=(struct TMImageData *) ti->ti_Data;
+                      break;
+    case TMOP_Screen: icon_screen=(struct Screen *) ti->ti_Data;
+                      break;
    }
   }
 
@@ -120,9 +169,39 @@ struct TMObject *CreateTMObjectImage(struct TMHandle *handle, char *name,
    }
 
    /* Got IFF data? No --> Open icon file */
-   if (!(tmobj->io_Data) && GetIconLibrary())
-    if (tmobj->io_Data=(struct TMImageData *) GetDiskObject(tmobj->io_File)) {
-     /* Got an icon */
+   if (!(tmobj->io_Data) && GetIconLibrary()) {
+    if (IconVersion>=44) {
+     /* V44: try GetIconTagList for palette-mapped icon and remap to screen */
+     struct TagItem gettags[5];
+     struct DiskObject *dobj;
+     struct Rectangle rect;
+
+     gettags[0].ti_Tag=ICONGETA_GetPaletteMappedIcon;
+     gettags[0].ti_Data=TRUE;
+     gettags[1].ti_Tag=ICONGETA_RemapIcon;
+     gettags[1].ti_Data=TRUE;
+     gettags[2].ti_Tag=ICONGETA_Screen;
+     gettags[2].ti_Data=(ULONG)icon_screen;
+     gettags[3].ti_Tag=TAG_DONE;
+     gettags[3].ti_Data=0;
+
+     dobj=GetIconTagList(tmobj->io_File,gettags);
+     if (dobj) {
+      tmobj->io_Data=(struct TMImageData *)dobj;
+      tmobj->io_Flags|=IO_DiskObj|IO_UseDrawIconState;
+      tmobj->io_Normal=NULL;
+      tmobj->io_Selected=NULL;
+      if (GetIconRectangleA(NULL,dobj,NULL,&rect,NULL)) {
+       tmobj->io_XSize=(UWORD)(rect.MaxX-rect.MinX+1);
+       tmobj->io_YSize=(UWORD)(rect.MaxY-rect.MinY+1);
+      } else {
+       tmobj->io_XSize=0;
+       tmobj->io_YSize=0;
+      }
+     }
+    }
+    /* Fallback: legacy GetDiskObject when V44 path not used or failed */
+    if (!(tmobj->io_Data) && (tmobj->io_Data=(struct TMImageData *)GetDiskObject(tmobj->io_File))) {
      struct Image *img=((struct DiskObject *) tmobj->io_Data)
                         ->do_Gadget.GadgetRender;
 
@@ -133,8 +212,9 @@ struct TMObject *CreateTMObjectImage(struct TMHandle *handle, char *name,
      tmobj->io_Selected=((struct DiskObject *) tmobj->io_Data)
                          ->do_Gadget.SelectRender;
     }
-    else
+    if (!tmobj->io_Data)
      FreeIconLibrary();
+   }
 
    /* All OK? */
    if (tmobj->io_Data) {
@@ -246,11 +326,29 @@ void ActivateTMObjectImage(struct TMLinkImage *tmli, void *start)
                               tmli->tmli_Link.tml_Linked;
  UWORD x=tmli->tmli_LeftEdge;
  UWORD y=tmli->tmli_TopEdge;
+ ULONG st=(ULONG)start;
 
  DEBUG_PRINTF("Activate/Image (%ld)\n",start);
 
+ /* V44: palette-mapped icon path uses DrawIconStateA only (no planar animation) */
+ if (tmobj->io_Flags&IO_UseDrawIconState) {
+  ULONG ids_state=IDS_NORMAL;
+  if (st==IOC_ACTIVE || st==IOC_FULLANIM) ids_state=IDS_SELECTED;
+  if (st==NULL) {
+   struct TMTimerReqImage *tmtri=tmli->tmli_Link.tml_Active;
+   if (tmtri) {
+    WaitIO((struct IORequest *)tmtri);
+    FreeMem(tmtri,sizeof(struct TMTimerReqImage));
+    tmli->tmli_Link.tml_Active=NULL;
+   }
+  }
+  DrawIconStateA(tmli->tmli_RastPort,(struct DiskObject *)tmobj->io_Data,
+                 NULL,(LONG)x,(LONG)y,ids_state,NULL);
+  return;
+ }
+
  /* Start animation? */
- switch ((ULONG) start) {
+ switch (st) {
   case NULL:         {
                       struct TMTimerReqImage *tmtri=tmli->tmli_Link.tml_Active;
                       struct TMImageNode *tmin=tmtri->tmtri_NextImage;

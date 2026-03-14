@@ -233,14 +233,22 @@ BOOL InternalChangeTMObject(struct TMHandle *handle, char *object,
  return(FALSE);
 }
 
-/* Add a link to a TMObject */
+/* Add a link to a TMObject. For TMOBJTYPE_IMAGE, if object not found and tags
+ * are supplied (e.g. TMOP_Screen for Option B), create the Image object first. */
 struct TMLink *AddLinkTMObject(struct TMHandle *handle, char *object,
-                               ULONG type, struct TMObject *linkedto)
+                               ULONG type, struct TMObject *linkedto,
+                               struct TagItem *tags)
 {
  struct TMObject *tmobj;
 
  /* Find object of specified type */
- if (tmobj=FindObjectInList(handle,object,type)) {
+ tmobj=FindObjectInList(handle,object,type);
+ /* Option B: create Image object if not found so caller can pass TMOP_Screen */
+ if (!tmobj && type==TMOBJTYPE_IMAGE &&
+     InternalCreateTMObject(handle,object,TMOBJTYPE_IMAGE,tags))
+  tmobj=FindObjectInList(handle,object,type);
+
+ if (tmobj) {
   struct TMLink *tml;
 
   /* Allocate TMLink structure */

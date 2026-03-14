@@ -101,7 +101,7 @@ struct TMObject *CreateTMObjectIcon(struct TMHandle *handle, char *name,
                                                              ti->ti_Data,
                                                             TMOBJTYPE_EXEC,
                                                             (struct TMObject *)
-                                                             tmobj);
+                                                             tmobj,NULL);
                         }
                         break;
      case TMOP_Image:   if (ti->ti_Data) {
@@ -114,7 +114,7 @@ struct TMObject *CreateTMObjectIcon(struct TMHandle *handle, char *name,
                          tmobj->io_ImageLink=(struct TMLinkImage *)
                                   AddLinkTMObject(handle, (char *) ti->ti_Data,
                                                   TMOBJTYPE_IMAGE,
-                                                  (struct TMObject *) tmobj);
+                                                  (struct TMObject *) tmobj,NULL);
                         }
                         break;
      case TMOP_LeftEdge:tmobj->io_LeftEdge=ti->ti_Data;
@@ -129,7 +129,7 @@ struct TMObject *CreateTMObjectIcon(struct TMHandle *handle, char *name,
                                                               ti->ti_Data,
                                                              TMOBJTYPE_SOUND,
                                                              (struct TMObject *)
-                                                              tmobj);
+                                                              tmobj,NULL);
                         }
                         break;
      case TMOP_TopEdge: tmobj->io_TopEdge=ti->ti_Data;
@@ -211,7 +211,7 @@ struct TMObject *ChangeTMObjectIcon(struct TMHandle *handle,
                                                            (char *) ti->ti_Data,
                                                            TMOBJTYPE_EXEC,
                                                            (struct TMObject *)
-                                                            tmobj);
+                                                            tmobj,NULL);
                        }
                        break;
    case TMOP_Image:    oldimage=tmobj->io_ImageLink;
@@ -222,7 +222,7 @@ struct TMObject *ChangeTMObjectIcon(struct TMHandle *handle,
                         tmobj->io_ImageLink=(struct TMLinkImage *)
                                   AddLinkTMObject(handle, (char *) ti->ti_Data,
                                                   TMOBJTYPE_IMAGE,
-                                                  (struct TMObject *) tmobj);
+                                                  (struct TMObject *) tmobj,NULL);
                        }
                        break;
    case TMOP_LeftEdge: tmobj->io_LeftEdge=ti->ti_Data;
@@ -241,7 +241,7 @@ struct TMObject *ChangeTMObjectIcon(struct TMHandle *handle,
                                                              ti->ti_Data,
                                                             TMOBJTYPE_SOUND,
                                                             (struct TMObject *)
-                                                             tmobj);
+                                                             tmobj,NULL);
                        }
                        break;
    case TMOP_TopEdge:  tmobj->io_TopEdge=ti->ti_Data;

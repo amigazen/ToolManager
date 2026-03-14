@@ -50,6 +50,7 @@
 /* Type: TMOBJTYPE_IMAGE */
 #define TMOP_File       (TAG_USER +  257)
 #define TMOP_Data       (TAG_USER +  258)
+#define TMOP_Screen     (TAG_USER +  259)  /* struct Screen *: for icon.library 44+ remap (Option B) */
 
 /* Type: TMOBJTYPE_SOUND */
 #define TMOP_Port       (TAG_USER +  513)
@@ -57,6 +58,14 @@
 /* Type: TMOBJTYPE_MENU/ICON */
 #define TMOP_Exec       (TAG_USER +  769)
 #define TMOP_Sound      (TAG_USER +  770)
+
+/* Type: TMOBJTYPE_MENU, V44/V45 Workbench menu strip / submenus (optional) */
+#define TMOP_MenuTitle      (TAG_USER +  771)  /* STRPTR: which menu title (NULL = Tools) */
+#define TMOP_ParentKey      (TAG_USER +  772)  /* ULONG: key from prior submenu parent (0 = top) */
+#define TMOP_IsSubmenuParent (TAG_USER +  773) /* BOOL: item gets sub-items; key out via SubmenuKeyPtr */
+#define TMOP_IsSeparator    (TAG_USER +  774)  /* BOOL: item is a separator bar (no Exec/Sound) */
+#define TMOP_CommandKey    (TAG_USER +  775)  /* STRPTR: shortcut key string (V44+, first char used) */
+#define TMOP_SubmenuKeyPtr (TAG_USER +  776)  /* ULONG *: receive key when IsSubmenuParent (caller set) */
 
 /* Type: TMOBJTYPE_ICON */
 #define TMOP_Image      (TAG_USER + 1025)

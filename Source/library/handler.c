@@ -395,7 +395,7 @@ __SAVE_DS__ void HandlerEntry(void)
 
      /* Search Access object (with full host name) */
      if (!(tml=AddLinkTMObject(PrivateTMHandle,HostNameBuffer,TMOBJTYPE_ACCESS,
-                               NULL))) {
+                               NULL,NULL))) {
       char *realm;
 
       /* Locate realm part */
@@ -405,7 +405,7 @@ __SAVE_DS__ void HandlerEntry(void)
 
        /* Search Access object (with realm name) */
        tml=AddLinkTMObject(PrivateTMHandle,HostNameBuffer,TMOBJTYPE_ACCESS,
-                               NULL);
+                               NULL,NULL);
       }
      }
 
@@ -414,7 +414,7 @@ __SAVE_DS__ void HandlerEntry(void)
     /* Object not found? */
     if (!tml)
      /* Search default Access object */
-     tml=AddLinkTMObject(PrivateTMHandle,"anyone",TMOBJTYPE_ACCESS,NULL);
+     tml=AddLinkTMObject(PrivateTMHandle,"anyone",TMOBJTYPE_ACCESS,NULL,NULL);
 
     DEBUG_PRINTF("Link: 0x%08lx\n",tml);
 

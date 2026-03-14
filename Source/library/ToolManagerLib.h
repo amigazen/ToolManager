@@ -31,6 +31,14 @@
 #include <prefs/prefhdr.h>
 #include <rexx/errors.h>
 #include <workbench/workbench.h>
+#include <workbench/icon.h>
+/* IDS_NORMAL/IDS_SELECTED for DrawIconStateA (intuition/imageclass.h or fallback) */
+#ifndef IDS_NORMAL
+#define IDS_NORMAL   0
+#endif
+#ifndef IDS_SELECTED
+#define IDS_SELECTED 1
+#endif
 
 /* System function prototypes */
 #include <proto/alib.h>
@@ -159,7 +167,8 @@ BOOL InternalChangeTMObject(struct TMHandle *handle, char *object,
                             struct TagItem *tags);
 struct TMObject *AllocateTMObject(ULONG size);
 struct TMLink *AddLinkTMObject(struct TMHandle *handle, char *object,
-                               ULONG type, struct TMObject *linkedto);
+                               ULONG type, struct TMObject *linkedto,
+                               struct TagItem *tags);
 void RemLinkTMObject(struct TMLink *tml);
 void DeleteAllLinksTMObject(struct TMObject *tmobj);
 void CallActivateTMObject(struct TMLink *tml, void *args);
@@ -184,6 +193,10 @@ BOOL InternalFreeTMHandle(struct TMHandle *handle);
 /* workbench.c */
 BOOL GetWorkbench(void);
 void FreeWorkbench(void);
+
+/* imageobj.c: icon.library 44+ helpers for dock (Option B) */
+void IconSetGlobalScreen(struct Screen *);
+void LayoutIconForImageLink(struct TMLinkImage *, struct Screen *);
 
 /* System library base pointers */
 extern struct Library *CxBase;

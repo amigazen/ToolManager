@@ -49,6 +49,7 @@
 /* Type: TMOBJTYPE_IMAGE */
 #define TMOP_File       (TAG_USER +  257)
 #define TMOP_Data       (TAG_USER +  258)
+#define TMOP_Screen     (TAG_USER +  259)  /* struct Screen *: icon.library 44+ remap (Option B) */
 
 /* Type: TMOBJTYPE_SOUND */
 #define TMOP_Port       (TAG_USER +  513)

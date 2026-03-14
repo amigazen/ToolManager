@@ -56,7 +56,7 @@ struct TMObject *CreateTMObjectAccess(struct TMHandle *handle, char *name,
                                                           (char *) ti->ti_Data,
                                                           TMOBJTYPE_EXEC,
                                                           (struct TMObject *)
-                                                           tmobj);
+                                                           tmobj,NULL);
 
                        DEBUG_PRINTF("ExecLink: 0x%08lx\n",newae->ae_ExecLink);
 
@@ -146,7 +146,7 @@ BOOL ChangeTMObjectAccess(struct TMHandle *handle,
                                                         (char *) ti->ti_Data,
                                                         TMOBJTYPE_EXEC,
                                                         (struct TMObject *)
-                                                         tmobj);
+                                                         tmobj,NULL);
 
                      /* Add node to list. Head of list? */
                      if (ae) {
@@ -233,7 +233,7 @@ void ActivateTMObjectAccess(struct TMLink *tml, void *args)
   DEBUG_PUTSTR("Free access!\n");
 
   /* Search Exec object (only global Exec objects can be activated!) */
-  if (tmle=AddLinkTMObject(PrivateTMHandle,execname,TMOBJTYPE_EXEC,NULL)) {
+  if (tmle=AddLinkTMObject(PrivateTMHandle,execname,TMOBJTYPE_EXEC,NULL,NULL)) {
 
    DEBUG_PRINTF("Link: 0x%08lx\n",tmle);
 

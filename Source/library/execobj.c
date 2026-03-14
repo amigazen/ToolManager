@@ -888,7 +888,7 @@ static void StartProgram(struct TMObjectExec *tmobj, struct AppMessage *msg)
                          (tmobj->eo_LinkData=AddLinkTMObject(tmobj->eo_Handle,
                                                              tmobj->eo_Command,
                                                              TMOBJTYPE_DOCK,
-                                                 (struct TMObject *) tmobj))) {
+                                                 (struct TMObject *) tmobj,NULL))) {
                       /* Yes, activate it */
                       CallActivateTMObject(tmobj->eo_LinkData,NULL);
                       rc=TRUE;
