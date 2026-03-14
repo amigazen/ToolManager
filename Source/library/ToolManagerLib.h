@@ -32,6 +32,9 @@
 #include <rexx/errors.h>
 #include <workbench/workbench.h>
 #include <workbench/icon.h>
+#include <datatypes/datatypes.h>
+#include <datatypes/pictureclass.h>
+#include <datatypes/soundclass.h>
 /* IDS_NORMAL/IDS_SELECTED for DrawIconStateA (intuition/imageclass.h or fallback) */
 #ifndef IDS_NORMAL
 #define IDS_NORMAL   0
@@ -57,6 +60,7 @@
 #include <proto/screennotify.h>
 #include <proto/utility.h>
 #include <proto/wb.h>
+#include <proto/datatypes.h>
 
 /* ANSI C include files */
 #include <stdlib.h>

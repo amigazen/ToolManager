@@ -11,6 +11,9 @@
 
 #include "ToolManagerLib.h"
 
+/* Internal only: optional datatypes image load (dtimage.c); not part of public API. */
+struct TMImageData *ReadImageViaDataTypes(char *name);
+
 /* extended TMTimerReq structure */
 struct TMTimerReqImage {
                         struct TMTimerReq   tmtri_TimerReq;
@@ -166,6 +169,17 @@ struct TMObject *CreateTMObjectImage(struct TMHandle *handle, char *name,
      if (img->ImageData)
       tmobj->io_Selected=img;
     }
+   }
+
+   /* IFF failed: try datatypes.library (e.g. PNG, JPEG, GIF) when available */
+   if (!(tmobj->io_Data) && (tmobj->io_Data=ReadImageViaDataTypes(tmobj->io_File))) {
+    struct Image *img=&tmobj->io_Data->tmid_Normal;
+    tmobj->io_XSize=img->Width;
+    tmobj->io_YSize=img->Height+1;
+    tmobj->io_Normal=img;
+    img=&tmobj->io_Data->tmid_Selected;
+    if (img->ImageData)
+     tmobj->io_Selected=img;
    }
 
    /* Got IFF data? No --> Open icon file */

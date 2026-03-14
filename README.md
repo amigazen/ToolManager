@@ -30,6 +30,7 @@ ToolManager is a full-featured program for Workbench and CLI tool management on 
 - **DataTypes for Image objects:** In addition to IFF format brushes, Image objects can now use any image supported by DataTypes
 - **DataTypes for Sound objects:** Sound samples can now be in any format supported by DataTypes, not only IFF 8SVX
 - **Workbench v44+:** When workbench.library version 44 or higher is present, and Tools will be launched in Workbench mode via the Workbench API. WBStart-Handler no longer needs to be installed in this case
+- **Icon.library v44+:** ToolManager will now use the advanced color palette loading and remapping capabilities of icon.library version 44 or higher when loading images from icons
 - **Reaction Prefs:** A new Reaction native ToolManager Prefs app is included, in addition to the classic GadTools version
 - **AmigaOS 3.2 support:** ToolManager 2.2 has full support for new features of AmigaOS 3.2
 

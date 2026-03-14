@@ -8,6 +8,12 @@
 
 #include "ToolManagerLib.h"
 
+/* Internal only: optional datatypes sound load/play (dtsound.c); not part of public API. */
+struct TMSoundData;
+struct TMSoundData *ReadSoundViaDataTypes(char *name);
+void FreeSoundData(struct TMSoundData *tsd);
+void PlaySoundData(struct TMSoundData *tsd);
+
 /* extended TMObject structure for TMOBJTYPE_SOUND objects */
 struct TMObjectSound {
                       struct TMObject  so_Object;
@@ -178,9 +184,16 @@ struct TMLink *AllocLinkTMObjectSound(struct TMObjectSound *tmobj)
 void ActivateTMObjectSound(struct TMLink *tml, void *args)
 {
  struct TMObjectSound *tmobj=(struct TMObjectSound *) tml->tml_Linked;
+ struct TMSoundData *snd;
 
  DEBUG_PUTSTR("Activate/Sound\n");
 
- /* Send ARexx command */
- SendARexxCommand(tmobj->so_ARexxCmd,tmobj->so_CmdLen);
+ /* Try to load and play via datatypes (any format -> 8SVX in memory); else ARexx. */
+ snd = ReadSoundViaDataTypes(tmobj->so_Command);
+ if (snd) {
+  PlaySoundData(snd);
+  FreeSoundData(snd);
+ } else {
+  SendARexxCommand(tmobj->so_ARexxCmd,tmobj->so_CmdLen);
+ }
 }

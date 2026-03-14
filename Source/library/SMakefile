@@ -13,7 +13,7 @@ ldlibs = lib:sc.lib lib:amiga.lib lib:debug.lib
 
 lib_c_objs = LibInit.o handler.o data.o tmhandle.o objects.o execobj.o imageobj.o\
  soundobj.o menuobj.o iconobj.o dockobj.o accessobj.o rexx.o workbench.o readiff.o\
- hotkey.o locale.o safety.o config.o
+ dtimage.o dtsound.o hotkey.o locale.o safety.o config.o
 
 lib_objs = libasm.o $(lib_c_objs)
 dest = toolmanager.library
@@ -56,6 +56,10 @@ workbench.o: workbench.c ToolManagerLib.h
 	sc $(opts) workbench.c
 readiff.o: readiff.c ToolManagerLib.h
 	sc $(opts) readiff.c
+dtimage.o: dtimage.c ToolManagerLib.h
+	sc $(opts) dtimage.c
+dtsound.o: dtsound.c ToolManagerLib.h
+	sc $(opts) dtsound.c
 hotkey.o: hotkey.c ToolManagerLib.h
 	sc $(opts) hotkey.c
 locale.o: locale.c ToolManagerLib.h
