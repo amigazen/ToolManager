@@ -34,6 +34,7 @@
 #include <proto/intuition.h>
 #include <proto/locale.h>
 #include <proto/wb.h>
+#include <proto/utility.h>
 
 /* ANSI C include files */
 #include <stdlib.h>
@@ -248,6 +249,7 @@ extern struct Library *IFFParseBase;
 extern struct IntuitionBase *IntuitionBase;
 extern struct ExecBase *SysBase;
 extern struct Library *WorkbenchBase;
+extern struct Library *UtilityBase;
 
 /* Global data */
 extern char                 *ProgramName;

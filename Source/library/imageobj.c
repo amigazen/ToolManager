@@ -91,18 +91,27 @@ void IconSetGlobalScreen(struct Screen *screen)
 void LayoutIconForImageLink(struct TMLinkImage *tmli, struct Screen *screen)
 {
  struct TMObjectImage *tmobj;
+ ULONG flags;
+ BOOL ok;
 
- if (!IconBase || IconVersion<44 || !tmli || !tmli->tmli_Link.tml_Linked)
+ if (!IconBase || IconVersion<44 || !tmli || !tmli->tmli_Link.tml_Linked || !screen)
   return;
  if (tmli->tmli_Link.tml_Linked->tmo_Type!=TMOBJTYPE_IMAGE)
   return;
  tmobj=(struct TMObjectImage *)tmli->tmli_Link.tml_Linked;
- if (!(tmobj->io_Flags&IO_UseDrawIconState) || !tmobj->io_Data)
+ flags=tmobj->io_Flags;
+
+ /* Only DiskObject-based icons are valid for LayoutIconA/GetIconRectangleA here. */
+ if (!(flags&IO_UseDrawIconState) || !(flags&IO_DiskObj) || !tmobj->io_Data)
   return;
- if (LayoutIconA((struct DiskObject *)tmobj->io_Data,screen,NULL)) {
+
+ ok=LayoutIconA((struct DiskObject *)tmobj->io_Data,screen,NULL) ? TRUE : FALSE;
+
+ if (ok) {
   struct Rectangle rect;
-  if (GetIconRectangleA(NULL,(struct DiskObject *)tmobj->io_Data,
-                        NULL,&rect,NULL)) {
+  ok=GetIconRectangleA(NULL,(struct DiskObject *)tmobj->io_Data,
+                       NULL,&rect,NULL) ? TRUE : FALSE;
+  if (ok) {
    tmli->tmli_Width=(UWORD)(rect.MaxX-rect.MinX+1);
    tmli->tmli_Height=(UWORD)(rect.MaxY-rect.MinY+1);
   }
@@ -216,15 +225,21 @@ struct TMObject *CreateTMObjectImage(struct TMHandle *handle, char *name,
     }
     /* Fallback: legacy GetDiskObject when V44 path not used or failed */
     if (!(tmobj->io_Data) && (tmobj->io_Data=(struct TMImageData *)GetDiskObject(tmobj->io_File))) {
-     struct Image *img=((struct DiskObject *) tmobj->io_Data)
-                        ->do_Gadget.GadgetRender;
+     struct DiskObject *dobj=(struct DiskObject *) tmobj->io_Data;
+     struct Image *img=dobj->do_Gadget.GadgetRender;
 
-     tmobj->io_Flags|=IO_DiskObj;
-     tmobj->io_XSize=img->Width;
-     tmobj->io_YSize=img->Height+1;
-     tmobj->io_Normal=img;
-     tmobj->io_Selected=((struct DiskObject *) tmobj->io_Data)
-                         ->do_Gadget.SelectRender;
+     /* Some icons may not have a GadgetRender image; treat as load failure to
+        avoid crashing later when DrawImage() is called. */
+     if (img) {
+      tmobj->io_Flags|=IO_DiskObj;
+      tmobj->io_XSize=img->Width;
+      tmobj->io_YSize=img->Height+1;
+      tmobj->io_Normal=img;
+      tmobj->io_Selected=dobj->do_Gadget.SelectRender;
+     } else {
+      FreeDiskObject(dobj);
+      tmobj->io_Data=NULL;
+     }
     }
     if (!tmobj->io_Data)
      FreeIconLibrary();
@@ -233,7 +248,7 @@ struct TMObject *CreateTMObjectImage(struct TMHandle *handle, char *name,
    /* All OK? */
    if (tmobj->io_Data) {
     tmobj->io_Flags|=IO_FreeData; /* Set free resources flag */
-    return(tmobj);
+   return((struct TMObject *)tmobj);
    }
   }
   else {
@@ -250,7 +265,7 @@ struct TMObject *CreateTMObjectImage(struct TMHandle *handle, char *name,
     tmobj->io_Selected=img;
 
    /* All OK */
-   return(tmobj);
+  return((struct TMObject *)tmobj);
   }
   FreeMem(tmobj,sizeof(struct TMObjectImage));
  }
@@ -304,7 +319,7 @@ struct TMLink *AllocLinkTMObjectImage(struct TMObjectImage *tmobj)
   tml->tmli_Selected=tmobj->io_Selected;
  }
 
- return(tml);
+ return((struct TMLink *)tml);
 }
 
 /* Send timer request */
@@ -336,17 +351,25 @@ static void AbortTimerRequest(struct TMTimerReqImage *tmtri)
 /* Activate an Image object */
 void ActivateTMObjectImage(struct TMLinkImage *tmli, void *start)
 {
- struct TMObjectImage *tmobj=(struct TMObjectImage *)
-                              tmli->tmli_Link.tml_Linked;
- UWORD x=tmli->tmli_LeftEdge;
- UWORD y=tmli->tmli_TopEdge;
- ULONG st=(ULONG)start;
+ struct TMObjectImage *tmobj;
+ UWORD x;
+ UWORD y;
+ ULONG st;
 
- DEBUG_PRINTF("Activate/Image (%ld)\n",start);
+ /* Basic sanity checks */
+ if (!tmli) return;
+ if (!tmli->tmli_Link.tml_Linked) return;
+ if (!tmli->tmli_RastPort) return;
+
+ tmobj=(struct TMObjectImage *)tmli->tmli_Link.tml_Linked;
+ x=tmli->tmli_LeftEdge;
+ y=tmli->tmli_TopEdge;
+ st=(ULONG)start;
 
  /* V44: palette-mapped icon path uses DrawIconStateA only (no planar animation) */
  if (tmobj->io_Flags&IO_UseDrawIconState) {
   ULONG ids_state=IDS_NORMAL;
+  if (!tmobj->io_Data) return;
   if (st==IOC_ACTIVE || st==IOC_FULLANIM) ids_state=IDS_SELECTED;
   if (st==NULL) {
    struct TMTimerReqImage *tmtri=tmli->tmli_Link.tml_Active;
@@ -361,11 +384,21 @@ void ActivateTMObjectImage(struct TMLinkImage *tmli, void *start)
   return;
  }
 
+ /* Without DrawIconStateA, we must have a normal image to draw for
+    deactivated/normal states. If it is missing, do nothing. */
+ if (!tmli->tmli_Normal) {
+  if (st==IOC_DEACTIVE || st==NULL || st==IOC_ACTIVE || st==IOC_FULLANIM)
+   return;
+ }
+
  /* Start animation? */
  switch (st) {
   case NULL:         {
                       struct TMTimerReqImage *tmtri=tmli->tmli_Link.tml_Active;
-                      struct TMImageNode *tmin=tmtri->tmtri_NextImage;
+                      struct TMImageNode *tmin;
+
+                      if (!tmtri) return;
+                      tmin=tmtri->tmtri_NextImage;
 
                       /* Remove timer request */
                       WaitIO((struct IORequest *) tmtri);
@@ -388,7 +421,8 @@ void ActivateTMObjectImage(struct TMLinkImage *tmli, void *start)
                        SendTimerRequest(tmtri,tmtri->tmtri_NextImage==NULL);
                       } else {
                        /* No. Draw normal picture */
-                       DrawImage(tmli->tmli_RastPort,tmli->tmli_Normal,x,y);
+                       if (tmli->tmli_Normal)
+                        DrawImage(tmli->tmli_RastPort,tmli->tmli_Normal,x,y);
 
                        /* Free timer request */
                        FreeMem(tmtri,sizeof(struct TMTimerReqImage));
@@ -410,7 +444,9 @@ void ActivateTMObjectImage(struct TMLinkImage *tmli, void *start)
                       }
 
                       /* Draw inactive image */
-                      DrawImage(tmli->tmli_RastPort,tmli->tmli_Normal,x,y);
+                      if (tmli->tmli_Normal) {
+                       DrawImage(tmli->tmli_RastPort,tmli->tmli_Normal,x,y);
+                      }
                      }
                      break;
   case IOC_ACTIVE:   {
@@ -423,7 +459,9 @@ void ActivateTMObjectImage(struct TMLinkImage *tmli, void *start)
                        AbortTimerRequest(tmtri);
 
                        /* Draw inactive state */
-                       DrawImage(rp,tmli->tmli_Normal,x,y);
+                       if (tmli->tmli_Normal) {
+                        DrawImage(rp,tmli->tmli_Normal,x,y);
+                       }
 
                        /* Free timer request */
                        FreeMem(tmtri,sizeof(struct TMTimerReqImage));
@@ -431,9 +469,10 @@ void ActivateTMObjectImage(struct TMLinkImage *tmli, void *start)
                       }
 
                       /* Draw selected state. Got a selected image? */
-                      if (tmobj->io_Selected)
+                      if (tmobj->io_Selected) {
                        /* Yes, draw it */
                        DrawImage(rp,tmobj->io_Selected,x,y);
+                      }
                       else {
                        /* No, invert image */
                        SetDrMd(rp,COMPLEMENT);
@@ -452,7 +491,9 @@ void ActivateTMObjectImage(struct TMLinkImage *tmli, void *start)
                        AbortTimerRequest(tmtri);
 
                        /* Draw inactive state */
-                       DrawImage(rp,tmli->tmli_Normal,x,y);
+                       if (tmli->tmli_Normal) {
+                        DrawImage(rp,tmli->tmli_Normal,x,y);
+                       }
 
                        /* Free timer request */
                        FreeMem(tmtri,sizeof(struct TMTimerReqImage));
@@ -467,6 +508,10 @@ void ActivateTMObjectImage(struct TMLinkImage *tmli, void *start)
 
                        /* Init timer request */
                        tmtri->tmtri_TimerReq.tmtr_Request=*deftimereq;
+                       if (!tmli->tmli_Normal) {
+                        FreeMem(tmtri,sizeof(struct TMTimerReqImage));
+                        break;
+                       }
                        tmtri->tmtri_Image=*(tmli->tmli_Normal);
                        tmtri->tmtri_TimerReq.tmtr_Link=(struct TMLink *) tmli;
 
@@ -480,9 +525,10 @@ void ActivateTMObjectImage(struct TMLinkImage *tmli, void *start)
                         tmtri->tmtri_NextImage=NULL;
 
                        /* Got a second picture? */
-                       if (img)
+                       if (img) {
                         /* Yes, draw it */
                         DrawImage(rp,img,x,y);
+                       }
                        else {
                         /* No, invert image */
                         SetDrMd(rp,COMPLEMENT);

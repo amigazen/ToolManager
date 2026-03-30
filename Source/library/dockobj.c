@@ -83,12 +83,42 @@ static struct TagItem flagmap[]={
                                  TMOP_Sticky,    DO_Sticky,
                                  TAG_DONE};
 
+/* Duplicate a C-string for storing inside a DockTool instance.
+   This prevents gadget text pointers from referencing transient buffers. */
+static char *DupDockString(char *s)
+{
+ ULONG len;
+ char *d;
+
+ if (!s) return(NULL);
+
+ len=strlen(s)+1;
+ d=AllocMem(len,MEMF_PUBLIC);
+ if (d) strcpy(d,s);
+
+ return(d);
+}
+
 /* Library bases */
 struct Library *DiskfontBase;
 
 /* Forward declarations for dock window helpers (used by ScreenCloseRequest/ScreenOpenRequest) */
 static void CloseDockWindow(struct TMObjectDock *dock);
 static void OpenDockWindow(struct TMObjectDock *tmobj, BOOL beep);
+
+/* Validate that an image link looks sane before dereferencing it.
+   We can't fully prove it isn't stale, but these checks catch the most common
+   cases (wrong type/size/ownership, NULL link target). */
+static BOOL ValidImageLink(struct TMLinkImage *tmli, struct TMObjectDock *dock)
+{
+ if (!tmli) return(FALSE);
+ if (tmli->tmli_Link.tml_Size != sizeof(struct TMLinkImage)) return(FALSE);
+ if (!tmli->tmli_Link.tml_Linked) return(FALSE);
+ if (tmli->tmli_Link.tml_Linked->tmo_Type != TMOBJTYPE_IMAGE) return(FALSE);
+ /* Optional ownership check: this link must belong to this dock object */
+ if (dock && (tmli->tmli_Link.tml_LinkedTo != (struct TMObject *)dock)) return(FALSE);
+ return(TRUE);
+}
 
 /* Close a window safely */
 static void SafeCloseWindow(struct Window *w)
@@ -283,10 +313,13 @@ static void OpenDockWindow(struct TMObjectDock *tmobj, BOOL beep)
         struct TMLinkImage *tmli=dt->dt_ImageLink;
 
         /* Link to image valid? */
-        if (tmli) {
-         /* max(width) */
-         valx=tmli->tmli_Width;
-         valy=tmli->tmli_Height-1;
+        if (ValidImageLink(tmli,tmobj)) {
+         /* Guard against zero/invalid image sizes (prevents underflow in Height-1) */
+         if (tmli->tmli_Width>1 && tmli->tmli_Height>1) {
+          /* max(width) */
+          valx=tmli->tmli_Width;
+          valy=tmli->tmli_Height-1;
+         }
         }
        }
 
@@ -486,6 +519,9 @@ static void OpenDockWindow(struct TMObjectDock *tmobj, BOOL beep)
          BOOL pattern=((tmobj->do_Flags & DO_Pattern)!=0 && !text);
          struct NewGadget ng;
 
+         /* Ensure all NewGadget fields start from a known value. */
+         memset(&ng,0,sizeof(ng));
+
          /* Set pattern */
          if (pattern) {
           SetAPen(rp,dri->dri_Pens[SHADOWPEN]);
@@ -527,11 +563,12 @@ static void OpenDockWindow(struct TMObjectDock *tmobj, BOOL beep)
          while (dt) {
           if (text) {
            /* Gadgets. Link valid? */
-           if (dt->dt_ExecLink) {
+           if (dt->dt_ExecLink && dt->dt_ExecName) {
             /* Init NewGadget values */
             ng.ng_LeftEdge=x;
             ng.ng_TopEdge=y;
             ng.ng_GadgetText=dt->dt_ExecName;
+            ng.ng_GadgetID=(ULONG)(lin*tmobj->do_Columns + col);
             ng.ng_UserData=dt;
 
             /* Create button gadget */
@@ -553,9 +590,14 @@ static void OpenDockWindow(struct TMObjectDock *tmobj, BOOL beep)
            }
 
            /* Link valid? */
-           if (tmli) {
-            /* V44: remap palette-mapped icon for this screen and update link size */
-            LayoutIconForImageLink(tmli,w->WScreen);
+           if (ValidImageLink(tmli,tmobj)) {
+            /* Avoid LayoutIconA() here; some setups crash inside icon.library.
+               The icon was already remapped when loaded (Option B / global screen). */
+            /* If size is invalid, skip drawing this entry to avoid crashes */
+            if (tmli->tmli_Width<1 || tmli->tmli_Height<1) {
+             /* Still advance grid position */
+             goto skip_image_draw;
+            }
             /* Yes. Set Parameters */
             tmli->tmli_LeftEdge=x+(dw - tmli->tmli_Width)/2;
             tmli->tmli_TopEdge=y+(dh + 1 - tmli->tmli_Height)/2;
@@ -566,6 +608,7 @@ static void OpenDockWindow(struct TMObjectDock *tmobj, BOOL beep)
            }
           }
 
+skip_image_draw:
           /* Next column */
           col++;
 
@@ -695,7 +738,7 @@ static void CloseDockWindow(struct TMObjectDock *dock)
  /* Deactivate all Image objects */
  while (dt) {
   /* Image object active? */
-  if (dt->dt_ImageLink && dt->dt_ImageLink->tmli_Link.tml_Active)
+  if (ValidImageLink(dt->dt_ImageLink,dock) && dt->dt_ImageLink->tmli_Link.tml_Active)
    /* Yes. Deactivate it first */
    CallActivateTMObject((struct TMLink *) dt->dt_ImageLink,
                         (void *) IOC_DEACTIVE);
@@ -761,6 +804,12 @@ static void FreeTools(struct TMObjectDock *tmobj)
   if (dt->dt_ImageLink) RemLinkTMObject((struct TMLink *) dt->dt_ImageLink);
   if (dt->dt_SoundLink) RemLinkTMObject(dt->dt_SoundLink);
 
+  /* Free exec label text duplicated for gadget creation */
+  if (dt->dt_ExecName) {
+   FreeMem(dt->dt_ExecName,strlen(dt->dt_ExecName)+1);
+   dt->dt_ExecName=NULL;
+  }
+
   /* Free Node */
   FreeMem(dt,sizeof(struct DockTool));
  }
@@ -822,7 +871,7 @@ struct TMObject *CreateTMObjectDock(struct TMHandle *handle, char *name,
                             /* Get name of exec object. We use names[0]
                                instead of object name, because the link could
                                be deleted while window is still active. */
-                            newdt->dt_ExecName=names[0];
+                            newdt->dt_ExecName=DupDockString(names[0]);
 
                            /* Add link to Image object (Option B: TMOP_Screen when window open) */
                            if (names[1]) {
@@ -996,7 +1045,7 @@ BOOL ChangeTMObjectDock(struct TMHandle *handle,
                            /* Get name of exec object. We use names[0]
                               instead of object name, because the link could
                               be deleted while window is still active. */
-                           newdt->dt_ExecName=names[0];
+                           newdt->dt_ExecName=DupDockString(names[0]);
 
                           /* Add link to Image object (Option B: TMOP_Screen when window open) */
                           if (names[1]) {
@@ -1094,7 +1143,11 @@ void DeleteLinkTMObjectDock(struct TMLink *tml)
   /* Link to Exec object? */
   if (tml==dt->dt_ExecLink) {
    dt->dt_ExecLink=NULL;
-   dt->dt_ExecName=NULL;
+   /* Free duplicated exec label text if present */
+   if (dt->dt_ExecName) {
+    FreeMem(dt->dt_ExecName,strlen(dt->dt_ExecName)+1);
+    dt->dt_ExecName=NULL;
+   }
    break;
   }
   /* Link to Image object? */
@@ -1176,7 +1229,7 @@ static BOOL ActivateDockEntry(struct TMObjectDock *tmobj, struct DockTool *dt,
  if (dt->dt_SoundLink) CallActivateTMObject(dt->dt_SoundLink,NULL);
 
  /* Activate Image object */
- if (!(tmobj->do_Flags & DO_Text) && dt->dt_ImageLink && anim)
+ if (!(tmobj->do_Flags & DO_Text) && anim && ValidImageLink(dt->dt_ImageLink,tmobj))
     CallActivateTMObject((struct TMLink *) dt->dt_ImageLink,(void *) anim);
 
  /* Set defered close flag */
@@ -1273,7 +1326,7 @@ void HandleIDCMPEvents(void)
                                    DEBUG_PRINTF("Dock selected: 0x%08lx\n",dt);
 
                                    /* Got a dock tool with image object? */
-                                   if (tmli)
+                                   if (ValidImageLink(tmli,tmobj))
                                     /* Image object with active anim? */
                                     if (tmli->tmli_Link.tml_Active)
                                      /* Yes, clear pointer */
@@ -1295,7 +1348,7 @@ void HandleIDCMPEvents(void)
                                    struct TMLinkImage *tmli=dt->dt_ImageLink;
 
                                    /* Dock tool with image object? */
-                                   if (tmli) {
+                                   if (ValidImageLink(tmli,tmobj)) {
                                     UWORD x=msg->MouseX;
                                     UWORD y=msg->MouseY;
                                     UWORD dx=tmobj->do_SelectX;
@@ -1397,7 +1450,7 @@ void HandleIDCMPEvents(void)
                                 struct TMLinkImage *tmli=dt->dt_ImageLink;
 
                                 /* Got non-ANIM image object? */
-                                if (tmli && !tmli->tmli_Link.tml_Active)
+                                if (ValidImageLink(tmli,tmobj) && !tmli->tmli_Link.tml_Active)
                                  CallActivateTMObject((struct TMLink *) tmli,
                                                       (void *) IOC_DEACTIVE);
 
