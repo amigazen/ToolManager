@@ -134,10 +134,6 @@ static void CloseRAIconWindow(void)
  RAIconYIntObj=NULL;
  RAIconPosChooserObj=NULL;
  RAIconShowNameObj=NULL;
- if (CurrentNode) {
-  FreeIconNode((struct Node *)CurrentNode);
-  CurrentNode=NULL;
- }
 }
 
 static char *DuplicateRAString(Object *strObj)
@@ -217,6 +213,7 @@ BOOL HandleRAIconWindowEvent(Object *windowObj, ULONG result, UWORD code)
 
  switch (result) {
   case WMHI_CLOSEWINDOW:
+   if (CurrentNode) { FreeIconNode((struct Node *)CurrentNode); CurrentNode=NULL; }
    SubWindowRAReturnData=(void *)-1;
    return TRUE;
   case WMHI_GADGETUP:
@@ -225,6 +222,7 @@ BOOL HandleRAIconWindowEvent(Object *windowObj, ULONG result, UWORD code)
      SubWindowRAReturnData=IconOKGadgetFunc();
      return TRUE;
     case G_ICON_CANCEL:
+     if (CurrentNode) { FreeIconNode((struct Node *)CurrentNode); CurrentNode=NULL; }
      SubWindowRAReturnData=(void *)-1;
      return TRUE;
     case G_ICON_EXEC_BUT:
@@ -404,15 +402,19 @@ void *HandleIconEditWindowIDCMP(struct IntuiMessage *msg)
  return NULL;
 }
 
-struct Node *ReadIconNode(UBYTE *buf)
+struct Node *ReadIconNode(UBYTE *buf, ULONG size)
 {
  struct IconNode *in;
+ struct IconPrefsObject *ipo;
+ ULONG sbits;
+ UBYTE *ptr;
+
+ (void)size;
+ ipo=(struct IconPrefsObject *)buf;
+ sbits=ipo->ipo_StringBits;
+ ptr=(UBYTE *)&ipo[1];
 
  if (in=AllocMem(sizeof(struct IconNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  struct IconPrefsObject *ipo=(struct IconPrefsObject *) buf;
-  ULONG sbits=ipo->ipo_StringBits;
-  UBYTE *ptr=(UBYTE *) &ipo[1];
-
   if ((!(sbits & ICPO_NAME) || (in->in_Node.ln_Name=GetConfigStr(&ptr))) &&
       (!(sbits & ICPO_EXEC) || (in->in_Exec=GetConfigStr(&ptr))) &&
       (!(sbits & ICPO_IMAGE) || (in->in_Image=GetConfigStr(&ptr))) &&

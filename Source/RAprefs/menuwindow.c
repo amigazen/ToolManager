@@ -9,23 +9,38 @@
  */
 
 #include "RAprefsConf.h"
+#include <stdio.h>
 
 struct MenuNode {
                   struct Node  mn_Node;
                   char        *mn_Exec;
                   char        *mn_Sound;
+                  char        *mn_Title;
+                  char        *mn_CommandKey;
+                  ULONG       mn_Flags;
+                  LONG        mn_ParentIndex;
                  };
 
-#define G_MENU_NAME   1
-#define G_MENU_EXEC_BUT 2
-#define G_MENU_EXEC_TXT 3
+#define G_MENU_NAME      1
+#define G_MENU_EXEC_BUT  2
+#define G_MENU_EXEC_TXT  3
 #define G_MENU_SOUND_BUT 4
 #define G_MENU_SOUND_TXT 5
-#define G_MENU_OK     6
-#define G_MENU_CANCEL  7
+#define G_MENU_OK        6
+#define G_MENU_CANCEL    7
+#define G_MENU_TITLE_STR 8
+#define G_MENU_SEPARATOR_CHK 9
+#define G_MENU_SUBMENU_CHK   10
+#define G_MENU_PARENT_STR    11
+#define G_MENU_CMDKEY_STR    12
 
 #define MENU_GAD_EXEC_TXT  3
 #define MENU_GAD_SOUND_TXT 5
+
+#define MENU_TITLE_BUF_LEN  64
+#define PARENT_BUF_LEN      16
+#define CMDKEY_BUF_LEN       8
+static char menu_parent_buf[PARENT_BUF_LEN];
 
 static struct MenuNode *CurrentNode;
 static ULONG CurrentGadgetNum;
@@ -33,9 +48,15 @@ static Object *RAMenuWindowObj;
 static Object *RAMenuNameStrObj;
 static Object *RAMenuExecTxtObj;
 static Object *RAMenuSoundTxtObj;
+static Object *RAMenuTitleStrObj;
+static Object *RAMenuSeparatorChkObj;
+static Object *RAMenuSubmenuChkObj;
+static Object *RAMenuParentStrObj;
+static Object *RAMenuCmdkeyStrObj;
 static struct Requester DummyReq;
 
 struct IClass *STRING_GetClass(void);
+struct IClass *CHECKBOX_GetClass(void);
 
 void InitMenuEditWindow(UWORD left, UWORD fheight)
 {
@@ -52,25 +73,44 @@ void FreeMenuNode(struct Node *node)
  if (s=mn->mn_Node.ln_Name) free(s);
  if (s=mn->mn_Exec) free(s);
  if (s=mn->mn_Sound) free(s);
+ if (s=mn->mn_Title) free(s);
+ if (s=mn->mn_CommandKey) free(s);
  FreeMem(mn,sizeof(struct MenuNode));
 }
 
 struct Node *CopyMenuNode(struct Node *node)
 {
- struct MenuNode *mn,*orignode=(struct MenuNode *) node;
+ struct MenuNode *mn;
+ struct MenuNode *orignode=(struct MenuNode *) node;
+ char *dup_title;
+ char *dup_cmdkey;
 
- if (mn=AllocMem(sizeof(struct MenuNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  if (orignode) {
-   if ((!orignode->mn_Node.ln_Name || (mn->mn_Node.ln_Name=strdup(orignode->mn_Node.ln_Name))) &&
-       (!orignode->mn_Exec || (mn->mn_Exec=strdup(orignode->mn_Exec))) &&
-       (!orignode->mn_Sound || (mn->mn_Sound=strdup(orignode->mn_Sound))))
-    return (struct Node *)mn;
-  } else {
-   if (mn->mn_Node.ln_Name=strdup(AppStrings[MSG_MENUWIN_NEWNAME]))
-    return (struct Node *)mn;
+ if (!(mn=AllocMem(sizeof(struct MenuNode),MEMF_PUBLIC|MEMF_CLEAR)))
+  return NULL;
+ if (orignode) {
+  dup_title=(orignode->mn_Title && *orignode->mn_Title) ?
+            strdup(orignode->mn_Title) : NULL;
+  dup_cmdkey=(orignode->mn_CommandKey && *orignode->mn_CommandKey) ?
+             strdup(orignode->mn_CommandKey) : NULL;
+  if ((!orignode->mn_Node.ln_Name || (mn->mn_Node.ln_Name=strdup(orignode->mn_Node.ln_Name))) &&
+      (!orignode->mn_Exec || (mn->mn_Exec=strdup(orignode->mn_Exec))) &&
+      (!orignode->mn_Sound || (mn->mn_Sound=strdup(orignode->mn_Sound))) &&
+      (dup_title || !orignode->mn_Title) && (dup_cmdkey || !orignode->mn_CommandKey)) {
+   mn->mn_Title=dup_title;
+   mn->mn_CommandKey=dup_cmdkey;
+   mn->mn_Flags=orignode->mn_Flags;
+   mn->mn_ParentIndex=orignode->mn_ParentIndex;
+   return (struct Node *)mn;
   }
-  FreeMenuNode((struct Node *)mn);
+  if (dup_title) free(dup_title);
+  if (dup_cmdkey) free(dup_cmdkey);
+ } else {
+  if (mn->mn_Node.ln_Name=strdup(AppStrings[MSG_MENUWIN_NEWNAME])) {
+   mn->mn_ParentIndex=-1;
+   return (struct Node *)mn;
+  }
  }
+ FreeMenuNode((struct Node *)mn);
  return NULL;
 }
 
@@ -78,11 +118,12 @@ struct Node *CreateMenuNode(char *name)
 {
  struct MenuNode *mn;
 
- if (mn=AllocMem(sizeof(struct MenuNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  if ((mn->mn_Node.ln_Name=strdup(name)) && (mn->mn_Exec=strdup(name)))
-   return (struct Node *)mn;
-  FreeMenuNode((struct Node *)mn);
- }
+ if (!(mn=AllocMem(sizeof(struct MenuNode),MEMF_PUBLIC|MEMF_CLEAR)))
+  return NULL;
+ mn->mn_ParentIndex=-1;
+ if ((mn->mn_Node.ln_Name=strdup(name)) && (mn->mn_Exec=strdup(name)))
+  return (struct Node *)mn;
+ FreeMenuNode((struct Node *)mn);
  return NULL;
 }
 
@@ -95,10 +136,11 @@ static void CloseRAMenuWindow(void)
  RAMenuNameStrObj=NULL;
  RAMenuExecTxtObj=NULL;
  RAMenuSoundTxtObj=NULL;
- if (CurrentNode) {
-  FreeMenuNode((struct Node *)CurrentNode);
-  CurrentNode=NULL;
- }
+ RAMenuTitleStrObj=NULL;
+ RAMenuSeparatorChkObj=NULL;
+ RAMenuSubmenuChkObj=NULL;
+ RAMenuParentStrObj=NULL;
+ RAMenuCmdkeyStrObj=NULL;
 }
 
 static char *DuplicateRAString(Object *strObj)
@@ -130,8 +172,12 @@ static void OpenListReqForMenu(ULONG listnum, ULONG gadnum)
 static void *MenuOKGadgetFunc(void)
 {
  char *nameStr;
+ char *titleStr;
+ char *cmdkeyStr;
+ char *parentStr;
+ ULONG sep;
+ ULONG sub;
 
- /* Match original: only (char*)-1 is error; NULL = empty name allowed */
  nameStr=DuplicateRAString(RAMenuNameStrObj);
  if (nameStr==(char *)-1) {
   FreeMenuNode((struct Node *)CurrentNode);
@@ -140,6 +186,23 @@ static void *MenuOKGadgetFunc(void)
  }
  if (CurrentNode->mn_Node.ln_Name) free(CurrentNode->mn_Node.ln_Name);
  CurrentNode->mn_Node.ln_Name=nameStr;
+
+ titleStr=RAMenuTitleStrObj ? DuplicateRAString(RAMenuTitleStrObj) : NULL;
+ cmdkeyStr=RAMenuCmdkeyStrObj ? DuplicateRAString(RAMenuCmdkeyStrObj) : NULL;
+ parentStr=RAMenuParentStrObj ? DuplicateRAString(RAMenuParentStrObj) : NULL;
+ if (titleStr==(char *)-1) titleStr=NULL;
+ if (cmdkeyStr==(char *)-1) cmdkeyStr=NULL;
+ if (CurrentNode->mn_Title) free(CurrentNode->mn_Title);
+ if (CurrentNode->mn_CommandKey) free(CurrentNode->mn_CommandKey);
+ CurrentNode->mn_Title=(titleStr && *titleStr) ? titleStr : (free(titleStr), (char *)NULL);
+ CurrentNode->mn_CommandKey=(cmdkeyStr && *cmdkeyStr) ? cmdkeyStr : (free(cmdkeyStr), (char *)NULL);
+ CurrentNode->mn_ParentIndex=(parentStr && *parentStr) ? (LONG)atoi(parentStr) : -1L;
+ if (parentStr) free(parentStr);
+ sep=0;
+ sub=0;
+ if (RAMenuSeparatorChkObj) GetAttr(GA_Selected,RAMenuSeparatorChkObj,(ULONG *)&sep);
+ if (RAMenuSubmenuChkObj) GetAttr(GA_Selected,RAMenuSubmenuChkObj,(ULONG *)&sub);
+ CurrentNode->mn_Flags=(sep ? MOPOF_SEPARATOR : 0u)|(sub ? MOPOF_SUBMENU_PARENT : 0u);
  return (void *)CurrentNode;
 }
 
@@ -149,6 +212,7 @@ BOOL HandleRAMenuWindowEvent(Object *windowObj, ULONG result, UWORD code)
 
  switch (result) {
   case WMHI_CLOSEWINDOW:
+   if (CurrentNode) { FreeMenuNode((struct Node *)CurrentNode); CurrentNode=NULL; }
    SubWindowRAReturnData=(void *)-1;
    return TRUE;
   case WMHI_GADGETUP:
@@ -157,6 +221,7 @@ BOOL HandleRAMenuWindowEvent(Object *windowObj, ULONG result, UWORD code)
      SubWindowRAReturnData=MenuOKGadgetFunc();
      return TRUE;
     case G_MENU_CANCEL:
+     if (CurrentNode) { FreeMenuNode((struct Node *)CurrentNode); CurrentNode=NULL; }
      SubWindowRAReturnData=(void *)-1;
      return TRUE;
     case G_MENU_EXEC_BUT:
@@ -177,12 +242,32 @@ BOOL OpenMenuEditWindow(struct Node *node, struct Window *parent)
  struct Window *w;
  char *execStr;
  char *soundStr;
+ char *titleStr;
+ char *cmdkeyStr;
+ ULONG sepChk;
+ ULONG subChk;
+ ULONG labName;
+ ULONG labExec;
+ ULONG labSound;
+ ULONG labOk;
+ ULONG labCancel;
 
  if (!(CurrentNode=(struct MenuNode *)CopyMenuNode(node)))
   return FALSE;
  execStr=CurrentNode->mn_Exec ? CurrentNode->mn_Exec : "";
  soundStr=CurrentNode->mn_Sound ? CurrentNode->mn_Sound : "";
+ titleStr=(CurrentNode->mn_Title && *CurrentNode->mn_Title) ? CurrentNode->mn_Title : "";
+ cmdkeyStr=(CurrentNode->mn_CommandKey && *CurrentNode->mn_CommandKey) ? CurrentNode->mn_CommandKey : "";
+ sprintf(menu_parent_buf, "%ld", (long)CurrentNode->mn_ParentIndex);
+ sepChk=(CurrentNode->mn_Flags&MOPOF_SEPARATOR) ? TRUE : FALSE;
+ subChk=(CurrentNode->mn_Flags&MOPOF_SUBMENU_PARENT) ? TRUE : FALSE;
+ labName=(ULONG)AppStrings[MSG_WINDOW_NAME_GAD];
+ labExec=(ULONG)AppStrings[MSG_WINDOW_EXEC_GAD];
+ labSound=(ULONG)AppStrings[MSG_WINDOW_SOUND_GAD];
+ labOk=(ULONG)AppStrings[MSG_WINDOW_OK_GAD];
+ labCancel=(ULONG)AppStrings[MSG_WINDOW_CANCEL_GAD];
 
+ /* Layout matches last working commit: Name, Exec row, Sound row, OK/Cancel only (no Title/Checkboxes/Parent/Cmdkey in macro to avoid unbalanced parens) */
  layout=VGroupObject,
   LAYOUT_SpaceOuter,TRUE,
   LAYOUT_SpaceInner,TRUE,
@@ -245,6 +330,11 @@ BOOL OpenMenuEditWindow(struct Node *node, struct Window *parent)
   RAMenuNameStrObj=NULL;
   RAMenuExecTxtObj=NULL;
   RAMenuSoundTxtObj=NULL;
+  RAMenuTitleStrObj=NULL;
+  RAMenuSeparatorChkObj=NULL;
+  RAMenuSubmenuChkObj=NULL;
+  RAMenuParentStrObj=NULL;
+  RAMenuCmdkeyStrObj=NULL;
   FreeMenuNode((struct Node *)CurrentNode);
   CurrentNode=NULL;
   return FALSE;
@@ -303,21 +393,48 @@ void *HandleMenuEditWindowIDCMP(struct IntuiMessage *msg)
  return NULL;
 }
 
-struct Node *ReadMenuNode(UBYTE *buf)
+/* Forwards compatible: old prefs have only name/exec/sound and no extension;
+ * mn_Title/mn_CommandKey stay NULL, mn_Flags 0, mn_ParentIndex -1. */
+struct Node *ReadMenuNode(UBYTE *buf, ULONG chunk_size)
 {
  struct MenuNode *mn;
+ struct MenuPrefsObject *mpo;
+ ULONG sbits;
+ UBYTE *ptr;
+ UBYTE *chunk_start;
+ ULONG used;
+ UBYTE ext_len;
 
- if (mn=AllocMem(sizeof(struct MenuNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  struct MenuPrefsObject *mpo=(struct MenuPrefsObject *) buf;
-  ULONG sbits=mpo->mpo_StringBits;
-  UBYTE *ptr=(UBYTE *) &mpo[1];
+ if (!(mn=AllocMem(sizeof(struct MenuNode),MEMF_PUBLIC|MEMF_CLEAR)))
+  return NULL;
+ mpo=(struct MenuPrefsObject *)buf;
+ sbits=mpo->mpo_StringBits;
+ ptr=(UBYTE *)&mpo[1];
+ chunk_start=(UBYTE *)buf;
+ mn->mn_Flags=0;
+ mn->mn_ParentIndex=-1;
 
-  if ((!(sbits & MOPO_NAME) || (mn->mn_Node.ln_Name=GetConfigStr(&ptr))) &&
-      (!(sbits & MOPO_EXEC) || (mn->mn_Exec=GetConfigStr(&ptr))) &&
-      (!(sbits & MOPO_SOUND) || (mn->mn_Sound=GetConfigStr(&ptr))))
-   return (struct Node *)mn;
-  FreeMenuNode((struct Node *)mn);
+ if (!(sbits & MOPO_NAME) || (mn->mn_Node.ln_Name=GetConfigStr(&ptr))) {
+  if (!(sbits & MOPO_EXEC) || (mn->mn_Exec=GetConfigStr(&ptr))) {
+   if (!(sbits & MOPO_SOUND) || (mn->mn_Sound=GetConfigStr(&ptr))) {
+    if (!(sbits & MOPO_TITLE) || (mn->mn_Title=GetConfigStr(&ptr))) {
+     if (!(sbits & MOPO_CMDKEY) || (mn->mn_CommandKey=GetConfigStr(&ptr))) {
+      used=(ULONG)(ptr-chunk_start);
+      if (chunk_size>=used+1u) {
+       ext_len=*ptr++;
+       if (ext_len>=8 && chunk_size>=used+9u) {
+        mn->mn_Flags=*(ULONG *)ptr;
+        ptr+=4;
+        mn->mn_ParentIndex=*(LONG *)ptr;
+       }
+      }
+      return (struct Node *)mn;
+     }
+    }
+   }
+  }
  }
+ FreeMenuNode((struct Node *)mn);
  return NULL;
 }
 
@@ -327,15 +444,27 @@ BOOL WriteMenuNode(struct IFFHandle *iff, UBYTE *buf, struct Node *node)
  struct MenuPrefsObject *mpo=(struct MenuPrefsObject *) buf;
  ULONG sbits=0;
  UBYTE *ptr=(UBYTE *) &mpo[1];
+ ULONG chunk_len;
 
  if (PutConfigStr(mn->mn_Node.ln_Name,&ptr)) sbits|=MOPO_NAME;
  if (PutConfigStr(mn->mn_Exec,&ptr)) sbits|=MOPO_EXEC;
  if (PutConfigStr(mn->mn_Sound,&ptr)) sbits|=MOPO_SOUND;
+ if (mn->mn_Title && *mn->mn_Title && PutConfigStr(mn->mn_Title,&ptr))
+  sbits|=MOPO_TITLE;
+ if (mn->mn_CommandKey && *mn->mn_CommandKey && PutConfigStr(mn->mn_CommandKey,&ptr))
+  sbits|=MOPO_CMDKEY;
  mpo->mpo_StringBits=sbits;
- sbits=ptr-buf;
 
- if (PushChunk(iff,0,ID_TMMO,sbits)) return FALSE;
- if (WriteChunkBytes(iff,buf,sbits)!=sbits) return FALSE;
+ if (mn->mn_Flags || mn->mn_ParentIndex!=-1) {
+  *ptr++=(UBYTE)8;
+  *(ULONG *)ptr=mn->mn_Flags;
+  ptr+=4;
+  *(LONG *)ptr=mn->mn_ParentIndex;
+  ptr+=4;
+ }
+ chunk_len=(ULONG)(ptr-buf);
+ if (PushChunk(iff,0,ID_TMMO,chunk_len)) return FALSE;
+ if (WriteChunkBytes(iff,buf,chunk_len)!=chunk_len) return FALSE;
  if (PopChunk(iff)) return FALSE;
  return TRUE;
 }

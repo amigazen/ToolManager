@@ -13,6 +13,7 @@ static const char PrefsPortName[]="ToolManager_Prefs";
 
 /* Misc. data */
 struct Library *IFFParseBase=NULL;
+struct Library *UtilityBase=NULL;
 static struct MsgPort *PrefsPort=NULL;
 static char *FromFileName;
 static char *PubScreenName;
@@ -34,6 +35,7 @@ static char YesString[]="Y|Yes";
 /* Open resources */
 static BOOL OpenResources(void)
 {
+ if (!(UtilityBase=OpenLibrary("utility.library",47))) return(FALSE);
  if (!(IFFParseBase=OpenLibrary("iffparse.library",37))) return(FALSE);
  if (!(PrefsPort=CreateMsgPort())) return(FALSE);
  PrefsPort->mp_Node.ln_Pri=-127;
@@ -65,6 +67,7 @@ static void CloseResources(void)
   DeleteMsgPort(PrefsPort);
  }
  if (IFFParseBase) CloseLibrary(IFFParseBase);
+ if (UtilityBase) CloseLibrary(UtilityBase);
 }
 
 /* Free all preferences objects */
@@ -118,6 +121,7 @@ BOOL CopyFile(char *source, char *dest)
 /* Main program */
 static int mainprogram(struct WBArg *wa)
 {
+ (void)&Version;
  /* Another ToolManager Preferences program already running? */
  Forbid();
  if (PrefsPort=FindPort(PrefsPortName)) {
@@ -132,8 +136,8 @@ static int mainprogram(struct WBArg *wa)
 
  /* Open resources */
  if (OpenResources()) {
-  /* Check OS version */
-  if (SysBase->lib_Version>=39)
+  /* Check OS version (Library.lib_Version; cast for strict compilers) */
+  if (((struct Library *)SysBase)->lib_Version>=39)
    OSV39=TRUE;
 
   /* Set defaults */
@@ -476,11 +480,30 @@ static int mainprogram(struct WBArg *wa)
           }
          }
 
-         /* ReAction main window event? */
+         /* IDCMP event (main port): if ReAction sub-window open it may share this port, process it first */
          if (GotSigs & IDCMPSignalMask) {
-          while ((result=RA_HandleInput(raWindowObj,&code))!=WMHI_LASTMSG) {
-           if (HandleRAMainWindowEvent(raWindowObj,result,code))
-            notend=FALSE;
+          if (SubWindowRAObject) {
+           while ((result=RA_HandleInput(SubWindowRAObject,&code))!=WMHI_LASTMSG) {
+            if (SubWindowRAHandler && (*SubWindowRAHandler)(SubWindowRAObject,result,code)) {
+             if (SubWindowRACloseFunc) (*SubWindowRACloseFunc)();
+             SubWindowRAObject=NULL;
+             SubWindowPort=NULL;
+             SubWindowRAHandler=NULL;
+             SubWindowRACloseFunc=NULL;
+             handlerData=SubWindowRAReturnData;
+             SubWindowRAReturnData=NULL;
+             if (UpdateWindow)
+              (*UpdateWindow)(handlerData);
+             else
+              notend=FALSE;
+             break;
+            }
+           }
+          } else {
+           while ((result=RA_HandleInput(raWindowObj,&code))!=WMHI_LASTMSG) {
+            if (HandleRAMainWindowEvent(raWindowObj,result,code))
+             notend=FALSE;
+           }
           }
          }
 

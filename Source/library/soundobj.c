@@ -109,7 +109,9 @@ BOOL ChangeTMObjectSound(struct TMHandle *handle,
                          struct TagItem *tags)
 {
  struct TagItem *ti,*tstate;
- char *oldcmd,*oldport,*oldline;
+ char *oldcmd=tmobj->so_Command;
+ char *oldport=tmobj->so_Port;
+ char *oldline;
  ULONG oldlen;
 
  /* Scan tag list */
@@ -121,13 +123,11 @@ BOOL ChangeTMObjectSound(struct TMHandle *handle,
   switch (ti->ti_Tag) {
    case TMOP_Command: {
                        char *s=(char *) ti->ti_Data;
-                       oldcmd=tmobj->so_Command;
                        if (s) tmobj->so_Command=s;
                       }
                       break;
    case TMOP_Port:    {
                        char *s=(char *) ti->ti_Data;
-                       oldport=tmobj->so_Port;
                        if (s) tmobj->so_Port=s;
                       }
                       break;

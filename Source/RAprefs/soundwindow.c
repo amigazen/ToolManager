@@ -87,10 +87,6 @@ static void CloseRASoundWindow(void)
  RASoundNameStrObj=NULL;
  RASoundCommStrObj=NULL;
  RASoundArexxStrObj=NULL;
- if (CurrentNode) {
-  FreeSoundNode((struct Node *)CurrentNode);
-  CurrentNode=NULL;
- }
 }
 
 static void *SoundOKGadgetFunc(void)
@@ -131,6 +127,7 @@ BOOL HandleRASoundWindowEvent(Object *windowObj, ULONG result, UWORD code)
 
  switch (result) {
   case WMHI_CLOSEWINDOW:
+   if (CurrentNode) { FreeSoundNode((struct Node *)CurrentNode); CurrentNode=NULL; }
    SubWindowRAReturnData=(void *)-1;
    return TRUE;
   case WMHI_GADGETUP:
@@ -139,6 +136,7 @@ BOOL HandleRASoundWindowEvent(Object *windowObj, ULONG result, UWORD code)
      SubWindowRAReturnData=SoundOKGadgetFunc();
      return TRUE;
     case G_SOUND_CANCEL:
+     if (CurrentNode) { FreeSoundNode((struct Node *)CurrentNode); CurrentNode=NULL; }
      SubWindowRAReturnData=(void *)-1;
      return TRUE;
    }
@@ -237,15 +235,19 @@ void *HandleSoundEditWindowIDCMP(struct IntuiMessage *msg)
  return NULL;
 }
 
-struct Node *ReadSoundNode(UBYTE *buf)
+struct Node *ReadSoundNode(UBYTE *buf, ULONG size)
 {
  struct SoundNode *sn;
+ struct SoundPrefsObject *spo;
+ ULONG sbits;
+ UBYTE *ptr;
+
+ (void)size;
+ spo=(struct SoundPrefsObject *)buf;
+ sbits=spo->spo_StringBits;
+ ptr=(UBYTE *)&spo[1];
 
  if (sn=AllocMem(sizeof(struct SoundNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  struct SoundPrefsObject *spo=(struct SoundPrefsObject *) buf;
-  ULONG sbits=spo->spo_StringBits;
-  UBYTE *ptr=(UBYTE *) &spo[1];
-
   if ((!(sbits & SOPO_NAME) || (sn->sn_Node.ln_Name=GetConfigStr(&ptr))) &&
       (!(sbits & SOPO_COMMAND) || (sn->sn_Command=GetConfigStr(&ptr))) &&
       (!(sbits & SOPO_PORT) || (sn->sn_Port=GetConfigStr(&ptr))))

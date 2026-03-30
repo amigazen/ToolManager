@@ -11,6 +11,9 @@
 
 #include "RAprefsConf.h"
 
+struct IClass *INTEGER_GetClass(void);
+struct IClass *CHECKBOX_GetClass(void);
+
 struct ExecNode {
                  struct Node  en_Node;
                  ULONG        en_Flags;
@@ -100,7 +103,7 @@ static void DoCommandButton(void)
  if (RAExecCmdStrObj) GetAttr(STRINGA_TextVal,RAExecCmdStrObj,(ULONG *)&oldFile);
  FileReqParms.frp_Title=AppStrings[MSG_FILEREQ_TITLE_FILE];
  FileReqParms.frp_Flags2=FRF_REJECTICONS;
- FileReqParms.frp_OldFile=oldFile ? oldFile : "";
+ FileReqParms.frp_OldFile=oldFile ? oldFile : (STRPTR)"";
  FileReqParms.frp_Window=w;
  if (file=OpenFileRequester(&DummyReq)) {
   if (RAExecCmdStrObj) SetAttrs(RAExecCmdStrObj,STRINGA_TextVal,file,TAG_END);
@@ -121,7 +124,7 @@ static void DoCurDirButton(void)
  if (RAExecCurdirStrObj) GetAttr(STRINGA_TextVal,RAExecCurdirStrObj,(ULONG *)&oldFile);
  FileReqParms.frp_Title=AppStrings[MSG_FILEREQ_TITLE_DRAWER];
  FileReqParms.frp_Flags2=FRF_DRAWERSONLY|FRF_REJECTICONS;
- FileReqParms.frp_OldFile=oldFile ? oldFile : "";
+ FileReqParms.frp_OldFile=oldFile ? oldFile : (STRPTR)"";
  FileReqParms.frp_Window=w;
  if (file=OpenFileRequester(&DummyReq)) {
   if (RAExecCurdirStrObj) SetAttrs(RAExecCurdirStrObj,STRINGA_TextVal,file,TAG_END);
@@ -172,7 +175,7 @@ static void DoOutputButton(void)
  if (RAExecOutputStrObj) GetAttr(STRINGA_TextVal,RAExecOutputStrObj,(ULONG *)&oldFile);
  FileReqParms.frp_Title=AppStrings[MSG_FILEREQ_TITLE_FILE];
  FileReqParms.frp_Flags2=FRF_REJECTICONS;
- FileReqParms.frp_OldFile=oldFile ? oldFile : "";
+ FileReqParms.frp_OldFile=oldFile ? oldFile : (STRPTR)"";
  FileReqParms.frp_Window=w;
  if (file=OpenFileRequester(&DummyReq)) {
   if (RAExecOutputStrObj) SetAttrs(RAExecOutputStrObj,STRINGA_TextVal,file,TAG_END);
@@ -301,10 +304,6 @@ static void CloseRAExecWindow(void)
  RAExecPscreenStrObj=NULL;
  RAExecArgsObj=NULL;
  RAExecToFrontObj=NULL;
- if (CurrentNode) {
-  FreeExecNode((struct Node *)CurrentNode);
-  CurrentNode=NULL;
- }
 }
 
 static void *ExecOKGadgetFunc(void)
@@ -387,6 +386,7 @@ BOOL HandleRAExecWindowEvent(Object *windowObj, ULONG result, UWORD code)
  (void)windowObj;
  switch (result) {
   case WMHI_CLOSEWINDOW:
+   if (CurrentNode) { FreeExecNode((struct Node *)CurrentNode); CurrentNode=NULL; }
    SubWindowRAReturnData=(void *)-1;
    return TRUE;
   case WMHI_GADGETUP:
@@ -395,6 +395,7 @@ BOOL HandleRAExecWindowEvent(Object *windowObj, ULONG result, UWORD code)
      SubWindowRAReturnData=ExecOKGadgetFunc();
      return TRUE;
     case G_EXEC_CANCEL:
+     if (CurrentNode) { FreeExecNode((struct Node *)CurrentNode); CurrentNode=NULL; }
      SubWindowRAReturnData=(void *)-1;
      return TRUE;
     case G_EXEC_TYPE:
@@ -451,20 +452,20 @@ BOOL OpenExecEditWindow(struct Node *node, struct Window *parent)
 
  layout=VGroupObject,
   LAYOUT_SpaceOuter,TRUE,LAYOUT_SpaceInner,TRUE,LAYOUT_BevelStyle,BVS_THIN,
-  StartMember,RAExecNameStrObj=StringObject,GA_ID,G_EXEC_NAME,GA_RelVerify,TRUE,STRINGA_TextVal,name,STRINGA_MaxChars,SGBUFLEN,EndMember,MemberLabel(AppStrings[MSG_WINDOW_NAME_GAD]),
-  StartMember,RAExecTypeChooserObj=ChooserObject,GA_ID,G_EXEC_TYPE,GA_RelVerify,TRUE,CHOOSER_PopUp,TRUE,CHOOSER_Labels,ExecTypeChooserLabels,CHOOSER_Selected,CurrentNode->en_ExecType,EndMember,MemberLabel(AppStrings[MSG_EXECWIN_EXECTYPE_GAD]),
-  StartMember,HGroupObject,ButtonObject,GA_ID,G_EXEC_CMD_BUT,GA_RelVerify,TRUE,GA_Text,AppStrings[MSG_WINDOW_COMMAND_GAD],ButtonEnd,RAExecCmdStrObj=StringObject,GA_ID,G_EXEC_CMD_STR,GA_RelVerify,TRUE,STRINGA_TextVal,cmd,STRINGA_MaxChars,SGBUFLEN,EndGroup,EndMember,MemberLabel(AppStrings[MSG_WINDOW_COMMAND_GAD]),
-  StartMember,RAExecHotkeyStrObj=StringObject,GA_ID,G_EXEC_HOTKEY,GA_RelVerify,TRUE,STRINGA_TextVal,hotkey,STRINGA_MaxChars,SGBUFLEN,EndMember,MemberLabel(AppStrings[MSG_WINDOW_HOTKEY_GAD]),
-  StartMember,RAExecStackObj=IntegerObject,GA_ID,G_EXEC_STACK,GA_RelVerify,TRUE,INTEGER_Number,CurrentNode->en_Stack,INTEGER_MaxChars,10,EndMember,MemberLabel(AppStrings[MSG_EXECWIN_STACK_GAD]),
-  StartMember,RAExecPrioObj=IntegerObject,GA_ID,G_EXEC_PRIO,GA_RelVerify,TRUE,INTEGER_Number,CurrentNode->en_Priority,INTEGER_MaxChars,10,EndMember,MemberLabel(AppStrings[MSG_EXECWIN_PRIORITY_GAD]),
-  StartMember,RAExecDelayObj=IntegerObject,GA_ID,G_EXEC_DELAY,GA_RelVerify,TRUE,INTEGER_Number,CurrentNode->en_Delay,INTEGER_MaxChars,10,EndMember,MemberLabel(AppStrings[MSG_EXECWIN_DELAY_GAD]),
-  StartMember,HGroupObject,ButtonObject,GA_ID,G_EXEC_CURDIR_BUT,GA_RelVerify,TRUE,GA_Text,AppStrings[MSG_EXECWIN_CURRENTDIR_GAD],ButtonEnd,RAExecCurdirStrObj=StringObject,GA_ID,G_EXEC_CURDIR_STR,GA_RelVerify,TRUE,STRINGA_TextVal,curdir,STRINGA_MaxChars,SGBUFLEN,EndGroup,EndMember,MemberLabel(AppStrings[MSG_EXECWIN_CURRENTDIR_GAD]),
-  StartMember,HGroupObject,ButtonObject,GA_ID,G_EXEC_PATH_BUT,GA_RelVerify,TRUE,GA_Text,AppStrings[MSG_EXECWIN_PATH_GAD],ButtonEnd,RAExecPathStrObj=StringObject,GA_ID,G_EXEC_PATH_STR,GA_RelVerify,TRUE,STRINGA_TextVal,path,STRINGA_MaxChars,SGBUFLEN,EndGroup,EndMember,MemberLabel(AppStrings[MSG_EXECWIN_PATH_GAD]),
-  StartMember,HGroupObject,ButtonObject,GA_ID,G_EXEC_OUTPUT_BUT,GA_RelVerify,TRUE,GA_Text,AppStrings[MSG_EXECWIN_OUTPUT_GAD],ButtonEnd,RAExecOutputStrObj=StringObject,GA_ID,G_EXEC_OUTPUT_STR,GA_RelVerify,TRUE,STRINGA_TextVal,output,STRINGA_MaxChars,SGBUFLEN,EndGroup,EndMember,MemberLabel(AppStrings[MSG_EXECWIN_OUTPUT_GAD]),
-  StartMember,HGroupObject,ButtonObject,GA_ID,G_EXEC_PSCREEN_BUT,GA_RelVerify,TRUE,GA_Text,AppStrings[MSG_WINDOW_PUBSCREEN_GAD],ButtonEnd,RAExecPscreenStrObj=StringObject,GA_ID,G_EXEC_PSCREEN_STR,GA_RelVerify,TRUE,STRINGA_TextVal,pscreen,STRINGA_MaxChars,SGBUFLEN,EndGroup,EndMember,MemberLabel(AppStrings[MSG_WINDOW_PUBSCREEN_GAD]),
-  StartMember,RAExecArgsObj=CheckBoxObject,GA_ID,G_EXEC_ARGS,GA_RelVerify,TRUE,GA_Selected,(CurrentNode->en_Flags&EXPOF_ARGS)?TRUE:FALSE,GA_Text,AppStrings[MSG_EXECWIN_ARGUMENTS_GAD],EndMember,
-  StartMember,RAExecToFrontObj=CheckBoxObject,GA_ID,G_EXEC_TOFRONT,GA_RelVerify,TRUE,GA_Selected,(CurrentNode->en_Flags&EXPOF_TOFRONT)?TRUE:FALSE,GA_Text,AppStrings[MSG_EXECWIN_TOFRONT_GAD],EndMember,
-  StartHGroup,EvenSized,StartMember,ButtonObject,GA_ID,G_EXEC_OK,GA_RelVerify,TRUE,GA_Text,AppStrings[MSG_WINDOW_OK_GAD],ButtonEnd,StartMember,ButtonObject,GA_ID,G_EXEC_CANCEL,GA_RelVerify,TRUE,GA_Text,AppStrings[MSG_WINDOW_CANCEL_GAD],ButtonEnd,EndGroup,
+  StartMember,RAExecNameStrObj=StringObject,GA_ID,G_EXEC_NAME,GA_RelVerify,TRUE,STRINGA_TextVal,name,STRINGA_MaxChars,SGBUFLEN,EndMember,MemberLabel((ULONG)AppStrings[MSG_WINDOW_NAME_GAD]),
+  StartMember,RAExecTypeChooserObj=ChooserObject,GA_ID,G_EXEC_TYPE,GA_RelVerify,TRUE,CHOOSER_PopUp,TRUE,CHOOSER_Labels,ExecTypeChooserLabels,CHOOSER_Selected,CurrentNode->en_ExecType,EndMember,MemberLabel((ULONG)AppStrings[MSG_EXECWIN_EXECTYPE_GAD]),
+  StartMember,HGroupObject,ButtonObject,GA_ID,G_EXEC_CMD_BUT,GA_RelVerify,TRUE,GA_Text,(ULONG)AppStrings[MSG_WINDOW_COMMAND_GAD],ButtonEnd,RAExecCmdStrObj=StringObject,GA_ID,G_EXEC_CMD_STR,GA_RelVerify,TRUE,STRINGA_TextVal,cmd,STRINGA_MaxChars,SGBUFLEN,EndGroup,EndMember,MemberLabel((ULONG)AppStrings[MSG_WINDOW_COMMAND_GAD]),
+  StartMember,RAExecHotkeyStrObj=StringObject,GA_ID,G_EXEC_HOTKEY,GA_RelVerify,TRUE,STRINGA_TextVal,hotkey,STRINGA_MaxChars,SGBUFLEN,EndMember,MemberLabel((ULONG)AppStrings[MSG_WINDOW_HOTKEY_GAD]),
+  StartMember,RAExecStackObj=IntegerObject,GA_ID,G_EXEC_STACK,GA_RelVerify,TRUE,INTEGER_Number,CurrentNode->en_Stack,INTEGER_MaxChars,10,EndMember,MemberLabel((ULONG)AppStrings[MSG_EXECWIN_STACK_GAD]),
+  StartMember,RAExecPrioObj=IntegerObject,GA_ID,G_EXEC_PRIO,GA_RelVerify,TRUE,INTEGER_Number,CurrentNode->en_Priority,INTEGER_MaxChars,10,EndMember,MemberLabel((ULONG)AppStrings[MSG_EXECWIN_PRIORITY_GAD]),
+  StartMember,RAExecDelayObj=IntegerObject,GA_ID,G_EXEC_DELAY,GA_RelVerify,TRUE,INTEGER_Number,CurrentNode->en_Delay,INTEGER_MaxChars,10,EndMember,MemberLabel((ULONG)AppStrings[MSG_EXECWIN_DELAY_GAD]),
+  StartMember,HGroupObject,ButtonObject,GA_ID,G_EXEC_CURDIR_BUT,GA_RelVerify,TRUE,GA_Text,(ULONG)AppStrings[MSG_EXECWIN_CURRENTDIR_GAD],ButtonEnd,RAExecCurdirStrObj=StringObject,GA_ID,G_EXEC_CURDIR_STR,GA_RelVerify,TRUE,STRINGA_TextVal,curdir,STRINGA_MaxChars,SGBUFLEN,EndGroup,EndMember,MemberLabel((ULONG)AppStrings[MSG_EXECWIN_CURRENTDIR_GAD]),
+  StartMember,HGroupObject,ButtonObject,GA_ID,G_EXEC_PATH_BUT,GA_RelVerify,TRUE,GA_Text,(ULONG)AppStrings[MSG_EXECWIN_PATH_GAD],ButtonEnd,RAExecPathStrObj=StringObject,GA_ID,G_EXEC_PATH_STR,GA_RelVerify,TRUE,STRINGA_TextVal,path,STRINGA_MaxChars,SGBUFLEN,EndGroup,EndMember,MemberLabel((ULONG)AppStrings[MSG_EXECWIN_PATH_GAD]),
+  StartMember,HGroupObject,ButtonObject,GA_ID,G_EXEC_OUTPUT_BUT,GA_RelVerify,TRUE,GA_Text,(ULONG)AppStrings[MSG_EXECWIN_OUTPUT_GAD],ButtonEnd,RAExecOutputStrObj=StringObject,GA_ID,G_EXEC_OUTPUT_STR,GA_RelVerify,TRUE,STRINGA_TextVal,output,STRINGA_MaxChars,SGBUFLEN,EndGroup,EndMember,MemberLabel((ULONG)AppStrings[MSG_EXECWIN_OUTPUT_GAD]),
+  StartMember,HGroupObject,ButtonObject,GA_ID,G_EXEC_PSCREEN_BUT,GA_RelVerify,TRUE,GA_Text,(ULONG)AppStrings[MSG_WINDOW_PUBSCREEN_GAD],ButtonEnd,RAExecPscreenStrObj=StringObject,GA_ID,G_EXEC_PSCREEN_STR,GA_RelVerify,TRUE,STRINGA_TextVal,pscreen,STRINGA_MaxChars,SGBUFLEN,EndGroup,EndMember,MemberLabel((ULONG)AppStrings[MSG_WINDOW_PUBSCREEN_GAD]),
+  StartMember,RAExecArgsObj=CheckBoxObject,GA_ID,G_EXEC_ARGS,GA_RelVerify,TRUE,GA_Selected,(CurrentNode->en_Flags&EXPOF_ARGS)?TRUE:FALSE,GA_Text,(ULONG)AppStrings[MSG_EXECWIN_ARGUMENTS_GAD],EndMember,
+  StartMember,RAExecToFrontObj=CheckBoxObject,GA_ID,G_EXEC_TOFRONT,GA_RelVerify,TRUE,GA_Selected,(CurrentNode->en_Flags&EXPOF_TOFRONT)?TRUE:FALSE,GA_Text,(ULONG)AppStrings[MSG_EXECWIN_TOFRONT_GAD],EndMember,
+  StartHGroup,EvenSized,StartMember,ButtonObject,GA_ID,G_EXEC_OK,GA_RelVerify,TRUE,GA_Text,(ULONG)AppStrings[MSG_WINDOW_OK_GAD],ButtonEnd,StartMember,ButtonObject,GA_ID,G_EXEC_CANCEL,GA_RelVerify,TRUE,GA_Text,(ULONG)AppStrings[MSG_WINDOW_CANCEL_GAD],ButtonEnd,EndGroup,
  EndGroup;
 
  if (!layout) {
@@ -590,14 +591,19 @@ void *HandleExecEditWindowIDCMP(struct IntuiMessage *msg)
  return NULL;
 }
 
-struct Node *ReadExecNode(UBYTE *buf)
+struct Node *ReadExecNode(UBYTE *buf, ULONG size)
 {
  struct ExecNode *en;
+ struct ExecPrefsObject *epo;
+ ULONG sbits;
+ UBYTE *ptr;
+
+ (void)size;
+ epo=(struct ExecPrefsObject *)buf;
+ sbits=epo->epo_StringBits;
+ ptr=(UBYTE *)&epo[1];
 
  if (en=AllocMem(sizeof(struct ExecNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  struct ExecPrefsObject *epo=(struct ExecPrefsObject *) buf;
-  ULONG sbits=epo->epo_StringBits;
-  UBYTE *ptr=(UBYTE *) &epo[1];
 
   if ((!(sbits & EXPO_NAME) || (en->en_Node.ln_Name=GetConfigStr(&ptr))) &&
       (!(sbits & EXPO_COMMAND) || (en->en_Command=GetConfigStr(&ptr))) &&

@@ -153,7 +153,7 @@ static struct Catalog *Catalog;
 void GetLocale(void)
 {
  /* Try to open locale.library */
- if (LocaleBase=OpenLibrary("locale.library",38)) {
+ if (LocaleBase=(struct LocaleBase *)OpenLibrary("locale.library",38)) {
 
   DEBUG_PRINTF("Locale: 0x%08lx\n",LocaleBase);
 
@@ -179,6 +179,6 @@ void FreeLocale(void)
 {
  if (LocaleBase) {
   if (Catalog) CloseCatalog(Catalog);
-  CloseLibrary(LocaleBase);
+  CloseLibrary((struct Library *)LocaleBase);
  }
 }

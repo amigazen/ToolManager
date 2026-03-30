@@ -172,10 +172,8 @@ BOOL HandleRASelectWindowEvent(Object *windowObj, ULONG result, UWORD code)
      namePtr=NULL;
      if (SelNameStrObj)
       GetAttr(STRINGA_TextVal,SelNameStrObj,(ULONG *)&namePtr);
-     if (namePtr && *namePtr)
-      rc=OKGadgetFuncWithName(namePtr);
-     else
-      rc=(void *)-1;
+     /* Match original: no empty-name check; pass name or "" (Create*Node use strdup) */
+     rc=OKGadgetFuncWithName(namePtr ? namePtr : "");
      SubWindowRAReturnData=rc;
      return TRUE;
 

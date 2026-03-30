@@ -117,10 +117,7 @@ static void CloseRAImageWindow(void)
  }
  RAImageNameStrObj=NULL;
  RAImageFileStrObj=NULL;
- if (CurrentNode) {
-  FreeImageNode((struct Node *)CurrentNode);
-  CurrentNode=NULL;
- }
+ /* Node freed in handler on cancel/close; on OK we return it to UpdateMainWindow */
 }
 
 static void DoFileRequester(void)
@@ -131,7 +128,7 @@ static void DoFileRequester(void)
  oldFile=NULL;
  if (RAImageFileStrObj)
   GetAttr(STRINGA_TextVal,RAImageFileStrObj,(ULONG *)&oldFile);
- FileReqParms.frp_OldFile=oldFile ? oldFile : "";
+ FileReqParms.frp_OldFile=oldFile ? oldFile : (STRPTR)"";
 
  if (file=OpenFileRequester(&DummyReq)) {
   char *path;
@@ -185,6 +182,8 @@ BOOL HandleRAImageWindowEvent(Object *windowObj, ULONG result, UWORD code)
 
  switch (result) {
   case WMHI_CLOSEWINDOW:
+   /* Match original: free copied node on close */
+   if (CurrentNode) { FreeImageNode((struct Node *)CurrentNode); CurrentNode=NULL; }
    SubWindowRAReturnData=(void *)-1;
    return TRUE;
 
@@ -194,6 +193,7 @@ BOOL HandleRAImageWindowEvent(Object *windowObj, ULONG result, UWORD code)
      SubWindowRAReturnData=ImageOKGadgetFunc();
      return TRUE;
     case G_IMAGE_CANCEL:
+     if (CurrentNode) { FreeImageNode((struct Node *)CurrentNode); CurrentNode=NULL; }
      SubWindowRAReturnData=(void *)-1;
      return TRUE;
     case G_IMAGE_FILE_BUT:
@@ -224,10 +224,10 @@ BOOL OpenImageEditWindow(struct Node *node, struct Window *parent)
     STRINGA_TextVal,CurrentNode->in_Node.ln_Name,
     STRINGA_MaxChars,SGBUFLEN,
    EndMember,
-   MemberLabel(AppStrings[MSG_WINDOW_NAME_GAD]),
+   MemberLabel((ULONG)AppStrings[MSG_WINDOW_NAME_GAD]),
   StartMember,
    HGroupObject,
-    ButtonObject,GA_ID,G_IMAGE_FILE_BUT,GA_RelVerify,TRUE,GA_Text,AppStrings[MSG_IMAGEWIN_FILE_GAD],ButtonEnd,
+    ButtonObject,GA_ID,G_IMAGE_FILE_BUT,GA_RelVerify,TRUE,GA_Text,(ULONG)AppStrings[MSG_IMAGEWIN_FILE_GAD],ButtonEnd,
     RAImageFileStrObj=StringObject,
      GA_ID,G_IMAGE_FILE_STR,
      GA_RelVerify,TRUE,
@@ -235,10 +235,10 @@ BOOL OpenImageEditWindow(struct Node *node, struct Window *parent)
      STRINGA_MaxChars,SGBUFLEN,
    EndGroup,
    EndMember,
-   MemberLabel(AppStrings[MSG_IMAGEWIN_FILE_GAD]),
+   MemberLabel((ULONG)AppStrings[MSG_IMAGEWIN_FILE_GAD]),
   StartHGroup,EvenSized,
-   StartMember,ButtonObject,GA_ID,G_IMAGE_OK,GA_RelVerify,TRUE,GA_Text,AppStrings[MSG_WINDOW_OK_GAD],ButtonEnd,
-   StartMember,ButtonObject,GA_ID,G_IMAGE_CANCEL,GA_RelVerify,TRUE,GA_Text,AppStrings[MSG_WINDOW_CANCEL_GAD],ButtonEnd,
+   StartMember,ButtonObject,GA_ID,G_IMAGE_OK,GA_RelVerify,TRUE,GA_Text,(ULONG)AppStrings[MSG_WINDOW_OK_GAD],ButtonEnd,
+   StartMember,ButtonObject,GA_ID,G_IMAGE_CANCEL,GA_RelVerify,TRUE,GA_Text,(ULONG)AppStrings[MSG_WINDOW_CANCEL_GAD],ButtonEnd,
   EndGroup,
  EndGroup;
 
@@ -318,15 +318,19 @@ void *HandleImageEditWindowIDCMP(struct IntuiMessage *msg)
  return NULL;
 }
 
-struct Node *ReadImageNode(UBYTE *buf)
+struct Node *ReadImageNode(UBYTE *buf, ULONG size)
 {
  struct ImageNode *in;
+ struct ImagePrefsObject *ipo;
+ ULONG sbits;
+ UBYTE *ptr;
+
+ (void)size;
+ ipo=(struct ImagePrefsObject *)buf;
+ sbits=ipo->ipo_StringBits;
+ ptr=(UBYTE *)&ipo[1];
 
  if (in=AllocMem(sizeof(struct ImageNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  struct ImagePrefsObject *ipo=(struct ImagePrefsObject *) buf;
-  ULONG sbits=ipo->ipo_StringBits;
-  UBYTE *ptr=(UBYTE *) &ipo[1];
-
   if ((!(sbits & IMPO_NAME) || (in->in_Node.ln_Name=GetConfigStr(&ptr))) &&
       (!(sbits & IMPO_FILE) || (in->in_File=GetConfigStr(&ptr))))
    return (struct Node *)in;

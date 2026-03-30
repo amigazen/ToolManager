@@ -441,12 +441,14 @@ static ULONG BuildCommandLine(char *buf, char *command, BPTR curdir,
  if (lp) {
   /* [] parameter place holder found, copy first part of command */
   cmdlen=lp-command;
+  if (cmdlen > CMDLINELEN - 1) cmdlen = CMDLINELEN - 1;
   strncpy(buf,command,cmdlen);
   buf[cmdlen]='\0';
   contp=lp+2;
  }
  else {
-  strcpy(buf,command); /* No [] parameter place holder */
+  strncpy(buf,command,CMDLINELEN-1); /* No [] parameter place holder */
+  buf[CMDLINELEN-1]='\0';
   cmdlen=strlen(buf);
  }
  lp=buf+cmdlen;

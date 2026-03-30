@@ -1167,34 +1167,34 @@ void UpdateDockEditWindow(void *data)
 }
 
 /* Read TMDO IFF chunk into Dock node */
-struct Node *ReadDockNode(UBYTE *buf)
+struct Node *ReadDockNode(UBYTE *buf, ULONG size)
 {
  struct DockNode *dn;
+ struct DockPrefsObject *dpo;
+ ULONG sbits;
+ UBYTE *ptr;
+ struct List *toolslist;
+ LONG tools;
+ UBYTE tlflags;
+ struct TMNode *tn;
 
- /* Allocate memory for node */
+ (void)size;
+ dpo=(struct DockPrefsObject *)buf;
+ sbits=dpo->dpo_StringBits;
+ ptr=(UBYTE *)&dpo[1];
+
  if (dn=AllocMem(sizeof(struct DockNode),MEMF_PUBLIC|MEMF_CLEAR)) {
-  struct DockPrefsObject *dpo=(struct DockPrefsObject *) buf;
-  ULONG sbits=dpo->dpo_StringBits;
-  UBYTE *ptr=(UBYTE *) &dpo[1];
-  struct List *toolslist;
-
   if ((!(sbits & DOPO_NAME) || (dn->dn_Node.ln_Name=GetConfigStr(&ptr))) &&
       (!(sbits & DOPO_HOTKEY) || (dn->dn_HotKey=GetConfigStr(&ptr))) &&
       (!(sbits & DOPO_PSCREEN) || (dn->dn_PubScreen=GetConfigStr(&ptr))) &&
       (!(sbits & DOPO_TITLE) || (dn->dn_Title=GetConfigStr(&ptr))) &&
       (!(sbits & DOPO_FONTNAME) || (dn->dn_Font.ta_Name=GetConfigStr(&ptr))) &&
       (toolslist=malloc(sizeof(struct List)))) {
-   LONG tools=0;
-   UBYTE tlflags;
-
-   /* Init list */
+   tools=0;
    NewList(toolslist);
    dn->dn_ToolsList=toolslist;
 
-   /* Get tools */
    while ((tlflags=*ptr++) & DOPOT_CONTINUE) {
-    struct TMNode *tn;
-
     if (tn=AllocMem(sizeof(struct TMNode),MEMF_PUBLIC|MEMF_CLEAR)) {
      /* Add tool to list */
      AddTail(toolslist,(struct Node *) tn);

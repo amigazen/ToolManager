@@ -9,7 +9,7 @@
 #include "ToolManagerConf.h"
 
 /* misc. data */
-#define BUFSIZE 65536
+#define BUFSIZE 16384
 ULONG stopchunks[]={ID_PREF,ID_TMEX,
                     ID_PREF,ID_TMIM,
                     ID_PREF,ID_TMSO,
@@ -18,6 +18,7 @@ ULONG stopchunks[]={ID_PREF,ID_TMEX,
                     ID_PREF,ID_TMDO,
                     ID_PREF,ID_TMAC};
 struct PrefHeader PrefHdrChunk={TMPREFSVERSION,0,0};
+UBYTE *ConfigBufferLimit;
 
 /* Function tables */
 ReadNodeFuncPtr ReadNodeFunctions[TMOBJTYPES]={
@@ -52,6 +53,7 @@ BOOL ReadConfigFile(char *filename)
  if (configbuf=malloc(BUFSIZE)) {
   struct IFFHandle *iff;
 
+  ConfigBufferLimit = configbuf + BUFSIZE;
   DEBUG_PRINTF("config buffer: 0x%08lx\n",configbuf);
 
   /* Allocate IFF handle */
@@ -107,22 +109,14 @@ BOOL ReadConfigFile(char *filename)
 
            /* Read IFF chunk according to chunk ID */
            switch(cn->cn_ID) {
-            case ID_TMEX: type=TMOBJTYPE_EXEC;
-                          break;
-            case ID_TMIM: type=TMOBJTYPE_IMAGE;
-                          break;
-            case ID_TMSO: type=TMOBJTYPE_SOUND;
-                          break;
-            case ID_TMMO: type=TMOBJTYPE_MENU;
-                          break;
-            case ID_TMIC: type=TMOBJTYPE_ICON;
-                          break;
-            case ID_TMDO: type=TMOBJTYPE_DOCK;
-                          break;
-            case ID_TMAC: type=TMOBJTYPE_ACCESS;
-                          break;
-            default:      type=-1;
-                          break;
+            case ID_TMEX: type=TMOBJTYPE_EXEC; break;
+            case ID_TMIM: type=TMOBJTYPE_IMAGE; break;
+            case ID_TMSO: type=TMOBJTYPE_SOUND; break;
+            case ID_TMMO: type=TMOBJTYPE_MENU; break;
+            case ID_TMIC: type=TMOBJTYPE_ICON; break;
+            case ID_TMDO: type=TMOBJTYPE_DOCK; break;
+            case ID_TMAC: type=TMOBJTYPE_ACCESS; break;
+            default:      type=-1; break;
            }
 
            DEBUG_PRINTF(" type: %ld\n",type);
@@ -131,22 +125,23 @@ BOOL ReadConfigFile(char *filename)
            if (type!=-1) {
             ULONG size=cn->cn_Size;
 
-            /* Read chunk */
-            if (ReadChunkBytes(iff,configbuf,size)==size) {
-             struct Node *node;
+            if (size <= BUFSIZE) {
+             /* Read chunk */
+             if (ReadChunkBytes(iff,configbuf,size)==size) {
+              struct Node *node;
 
-             DEBUG_PRINTF("chunk read\n",0);
+              DEBUG_PRINTF("chunk read\n",0);
 
-             /* Interpret chunk contents */
-             if (node=(*ReadNodeFunctions[type])(configbuf)) {
+              /* Interpret chunk contents */
+              if (node=(*ReadNodeFunctions[type])(configbuf,size)) {
+               DEBUG_PRINTF("new node: 0x%08lx\n",node);
 
-              DEBUG_PRINTF("new node: 0x%08lx\n",node);
+               /* Make sure ln_Name is valid */
+               if (!node->ln_Name) node->ln_Name=strdup("");
 
-              /* Make sure ln_Name is valid */
-              if (!node->ln_Name) node->ln_Name=strdup("");
-
-              /* Append new node to list */
-              AddTail(&ObjectLists[type],node);
+               /* Append new node to list */
+               AddTail(&ObjectLists[type],node);
+              }
              }
             }
            }
@@ -180,6 +175,7 @@ BOOL WriteConfigFile(char *filename)
  if (configbuf=malloc(BUFSIZE)) {
   struct IFFHandle *iff;
 
+  ConfigBufferLimit = configbuf + BUFSIZE;
   DEBUG_PRINTF("config buffer: 0x%08lx\n",configbuf);
 
   /* Allocate IFF handle */
@@ -248,14 +244,18 @@ BOOL WriteConfigFile(char *filename)
 /* Read one config string and correct pointer */
 char *GetConfigStr(UBYTE **buf)
 {
- char *s=*buf;
+ UBYTE *s=*buf;
  char *new;
- ULONG len=strlen(s)+1;
+ ULONG len=0;
+
+ while (s + len < ConfigBufferLimit && s[len]) len++;
+ len++;
 
  /* Allocate string buffer */
  if (new=malloc(len)) {
   /* Copy string */
-  strcpy(new,s);
+  strncpy(new,(char *)s,len-1);
+  new[len-1] = '\0';
 
   /* Correct pointer */
   *buf+=len;
@@ -268,12 +268,22 @@ BOOL PutConfigStr(char *s, UBYTE **buf)
 {
  /* string valid? */
  if (s) {
-  /* Copy string to buffer */
-  strcpy(*buf,s);
+  ULONG maxlen = ConfigBufferLimit - *buf;
+  if ((LONG)maxlen > 0) {
+   ULONG slen;
 
-  /* Correct pointer */
-  *buf+=strlen(s)+1;
-  return(TRUE);
+   /* Calculate string length, limit to remaining space */
+   slen = strlen(s);
+   if (slen >= maxlen) slen = maxlen - 1;
+
+   /* Copy string to buffer */
+   strncpy((char *)*buf,s,slen);
+   (*buf)[slen] = '\0';
+
+   /* Correct pointer */
+   *buf+=slen+1;
+   return(TRUE);
+  }
  }
  return(FALSE);
 }

@@ -155,7 +155,7 @@ static void FreeBrowserList(void)
  struct Node *n;
 
  while (n=RemHead(&browserList))
-  FreeListBrowserNode((struct ListBrowserNode *)n);
+  FreeListBrowserNode(n);
 }
 
 static void BuildBrowserList(void)
@@ -166,37 +166,40 @@ static void BuildBrowserList(void)
  node=GetHead(CurrentList);
  while (node) {
   struct ListBrowserNode *lbnode;
+  struct Node *np;
 
   lbnode=AllocListBrowserNode(1,LBNCA_CopyText,TRUE,LBNCA_Text,
-    node->ln_Name ? node->ln_Name : "",TAG_END);
-  if (lbnode)
-   AddTail(&browserList,(struct Node *)lbnode);
+    (STRPTR)(node->ln_Name ? node->ln_Name : ""),TAG_END);
+  if (lbnode) {
+   np=(struct Node *)lbnode;
+   AddTail(&browserList,np);
+  }
   node=GetSucc(node);
  }
 }
 
 static void DetachObjectList(void)
 {
- SetGadgetAttrs(GL[G_ObjList],w,NULL,LISTBROWSER_Labels,(ULONG)~0,TAG_END);
+ SetGadgetAttrs((struct Gadget *)GL[G_ObjList],w,NULL,LISTBROWSER_Labels,(ULONG)~0,TAG_END);
  FreeBrowserList();
 }
 
 static void AttachObjectList(void)
 {
  BuildBrowserList();
- SetGadgetAttrs(GL[G_ObjList],w,NULL,LISTBROWSER_Labels,(ULONG)&browserList,
+ SetGadgetAttrs((struct Gadget *)GL[G_ObjList],w,NULL,LISTBROWSER_Labels,(ULONG)&browserList,
    LISTBROWSER_ShowSelected,TRUE,TAG_END);
 }
 
 static void DisableObjectGadgets(BOOL disable)
 {
- SetGadgetAttrs(GL[G_Top],w,NULL,GA_Disabled,disable,TAG_END);
- SetGadgetAttrs(GL[G_Up],w,NULL,GA_Disabled,disable,TAG_END);
- SetGadgetAttrs(GL[G_Down],w,NULL,GA_Disabled,disable,TAG_END);
- SetGadgetAttrs(GL[G_Bottom],w,NULL,GA_Disabled,disable,TAG_END);
- SetGadgetAttrs(GL[G_Edit],w,NULL,GA_Disabled,disable,TAG_END);
- SetGadgetAttrs(GL[G_Copy],w,NULL,GA_Disabled,disable,TAG_END);
- SetGadgetAttrs(GL[G_Remove],w,NULL,GA_Disabled,disable,TAG_END);
+ SetGadgetAttrs((struct Gadget *)GL[G_Top],w,NULL,GA_Disabled,disable,TAG_END);
+ SetGadgetAttrs((struct Gadget *)GL[G_Up],w,NULL,GA_Disabled,disable,TAG_END);
+ SetGadgetAttrs((struct Gadget *)GL[G_Down],w,NULL,GA_Disabled,disable,TAG_END);
+ SetGadgetAttrs((struct Gadget *)GL[G_Bottom],w,NULL,GA_Disabled,disable,TAG_END);
+ SetGadgetAttrs((struct Gadget *)GL[G_Edit],w,NULL,GA_Disabled,disable,TAG_END);
+ SetGadgetAttrs((struct Gadget *)GL[G_Copy],w,NULL,GA_Disabled,disable,TAG_END);
+ SetGadgetAttrs((struct Gadget *)GL[G_Remove],w,NULL,GA_Disabled,disable,TAG_END);
 }
 
 static void ConfigWriteError(char *s)
@@ -480,10 +483,10 @@ ULONG OpenRAMainWindow(UWORD wx, UWORD wy)
 
   i=1;
   do {
-   SetGadgetAttrs(GL[i],w,NULL,GA_ID,i,GA_RelVerify,TRUE,TAG_END);
+   SetGadgetAttrs((struct Gadget *)GL[i],w,NULL,GA_ID,i,GA_RelVerify,TRUE,TAG_END);
    i++;
   } while (i<=G_MAX);
- }
+}
 
  UnlockPubScreen(NULL,PublicScreen);
 
@@ -497,7 +500,7 @@ ULONG OpenRAMainWindow(UWORD wx, UWORD wy)
  else
   aw=NULL;
 
- SetGadgetAttrs(GL[G_ObjType],w,NULL,CHOOSER_Active,CurrentListNumber,TAG_END);
+ SetGadgetAttrs((struct Gadget *)GL[G_ObjType],w,NULL,CHOOSER_Active,CurrentListNumber,TAG_END);
 
  return sigmask;
 }
@@ -727,7 +730,7 @@ BOOL HandleRAMainWindowEvent(Object *windowObj, ULONG result, UWORD code)
 
  switch (result&WMHI_CLASSMASK) {
   case WMHI_CLOSEWINDOW:
-   return (!UpdateWindow);
+   return (BOOL)(!UpdateWindow);
 
   case WMHI_GADGETUP:
    gadid=result&WMHI_GADGETMASK;
@@ -825,15 +828,15 @@ BOOL HandleRAMainWindowEvent(Object *windowObj, ULONG result, UWORD code)
      break;
     case G_Save:
      closeval=SaveGadgetFunc();
-     return (closeval!=NULL);
+     return (BOOL)(closeval!=NULL);
     case G_Use:
      closeval=UseGadgetFunc();
-     return (closeval!=NULL);
+     return (BOOL)(closeval!=NULL);
     case G_Test:
      TestGadgetFunc();
      break;
     case G_Cancel:
-     return (!UpdateWindow);
+     return (BOOL)(!UpdateWindow);
     default:
      break;
    }

@@ -85,7 +85,7 @@ char *DuplicateBuffer(struct Gadget *gadget)
    return(s);
   } else
    /* Couldn't allocate memory */
-   return(-1);
+   return((char *)-1);
  }
 
  /* Buffer empty */
@@ -100,10 +100,10 @@ char FindVanillaKey(char *gadtext)
  /* Scan gadget text */
  if (cp=strchr(gadtext,'_'))
   /* Underscore found, return next character */
-  return(toupper(*(cp+1)));
+  return((char)toupper(*(cp+1)));
  else
   /* No underscore found, return dummy character */
-  return(1);
+  return((char)1);
 }
 
 /* Match a given vanilla key with the key array */
@@ -114,8 +114,8 @@ ULONG MatchVanillaKey(unsigned char key, char *array)
  /* Scan array */
  if (cp=strchr(array,toupper(key)))
   /* Key found, return index */
-  return(cp-array);
+  return((ULONG)(cp-array));
  else
   /* Key not found, return illegal value */
-  return(-1);
+  return((ULONG)-1);
 }

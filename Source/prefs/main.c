@@ -14,6 +14,7 @@ static const char PrefsPortName[]="ToolManager_Prefs";
 
 /* Misc. data */
 struct Library *IFFParseBase=NULL;
+struct Library *UtilityBase=NULL;
 static struct MsgPort *PrefsPort=NULL;
 static char *FromFileName;
 static char *PubScreenName;
@@ -35,6 +36,7 @@ static char YesString[]="Y|Yes";
 /* Open resources */
 static BOOL OpenResources(void)
 {
+ if (!(UtilityBase=OpenLibrary("utility.library",47))) return(FALSE);
  if (!(IFFParseBase=OpenLibrary("iffparse.library",37))) return(FALSE);
  if (!(PrefsPort=CreateMsgPort())) return(FALSE);
  PrefsPort->mp_Node.ln_Pri=-127;
@@ -66,6 +68,7 @@ static void CloseResources(void)
   DeleteMsgPort(PrefsPort);
  }
  if (IFFParseBase) CloseLibrary(IFFParseBase);
+ if (UtilityBase) CloseLibrary(UtilityBase);
 }
 
 /* Free all preferences objects */
